@@ -16,6 +16,15 @@ the long-wave period for 2050–2080 under UN WPP 2024 working-age population
 scenarios, including a Sub-Saharan-Africa fertility-crash variant and a
 sign-flip robustness check of Eq. (8.15).
 
+On 2026-09-02 the repository was extended with (i) a **technical report on the
+book's Section 8.3.3 errata** (`docs/Technical_Report_Ch8_Model_Errata.docx`),
+(ii) a **cycles figure of the nonlinear ODE solution at the book parameters**
+(`figures/ode_solution_book_params.png`, produced by
+`scripts/long_wave_model.py --cycles-fig`), and (iii) a full **wholesale-price
+evidence package** (gold-denominated and local-currency WPI for five countries,
+1800–2026: scripts, regenerated JSON series and figures). See
+["What was added in this update"](#what-was-added-in-this-update).
+
 ## The model
 
 Five key variables: the rate of profit `r`, the shares of surplus value invested
@@ -59,6 +68,12 @@ Book parameters: a1=0.04, a2=0.01, b0=0.004, b1=0.005, b2=0.05, n=0.015, gw=0.03
    post-2085 phenomenon. The SSA fertility-crash scenario moves the working-age
    peak 23 years earlier (2047) but barely changes wave lengths (−1 y), because
    wave length is insensitive to second-order changes in n.
+5. **Nonlinear solution at the book parameters** (initial values = closed-form
+   equilibrium (8.25) × 1.05, 300 years): sV, sC, δ and τ settle into limit
+   cycles of **~49–54 years** (the book's "about 50 years") while the rate of
+   profit r trends downwards — see
+   `figures/ode_solution_book_params.png` and
+   `docs/Technical_Report_Ch8_Model_Errata.docx` (Finding 6).
 
 ## Repository layout
 
@@ -68,25 +83,40 @@ long-wave-model/
 ├── requirements.txt
 ├── LICENSE
 ├── scripts/                       # all analysis scripts (English)
-│   ├── long_wave_model.py         # model implementation, book self-checks, n scenarios, figure
+│   ├── long_wave_model.py         # model implementation, book self-checks, n scenarios,
+│   │                              #   cycles_by_n figure + optional --cycles-fig ODE-solution figure
 │   ├── sv_sign_flip.py            # sign-flip robustness check of Eq. (8.15) (4 variants × 6 findings)
 │   ├── history_compare.py         # model vs the 5 historical long waves
 │   ├── forecast_2050_2080.py      # 2050-2080 UN WPP 2024 three-scenario forecast
-│   └── ssa_fertility_scenario.py  # SSA fertility-crash scenario, waves 6/7 re-estimation
+│   ├── ssa_fertility_scenario.py  # SSA fertility-crash scenario, waves 6/7 re-estimation
+│   ├── wpi_build_series.py        # WPI: assemble raw downloads -> annual/quarterly
+│   │                              #   gold-denominated series + cycles (JSON)
+│   ├── wpi_plot_charts.py         # WPI: gold-denominated country + combined figures
+│   ├── wpi_plot_local_currency.py # WPI: local-currency figure, pre-1940 peaks/troughs
+│   └── wpi_dl_destatis.py         # WPI: download helper for the slow Destatis server
 ├── docs/                          # English analysis reports
 │   ├── model_validation_n_scenarios.md
 │   ├── history_comparison.md
 │   ├── forecast_2050_2080.md
 │   ├── ssa_fertility_scenario.md
-│   └── sv_sign_flip_report.md
+│   ├── sv_sign_flip_report.md
+│   └── Technical_Report_Ch8_Model_Errata.docx   # 6 findings on the book's Section 8.3.3
 ├── data/                          # regenerated result JSONs (English)
 │   ├── results.json
 │   ├── history_results.json
 │   ├── forecast_results.json
 │   ├── ssa_scenario_results.json
-│   └── sv_flip_results.json
+│   ├── sv_flip_results.json
+│   ├── wpi_annual_1800_2026.json      # annual WPI / FX / gold-denominated WPI
+│   ├── wpi_quarterly_1982_2026.json   # quarterly gold-denominated WPI
+│   ├── wpi_cycles_gold.json           # gold WPI peak/trough cycles (9-yr MA)
+│   └── wpi_pre1940_cycles_local.json  # local-currency WPI pre-1940 cycles
 └── figures/
-    └── cycles_by_n.png            # profit-rate deviation r(t) per n scenario
+    ├── cycles_by_n.png            # linearised Δr(t) per n scenario
+    ├── ode_solution_book_params.png   # nonlinear ODE solution cycles at book parameters
+    ├── wpi_chart_US.png ... wpi_chart_FR.png   # gold-denominated WPI per country
+    ├── wpi_chart_combined_9yMA_log.png         # five countries, 9-yr MAs
+    └── wpi_chart_local_currency.png            # local-currency WPI, 5 panels
 ```
 
 ## Usage
@@ -96,17 +126,21 @@ pip install -r requirements.txt
 
 python scripts/long_wave_model.py                        # self-checks + n scenarios
 python scripts/long_wave_model.py --ns 0.015 0 -0.008 -0.015
+python scripts/long_wave_model.py --cycles-fig figures/ode_solution_book_params.png
 python scripts/sv_sign_flip.py                           # sign-flip check of (8.15)
 python scripts/history_compare.py                        # historical comparison
 python scripts/forecast_2050_2080.py                     # 2050-2080 forecast
 python scripts/ssa_fertility_scenario.py --data-dir <dir>  # SSA scenario (needs OWID CSVs, see below)
+python scripts/wpi_build_series.py --raw-dir <dir>       # WPI series (needs downloads, see below)
+python scripts/wpi_plot_charts.py                        # gold-denominated WPI figures
+python scripts/wpi_plot_local_currency.py                # local-currency WPI figure
 ```
 
 Results are written to `data/` (JSON) and `figures/` (PNG).
 
 ### Input data
 
-The first four scripts run standalone (all model inputs are hard-coded book
+The first five scripts run standalone (all model inputs are hard-coded book
 parameters and the wave periodisation from the book's Table 5.1 / App. 8.A).
 `ssa_fertility_scenario.py` additionally needs two OWID CSVs (UN WPP 2024),
 downloadable from Our World in Data:
@@ -120,6 +154,11 @@ directory via `--data-dir`.) The `n` inputs for `history_compare.py` /
 2026-08-23 (working-age 15–64 CAGR; pre-1950 shares imputed, see
 `docs/history_comparison.md` §2.1).
 
+The WPI scripts need the externally downloaded source files described in
+["WPI input data"](#wpi-input-data); they are **not** stored in the repository
+(raw data ~120 MB). Put them in one directory (default `<repo>/wpi_raw_data/`,
+git-ignored) and pass it via `--raw-dir`.
+
 ## Main results (quick reference)
 
 | Scenario | n (15–64, annual) | Period (eigenvalue) | Nonlinear sC period |
@@ -131,6 +170,122 @@ directory via `--data-dir`.) The `n` inputs for `history_compare.py` /
 | Optimistic 2050–80 (UN High) | +0.464% | 35.3 y | 38.9 y |
 | Medium 2050–80 (UN WPP 2024) | +0.048% | 32.9 y | 36.6 y |
 | Pessimistic 2050–80 (UN Low) | −0.302% | 31.0 y | 33.8 y |
+
+---
+
+# What was added in this update
+
+Merged on 2026-09-02 from the working project *price_index_in_gold* (task
+folder) plus the redo material of the Section 8.3.3 technical report:
+
+1. `docs/Technical_Report_Ch8_Model_Errata.docx` — the technical report
+   (6 findings) on the internal inconsistencies of the book's Section 8.3.3
+   (equilibrium / closed form / linearisation / "about 50 years" claim).
+   Finding 6 confirms that the nonlinear ODE solution nevertheless shows
+   ~50-year cycles with a long-run fall of the profit rate.
+2. `figures/ode_solution_book_params.png` — cycles of the **nonlinear solution
+   of the ODE** at the book parameters
+   (a1=0.04, a2=0.01, b0=0.004, b1=0.005, b2=0.05, gw=0.03, n=0.015),
+   generated by the new `--cycles-fig` option of `scripts/long_wave_model.py`
+   (5 panels: r, sV, sC, δ, τ over 300 years; initial values = closed-form
+   equilibrium (8.25) × 1.05; measured median period and rise/fall annotated
+   per panel).
+3. A wholesale-price evidence package (5 countries, 1800–2026):
+   - **scripts** `wpi_build_series.py`, `wpi_plot_charts.py`,
+     `wpi_plot_local_currency.py`, `wpi_dl_destatis.py` — see
+     ["WPI scripts"](#wpi-scripts);
+   - **data** `wpi_annual_1800_2026.json`, `wpi_quarterly_1982_2026.json`,
+     `wpi_cycles_gold.json`, `wpi_pre1940_cycles_local.json` — regenerated
+     result series (JSON, following the repo's data convention);
+   - **figures** `wpi_chart_US/UK/DE/JP/FR.png`,
+     `wpi_chart_combined_9yMA_log.png`, `wpi_chart_local_currency.png` — see
+     ["WPI figures"](#wpi-figures).
+
+## WPI figures
+
+All WPI figures are English-language PNGs. They can be re-generated with the
+plot scripts (they read the JSON series in `data/`; no downloads needed for
+plotting).
+
+| Figure | Content | Data used (sources) |
+|---|---|---|
+| `figures/wpi_chart_US.png` … `wpi_chart_FR.png` | Gold-denominated WPI per country, log scale, 1913=100: annual index (grey), centred 3/6/9-yr moving averages (blue/orange/red), peak/trough years labelled on the 9-yr MA | The five WPI series in local currency spliced over 1800–2026 (see source table below) divided by the USD exchange rate and the USD gold price; rebased to 1913=100 |
+| `figures/wpi_chart_combined_9yMA_log.png` | Five countries overlaid (9-yr MAs, log), 39 peak/trough markers with collision-free year labels | Same as above |
+| `figures/wpi_chart_local_currency.png` | Local-currency WPI, 3×2 subplot grid: every country rebased to its own 1913=100 (log). Pre-1940 span shaded; peaks/troughs of the 9-yr MA labelled there only. Germany panel caps the y-axis at 1e5 because the 1923 hyperinflation annual average (1.26e11) is off scale (annotated with an arrow + note) | The published local-currency WPI series (sources below); no FX/gold needed |
+| `figures/ode_solution_book_params.png` | Nonlinear ODE solution (r, sV, sC, δ, τ) at the book parameters, 300 years, cycles of ~50 y | Model equations (8.15)–(8.19) of the book; parameters as printed (no empirical data) |
+
+**Cycle tables printed on the charts** (peaks `P` / troughs `T`, 9-yr MA,
+min. 3-yr spacing, swing ≥ 12%, alternating):
+
+- Gold-denominated WPI: US P 1814/1869/1921/1967/2001, T 1846/1895/1938/1984/2016;
+  UK P 1812/1921/1967/2001, T 1895/1936/1983; DE P 1857/1876/1918/1968/2001,
+  T 1866/1895/1953/1984/2014; JP P 1922/1969/1998, T 1896/1938/1983;
+  FR P 1920/1967/1998, T 1938/1984/2014 (values in `data/wpi_cycles_gold.json`).
+- Local-currency WPI before 1940: US P 1814/1868/1921, T 1846/1895/1935;
+  UK P 1810/1870/1920, T 1847/1895/1934; DE P 1871/1919, T 1895/1935;
+  JP P 1922, T 1932; FR P 1927, T 1933
+  (`data/wpi_pre1940_cycles_local.json`; Germany 1919 peak is off scale on the
+  chart; Germany 1945–47 has no data; a first trough within 5 years of the
+  series start is discarded as an edge artefact).
+
+### WPI data sources (used by the figures above)
+
+The index input series are a mix of FRED/NBER, national statistical offices and
+historical compilations, spliced at overlaps (details of every splicing anchor
+are in the script comments of `scripts/wpi_build_series.py`):
+
+**Wholesale / producer prices (local currency):**
+
+| Country | Historical segment | Source |
+|---|---|---|
+| US | 1800–1849 | Warren–Pearson wholesale price index (HSUS E23–42) |
+| US | 1850–1894 / 1890–1914 | FRED NBER M0448AUSM323NNBR / M0448BUSM336NNBR |
+| US | 1913–2026 | FRED PPIACO — BLS all-commodity PPI (1982=100) |
+| UK | 1800–2016 | Bank of England "Three centuries" millennium dataset, table A47 (wages and prices; 2015=100) |
+| UK | 1948–2026 (monthly splice) | ONS GB7S output PPI (2015=100) + OECD MEI (GBRPROINDMISMEI) via FRED |
+| DE | 1851–1914 | Hamburg wholesale price index — FRED NBER A04054DE00HAMA314NNBR (annual) / M04054DE00HAMM314NNBR (monthly) |
+| DE | 1914–1944 | Statistisches Reichsamt (1913=100; via FRB bulletins and the literature), incl. 1922–23 hyperinflation (1923 annual average 1.26e11) |
+| DE | 1948–1957 | literature approximation of the Bundesbank long series (±10%, noted in the charts) |
+| DE | 1958–2024 / 2010–2026 | OECD MEI DEUPROINDMISMEI via FRED / Destatis statistical report table 61241-b01 (2021=100) — slow server, fetch with `wpi_dl_destatis.py` |
+| JP | 1887–1946 | BOJ IMES historical Tokyo wholesale prices (monthly CSVs, Shift-JIS) |
+| JP | 1945–1959 | BOJ/MOF national WPI (1934–36=100; level-spliced to the IMES segment at 1945–46) |
+| JP | 1955–2024 / 2024–2026 | OECD MEI JPNPROINDMISMEI via FRED / BOJ CGPI monthly-change tables in the monthly-report PDFs |
+| FR | 1913–1939 | FRED NBER M04057FRM360NNBR |
+| FR | 1940–1945 / 1946–1952 | FRB bulletin (1938=100) / INSEE (1938=100) |
+| FR | 1956–2024 / 2005–2025-10 | OECD MEI FRAPROINDMISMEI via FRED / INSEE IPPI monthly (2015=100; release paused after 2025-10) |
+
+**Gold price (USD/oz, used by the gold-denominated figures only):**
+1792–1833 official $19.39; 1834–1861 $20.67; 1862–1878 $20.67 × greenback
+premium (Mitchell 1908 / HSUS); 1879–1933 $20.67; 1934–1967 $35; 1950–2026
+monthly market price (London fixing / COMEX averages cached from the commodity
+price project).
+
+**Exchange rates (local currency per USD, gold figures only):** UK — BOE A33
+(USD/GBP 1791–2016, inverted) then FRED EXUSUK; Germany — gold parity 4.198
+to 1912, MeasuringWorth historical series 1913–1970 (official hyperinflation
+values for 1923–24 and 1941–45), FRED EXGEUS (DM) then DEXUSEU (EUR) 1971+;
+Japan — Hitotsubashi LTES table 26 (USD/100 yen, 1874–1941) with official
+1942–48 rates, MeasuringWorth ~360 (1949–1970), FRED EXJPUS 1971+; France —
+gold parity 5.1826 to 1912, MeasuringWorth 1913–1970, FRED EXFRUS (new francs,
+×100 for the 1960 redenomination) then DEXUSEU × 655.957 old francs per euro.
+
+Known caveats (also in the figure notes and JSON metadata): series definitions
+change over time (wholesale → producer prices); level breaks of a few percent
+possible at the splicing points; Germany 1945–47 has no data (occupation);
+Japan 1945–59 prices were controlled and the official FX understates the black
+market; France 1953–55 is linearly interpolated.
+
+### WPI scripts
+
+| Script | Function |
+|---|---|
+| `wpi_build_series.py` | Reads the downloaded source files (`--raw-dir`), assembles the annual and quarterly series (FX and gold denominate the WPI), detects the 9-yr-MA peak/trough cycles, and writes `data/wpi_annual_1800_2026.json`, `data/wpi_quarterly_1982_2026.json`, `data/wpi_cycles_gold.json` |
+| `wpi_plot_charts.py` | Reads the JSON series and draws the per-country gold-denominated charts plus the combined 9-yr-MA chart (log axes, labelled peaks/troughs, collision-avoided year labels) into `figures/` |
+| `wpi_plot_local_currency.py` | Draws the 5-panel local-currency figure with the shaded pre-1940 window, labelled pre-1940 peaks/troughs and the German capped axis; also writes `data/wpi_pre1940_cycles_local.json` |
+| `wpi_dl_destatis.py` | Downloads the Destatis producer-price xlsx with retries + integrity check (that server is too slow for plain curl) |
+
+All WPI figures were regenerated from the committed JSON data and verified to be
+pixel-identical to the working-project originals.
 
 ## License
 

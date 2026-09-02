@@ -1,0 +1,214 @@
+{
+ "meta": {
+  "title": "Peak/trough cycles of the annual gold-denominated WPI",
+  "detection": "centred 9-yr MA; local extrema with >=5 points in a +-2-yr window; min. 3-yr spacing; swing >= 12%; alternating types; first trough within 5 years of the series start dropped as an edge artefact",
+  "caveat": "the 1922-23 German hyperinflation distorts the 9-yr MA around 1918-27; cycle years there carry limited meaning"
+ },
+ "cycles": {
+  "US": [
+   {
+    "year": 1814,
+    "type": "peak",
+    "ma9": 153.06842434404092
+   },
+   {
+    "year": 1846,
+    "type": "trough",
+    "ma9": 80.96008587100255
+   },
+   {
+    "year": 1869,
+    "type": "peak",
+    "ma9": 115.1068291995121
+   },
+   {
+    "year": 1895,
+    "type": "trough",
+    "ma9": 72.1
+   },
+   {
+    "year": 1921,
+    "type": "peak",
+    "ma9": 165.2
+   },
+   {
+    "year": 1938,
+    "type": "trough",
+    "ma9": 69.8
+   },
+   {
+    "year": 1967,
+    "type": "peak",
+    "ma9": 159.37159874103762
+   },
+   {
+    "year": 1984,
+    "type": "trough",
+    "ma9": 42.5
+   },
+   {
+    "year": 2001,
+    "type": "peak",
+    "ma9": 71.5
+   },
+   {
+    "year": 2016,
+    "type": "trough",
+    "ma9": 24.9
+   }
+  ],
+  "UK": [
+   {
+    "year": 1812,
+    "type": "peak",
+    "ma9": 157.27484910649721
+   },
+   {
+    "year": 1895,
+    "type": "trough",
+    "ma9": 76.78450267059384
+   },
+   {
+    "year": 1921,
+    "type": "peak",
+    "ma9": 178.0
+   },
+   {
+    "year": 1936,
+    "type": "trough",
+    "ma9": 66.4
+   },
+   {
+    "year": 1967,
+    "type": "peak",
+    "ma9": 215.66229978903033
+   },
+   {
+    "year": 1983,
+    "type": "trough",
+    "ma9": 64.5
+   },
+   {
+    "year": 2001,
+    "type": "peak",
+    "ma9": 136.5
+   }
+  ],
+  "DE": [
+   {
+    "year": 1857,
+    "type": "peak",
+    "ma9": 97.19741255319998
+   },
+   {
+    "year": 1866,
+    "type": "trough",
+    "ma9": 68.0
+   },
+   {
+    "year": 1876,
+    "type": "peak",
+    "ma9": 88.3
+   },
+   {
+    "year": 1895,
+    "type": "trough",
+    "ma9": 71.7
+   },
+   {
+    "year": 1918,
+    "type": "peak",
+    "ma9": 274.7
+   },
+   {
+    "year": 1953,
+    "type": "trough",
+    "ma9": 81.90227665943331
+   },
+   {
+    "year": 1968,
+    "type": "peak",
+    "ma9": 152.6
+   },
+   {
+    "year": 1984,
+    "type": "trough",
+    "ma9": 33.9
+   },
+   {
+    "year": 2001,
+    "type": "peak",
+    "ma9": 110.4
+   },
+   {
+    "year": 2014,
+    "type": "trough",
+    "ma9": 27.3
+   }
+  ],
+  "JP": [
+   {
+    "year": 1896,
+    "type": "trough",
+    "ma9": 68.50336875291543
+   },
+   {
+    "year": 1922,
+    "type": "peak",
+    "ma9": 205.4
+   },
+   {
+    "year": 1938,
+    "type": "trough",
+    "ma9": 68.1
+   },
+   {
+    "year": 1969,
+    "type": "peak",
+    "ma9": 656.7558732830134
+   },
+   {
+    "year": 1983,
+    "type": "trough",
+    "ma9": 231.5
+   },
+   {
+    "year": 1998,
+    "type": "peak",
+    "ma9": 690.1
+   }
+  ],
+  "FR": [
+   {
+    "year": 1920,
+    "type": "peak",
+    "ma9": 187.7738893978066
+   },
+   {
+    "year": 1938,
+    "type": "trough",
+    "ma9": 63.9
+   },
+   {
+    "year": 1967,
+    "type": "peak",
+    "ma9": 196.4763379773029
+   },
+   {
+    "year": 1984,
+    "type": "trough",
+    "ma9": 21.5
+   },
+   {
+    "year": 1998,
+    "type": "peak",
+    "ma9": 38.9
+   },
+   {
+    "year": 2014,
+    "type": "trough",
+    "ma9": 6.8
+   }
+  ]
+ }
+}

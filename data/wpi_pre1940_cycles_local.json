@@ -1,0 +1,126 @@
+{
+ "title": "Pre-1940 peak/trough cycles of the local-currency WPI (labelled on figures/wpi_chart_local_currency.png)",
+ "detection": "same 9-yr MA method as wpi_cycles_gold.json; only extrema with year < 1940 are listed",
+ "cycles": [
+  {
+   "country": "US",
+   "year": 1814,
+   "type": "peak",
+   "ma9_value": 143.58957777777778
+  },
+  {
+   "country": "US",
+   "year": 1846,
+   "type": "trough",
+   "ma9_value": 80.96006666666666
+  },
+  {
+   "country": "US",
+   "year": 1868,
+   "type": "peak",
+   "ma9_value": 155.4
+  },
+  {
+   "country": "US",
+   "year": 1895,
+   "type": "trough",
+   "ma9_value": 72.1
+  },
+  {
+   "country": "US",
+   "year": 1921,
+   "type": "peak",
+   "ma9_value": 165.2
+  },
+  {
+   "country": "US",
+   "year": 1935,
+   "type": "trough",
+   "ma9_value": 108.6
+  },
+  {
+   "country": "UK",
+   "year": 1810,
+   "type": "peak",
+   "ma9_value": 169.2461680705058
+  },
+  {
+   "country": "UK",
+   "year": 1847,
+   "type": "trough",
+   "ma9_value": 94.92073186248314
+  },
+  {
+   "country": "UK",
+   "year": 1870,
+   "type": "peak",
+   "ma9_value": 119.9
+  },
+  {
+   "country": "UK",
+   "year": 1895,
+   "type": "trough",
+   "ma9_value": 76.7
+  },
+  {
+   "country": "UK",
+   "year": 1920,
+   "type": "peak",
+   "ma9_value": 198.1
+  },
+  {
+   "country": "UK",
+   "year": 1934,
+   "type": "trough",
+   "ma9_value": 103.0
+  },
+  {
+   "country": "DE",
+   "year": 1871,
+   "type": "peak",
+   "ma9_value": 98.98195555555554
+  },
+  {
+   "country": "DE",
+   "year": 1895,
+   "type": "trough",
+   "ma9_value": 71.6
+  },
+  {
+   "country": "DE",
+   "year": 1919,
+   "type": "peak",
+   "ma9_value": 14000017108.6
+  },
+  {
+   "country": "DE",
+   "year": 1935,
+   "type": "trough",
+   "ma9_value": 102.7
+  },
+  {
+   "country": "JP",
+   "year": 1922,
+   "type": "peak",
+   "ma9_value": 207.94536490959365
+  },
+  {
+   "country": "JP",
+   "year": 1932,
+   "type": "trough",
+   "ma9_value": 147.7
+  },
+  {
+   "country": "FR",
+   "year": 1927,
+   "type": "peak",
+   "ma9_value": 554.8754464899417
+  },
+  {
+   "country": "FR",
+   "year": 1933,
+   "type": "trough",
+   "ma9_value": 446.8
+  }
+ ]
+}

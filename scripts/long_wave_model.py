@@ -33,6 +33,9 @@ Usage:
     python long_wave_model.py --ns 0.015 0 -0.008 -0.015   # custom scenarios
     python long_wave_model.py --ns 0.02 0.015 0.005        # positive n range (nonlinear reference)
     python long_wave_model.py --a1 0.04 --n -0.010         # custom model parameters
+    python long_wave_model.py --cycles-fig figures/ode_solution_book_params.png
+                                                 # figure: nonlinear solution cycles
+                                                 # at the given (book) parameters
 """
 import numpy as np
 from scipy.integrate import odeint
@@ -203,6 +206,49 @@ def book_matrix_eigsonly():
     w = np.linalg.eigvals(BOOK_MATRIX)
     return sorted(w, key=lambda z: -z.imag)
 
+def plot_solution_cycles(m, out_png, T_years=300.0):
+    """Figure: the cycles of the nonlinear ODE solution at the given parameters.
+
+    Panels for r, sV, sC, delta, tau over T_years years. The initial values are
+    the closed-form equilibrium (8.25) times 1.05 (same convention as in
+    run_scenario). sV/sC/delta/tau settle into limit cycles of roughly 50 years
+    while the rate of profit r trends down - see the technical report
+    docs/Technical_Report_Ch8_Model_Errata.docx, Finding 6."""
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    names = ['r', 'sV', 'sC', 'delta', 'tau']
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#9467bd', '#d62728']
+    eq = m.equilibrium_closed_form()
+    t, sol = m.simulate(eq * 1.05, T_years=T_years)
+    fig, axes = plt.subplots(5, 1, figsize=(10, 13), sharex=True)
+    for ax, idx, nm, col in zip(axes, range(5), names, colors):
+        ax.plot(t, sol[:, idx], lw=1.0, color=col)
+        ax.axhline(eq[idx], color='#666666', ls='--', lw=0.9,
+                   label=f"equilibrium (8.25): {nm}* = {eq[idx]:.4f}")
+        seg = cycle_segments(t, sol, pick_index=idx)
+        txt = (f"median period ~ {seg[0]:.0f} y  ({seg[3]} cycles; "
+               f"rise {seg[1]:.0f} y / fall {seg[2]:.0f} y)"
+               if seg[0] == seg[0] else "no sustained cycle (long-run drift)")
+        ax.text(0.015, 0.93, txt, transform=ax.transAxes, fontsize=9,
+                bbox=dict(boxstyle='round,pad=0.25', fc='white', alpha=0.85,
+                          ec='#888888', lw=0.5))
+        ax.set_ylabel(f'{nm}(t)', fontsize=10)
+        ax.legend(loc='lower right', fontsize=8, framealpha=0.9)
+        ax.grid(alpha=0.3)
+    axes[-1].set_xlabel('t (years)')
+    p = m.p
+    fig.suptitle("Nonlinear solution of the long-wave model (8.15)-(8.19) at the "
+                 "book parameters\n"
+                 f"a1={p['a1']}, a2={p['a2']}, b0={p['b0']}, b1={p['b1']}, "
+                 f"b2={p['b2']}, gw={p['gw']}, n={p['n']}  |  initial values = "
+                 "closed-form equilibrium (8.25) x 1.05",
+                 fontsize=11)
+    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    os.makedirs(os.path.dirname(out_png), exist_ok=True)
+    fig.savefig(out_png, dpi=130)
+    plt.close(fig)
+
 # ----------------------------------------------------------------------
 # Rise/fall segment measurement
 # ----------------------------------------------------------------------
@@ -275,6 +321,9 @@ def main():
                     help='list of n scenarios (default: book baseline + 0 + -0.008 + -0.015)')
     ap.add_argument('--out', default=os.path.join(DATA_DIR, 'results.json'))
     ap.add_argument('--fig', default=os.path.join(FIG_DIR, 'cycles_by_n.png'))
+    ap.add_argument('--cycles-fig', default='',
+                    help='optional: PNG for the nonlinear-solution cycles figure at the '
+                         'given model parameters (e.g. figures/ode_solution_book_params.png)')
     args = ap.parse_args()
 
     m = Model(a1=args.a1, a2=args.a2, b0=args.b0, b1=args.b1, b2=args.b2, gw=args.gw,
@@ -352,6 +401,10 @@ def main():
         print(f"\nFigure saved: {args.fig}")
     except Exception as e:
         print('Plotting skipped:', e)
+
+    if args.cycles_fig:
+        plot_solution_cycles(m, args.cycles_fig)
+        print(f"Figure saved: {args.cycles_fig}")
 
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(args.out, 'w', encoding='utf-8') as f:
