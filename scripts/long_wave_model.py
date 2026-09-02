@@ -220,16 +220,25 @@ def plot_solution_cycles(m, out_png, T_years=300.0):
     names = ['r', 'sV', 'sC', 'delta', 'tau']
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#9467bd', '#d62728']
     eq = m.equilibrium_closed_form()
-    t, sol = m.simulate(eq * 1.05, T_years=T_years)
-    fig, axes = plt.subplots(5, 1, figsize=(10, 13), sharex=True)
+    # Window = 6 dominant eigenvalue periods, the same convention as run_scenario
+    # and docs/model_validation_n_scenarios.md (section 3, nonlinear reference).
+    J, w = m.eig_analysis(eq)
+    desc = m.describe_eigs(w)
+    T0 = next((d['T_years'] for d in desc if d['T_years']), 50.0)
+    twin = min(T_years, 6 * T0)
+    t, sol = m.simulate(eq * 1.05, T_years=twin)
+    fig, axes = plt.subplots(5, 1, figsize=(10, 13.6), sharex=True)
     for ax, idx, nm, col in zip(axes, range(5), names, colors):
         ax.plot(t, sol[:, idx], lw=1.0, color=col)
         ax.axhline(eq[idx], color='#666666', ls='--', lw=0.9,
                    label=f"equilibrium (8.25): {nm}* = {eq[idx]:.4f}")
         seg = cycle_segments(t, sol, pick_index=idx)
-        txt = (f"median period ~ {seg[0]:.0f} y  ({seg[3]} cycles; "
-               f"rise {seg[1]:.0f} y / fall {seg[2]:.0f} y)"
-               if seg[0] == seg[0] else "no sustained cycle (long-run drift)")
+        if seg[0] == seg[0]:
+            txt = (f"median period ~ {seg[0]:.0f} y  ({seg[3]} cycles; "
+                   f"rise {seg[1]:.0f} y / fall {seg[2]:.0f} y)")
+        else:
+            txt = ("no complete cycle: the rate of profit drifts down "
+                   "(unstable equilibrium, see note below)")
         ax.text(0.015, 0.93, txt, transform=ax.transAxes, fontsize=9,
                 bbox=dict(boxstyle='round,pad=0.25', fc='white', alpha=0.85,
                           ec='#888888', lw=0.5))
@@ -242,9 +251,19 @@ def plot_solution_cycles(m, out_png, T_years=300.0):
                  "book parameters\n"
                  f"a1={p['a1']}, a2={p['a2']}, b0={p['b0']}, b1={p['b1']}, "
                  f"b2={p['b2']}, gw={p['gw']}, n={p['n']}  |  initial values = "
-                 "closed-form equilibrium (8.25) x 1.05",
+                 f"closed-form equilibrium (8.25) x 1.05  |  window {twin:.0f} y "
+                 "(= 6 eigenvalue periods)",
                  fontsize=11)
-    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    fig.text(0.02, 0.006,
+             'Note: the closed-form equilibrium (8.25) is an unstable focus (dominant eigenvalue '
+             'Re = +0.0212);\n'
+             'oscillation amplitudes grow cycle by cycle and peak spacings lengthen '
+             '(sC: ~43 y -> ~61 y over this window), so "about 50 years" is a median over the\n'
+             'first cycles, not a stationary cycle.  Eigenvalue periods: 41.7 y at (8.25); '
+             '66.3 y (2*pi/0.0947) for the book\'s printed matrix - '
+             'see docs/model_validation_n_scenarios.md.',
+             ha='left', va='bottom', fontsize=8.2, color='#333333')
+    fig.tight_layout(rect=(0, 0.065, 1, 0.955))
     os.makedirs(os.path.dirname(out_png), exist_ok=True)
     fig.savefig(out_png, dpi=130)
     plt.close(fig)
