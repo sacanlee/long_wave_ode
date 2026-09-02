@@ -206,64 +206,112 @@ def book_matrix_eigsonly():
     w = np.linalg.eigvals(BOOK_MATRIX)
     return sorted(w, key=lambda z: -z.imag)
 
-def plot_solution_cycles(m, out_png, T_years=300.0):
+def _peak_spacings(t, yv):
+    """Times and lengths of the completed peak-to-peak intervals of a series.
+    Returns (spacing_start_times, spacings_in_years)."""
+    from scipy.signal import find_peaks
+    pk, _ = find_peaks(yv, distance=max(2, len(t) // 200))
+    if len(pk) < 2:
+        return [], []
+    t_pk = t[pk]
+    return t_pk[1:], list(np.diff(t_pk))
+
+def plot_solution_cycles(m, out_png, T_years=300.0, T_long=600.0):
     """Figure: the cycles of the nonlinear ODE solution at the given parameters.
 
-    Panels for r, sV, sC, delta, tau over T_years years. The initial values are
+    Upper block: r, sV, sC, delta, tau over T_years (default 300) years, with
+    the measured peak-to-peak spacings annotated per panel. Initial values are
     the closed-form equilibrium (8.25) times 1.05 (same convention as in
-    run_scenario). sV/sC/delta/tau settle into limit cycles of roughly 50 years
-    while the rate of profit r trends down - see the technical report
-    docs/Technical_Report_Ch8_Model_Errata.docx, Finding 6."""
+    run_scenario).
+
+    Bottom strip: peak-to-peak spacing of every completed cycle vs time from a
+    T_long (600 y) integration. The point of the figure is that the spacing
+    does NOT settle at a stable value: amplitudes grow and the period keeps
+    lengthening (sC 43 -> 83 y over 300 y; sV/delta/tau up to ~140 y by 600 y)
+    because the closed-form equilibrium is an unstable focus (Re = +0.0212).
+    The trajectory never reaches a limit cycle, so "about 50 years" is only a
+    median over the first cycles - see docs/model_validation_n_scenarios.md
+    and docs/Technical_Report_Ch8_Model_Errata.docx (Finding 6)."""
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     names = ['r', 'sV', 'sC', 'delta', 'tau']
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#9467bd', '#d62728']
     eq = m.equilibrium_closed_form()
-    # Window = 6 dominant eigenvalue periods, the same convention as run_scenario
-    # and docs/model_validation_n_scenarios.md (section 3, nonlinear reference).
-    J, w = m.eig_analysis(eq)
-    desc = m.describe_eigs(w)
-    T0 = next((d['T_years'] for d in desc if d['T_years']), 50.0)
-    twin = min(T_years, 6 * T0)
+    twin = T_years                      # variable-panel window (>= 300 y)
     t, sol = m.simulate(eq * 1.05, T_years=twin)
-    fig, axes = plt.subplots(5, 1, figsize=(10, 13.6), sharex=True)
-    for ax, idx, nm, col in zip(axes, range(5), names, colors):
+    tL, solL = m.simulate(eq * 1.05, T_years=T_long)   # long run for the spacing strip
+
+    import matplotlib.gridspec as gridspec
+    fig = plt.figure(figsize=(10, 15.6))
+    gs = gridspec.GridSpec(6, 1, height_ratios=[2.2, 2.2, 2.2, 2.2, 2.2, 1.5],
+                           hspace=0.38, top=0.94, bottom=0.075, left=0.09, right=0.97)
+    axes = [fig.add_subplot(g) for g in gs]
+
+    for ax, idx, nm, col in zip(axes[:5], range(5), names, colors):
         ax.plot(t, sol[:, idx], lw=1.0, color=col)
         ax.axhline(eq[idx], color='#666666', ls='--', lw=0.9,
                    label=f"equilibrium (8.25): {nm}* = {eq[idx]:.4f}")
-        seg = cycle_segments(t, sol, pick_index=idx)
-        if seg[0] == seg[0]:
-            txt = (f"median period ~ {seg[0]:.0f} y  ({seg[3]} cycles; "
-                   f"rise {seg[1]:.0f} y / fall {seg[2]:.0f} y)")
+        starts, sp = _peak_spacings(t, sol[:, idx])
+        if sp:
+            med = float(np.median(sp))
+            txt = (f"{len(sp)} complete cycles in {twin:.0f} y  |  peak-to-peak spacing "
+                   f"{sp[0]:.0f} -> {sp[-1]:.0f} y  |  median {med:.0f} y\n"
+                   f"-> spacing lengthens, no stable period")
         else:
-            txt = ("no complete cycle: the rate of profit drifts down "
-                   "(unstable equilibrium, see note below)")
-        ax.text(0.015, 0.93, txt, transform=ax.transAxes, fontsize=9,
-                bbox=dict(boxstyle='round,pad=0.25', fc='white', alpha=0.85,
+            txt = (f"no complete cycle in {twin:.0f} y: r decays from {sol[0, idx]:.2f} "
+                   f"towards {sol[-1, idx]:.3f}\n-> tendency of the rate of profit to fall")
+        ax.text(0.015, 0.94, txt, transform=ax.transAxes, fontsize=8.6, va='top',
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.88,
                           ec='#888888', lw=0.5))
         ax.set_ylabel(f'{nm}(t)', fontsize=10)
         ax.legend(loc='lower right', fontsize=8, framealpha=0.9)
         ax.grid(alpha=0.3)
-    axes[-1].set_xlabel('t (years)')
+        if idx < 4:
+            ax.set_xticklabels([])
+    axes[4].set_xlabel('t (years)', fontsize=10)
+
+    # Bottom strip: spacing of every completed cycle vs time (600-y integration).
+    axs = axes[5]
+    for idx, nm, col in zip([1, 2, 3, 4], ['sV', 'sC', 'delta', 'tau'], colors[1:]):
+        starts, sp = _peak_spacings(tL, solL[:, idx])
+        # After ~350 y sC stops oscillating and explodes monotonically (the
+        # spacing ~757 y interval is an artefact of that regime); keep sC only
+        # while it still completes cycles within the 600-y window.
+        if nm == 'sC':
+            keep = [s for s in sp if s < 200]
+            starts, sp = starts[:len(keep)], keep
+        if sp:
+            axs.plot(starts, sp, 'o-', ms=4, lw=1.0, color=col, label=nm)
+    axs.axhline(50, color='#555555', ls='--', lw=1.0)
+    axs.text(1.0, 50, '  book: "about 50 years"', va='center', ha='right',
+             fontsize=8, color='#555555', transform=axs.get_yaxis_transform())
+    axs.set_xlim(0, T_long)
+    axs.set_ylim(0, 170)
+    axs.set_xlabel('time at the end of each cycle (years)', fontsize=9)
+    axs.set_ylabel('peak-to-peak\nspacing (y)', fontsize=9)
+    axs.legend(loc='upper left', fontsize=8, ncol=4, framealpha=0.9)
+    axs.grid(alpha=0.3)
+    axs.set_title('Completed-cycle spacing over a 600-year integration: '
+                  'the period keeps lengthening and never stabilises '
+                  '(sC stops cycling after ~330 y and explodes monotonically)',
+                  fontsize=9.5, loc='left')
+
     p = m.p
-    fig.suptitle("Nonlinear solution of the long-wave model (8.15)-(8.19) at the "
-                 "book parameters\n"
-                 f"a1={p['a1']}, a2={p['a2']}, b0={p['b0']}, b1={p['b1']}, "
-                 f"b2={p['b2']}, gw={p['gw']}, n={p['n']}  |  initial values = "
-                 f"closed-form equilibrium (8.25) x 1.05  |  window {twin:.0f} y "
-                 "(= 6 eigenvalue periods)",
+    fig.suptitle("Nonlinear solution of the long-wave model (8.15)-(8.19) at the book parameters\n"
+                 f"a1={p['a1']}, a2={p['a2']}, b0={p['b0']}, b1={p['b1']}, b2={p['b2']}, "
+                 f"gw={p['gw']}, n={p['n']}   |   initial values = closed-form equilibrium "
+                 f"(8.25) x 1.05, window {twin:.0f} y",
                  fontsize=11)
-    fig.text(0.02, 0.006,
-             'Note: the closed-form equilibrium (8.25) is an unstable focus (dominant eigenvalue '
-             'Re = +0.0212);\n'
-             'oscillation amplitudes grow cycle by cycle and peak spacings lengthen '
-             '(sC: ~43 y -> ~61 y over this window), so "about 50 years" is a median over the\n'
-             'first cycles, not a stationary cycle.  Eigenvalue periods: 41.7 y at (8.25); '
-             '66.3 y (2*pi/0.0947) for the book\'s printed matrix - '
-             'see docs/model_validation_n_scenarios.md.',
+    fig.text(0.02, 0.014,
+             'Why no stable period: the closed-form equilibrium (8.25) is an unstable focus '
+             '(dominant eigenvalue Re = +0.0212), so the orbit spirals out - amplitudes grow\n'
+             'about x3 per cycle and the peak spacing lengthens (sC: 43 -> 83 y over 300 y; '
+             'up to ~140 y by 600 y).  After ~300 y sV turns negative and the model leaves its\n'
+             'economic domain, so longer integrations do not reveal a limit cycle either.  '
+             'Eigenvalue periods: 41.7 y at (8.25); 66.3 y (2*pi/0.0947) for the book\'s printed '
+             'matrix -\nsee docs/model_validation_n_scenarios.md.',
              ha='left', va='bottom', fontsize=8.2, color='#333333')
-    fig.tight_layout(rect=(0, 0.065, 1, 0.955))
     os.makedirs(os.path.dirname(out_png), exist_ok=True)
     fig.savefig(out_png, dpi=130)
     plt.close(fig)
