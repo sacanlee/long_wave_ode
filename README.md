@@ -99,7 +99,10 @@ long-wave-model/
 │   │                              #   gold-denominated series + cycles (JSON)
 │   ├── wpi_plot_charts.py         # WPI: gold-denominated country + combined figures
 │   ├── wpi_plot_local_currency.py # WPI: local-currency figure, pre-1940 peaks/troughs
-│   └── wpi_dl_destatis.py         # WPI: download helper for the slow Destatis server
+│   ├── wpi_dl_destatis.py         # WPI: download helper for the slow Destatis server
+│   ├── wpi_em_build.py            # EM (10 developing countries): price/PPP series ->
+│   │                              #   PPP-corrected gold-denominated index (JSON)
+│   └── wpi_em_sync.py             # EM vs US cycle-sync detection + combined JPG figure
 ├── docs/                          # English analysis reports
 │   ├── model_validation_n_scenarios.md
 │   ├── history_comparison.md
@@ -116,13 +119,16 @@ long-wave-model/
 │   ├── wpi_annual_1800_2026.json      # annual WPI / FX / gold-denominated WPI
 │   ├── wpi_quarterly_1982_2026.json   # quarterly gold-denominated WPI
 │   ├── wpi_cycles_gold.json           # gold WPI peak/trough cycles (9-yr MA)
-│   └── wpi_pre1940_cycles_local.json  # local-currency WPI pre-1940 cycles
+│   ├── wpi_pre1940_cycles_local.json  # local-currency WPI pre-1940 cycles
+│   ├── wpi_em_annual.json             # EM price/PPP/PPP-corrected gold index (annual)
+│   └── wpi_em_sync.json               # EM vs US sync-start years + correlations
 └── figures/
     ├── cycles_by_n.png            # linearised Δr(t) per n scenario
     ├── ode_solution_book_params.png   # nonlinear ODE solution cycles at book parameters
     ├── wpi_chart_US.png ... wpi_chart_FR.png   # gold-denominated WPI per country
     ├── wpi_chart_combined_9yMA_log.png         # five countries, 9-yr MAs
-    └── wpi_chart_local_currency.png            # local-currency WPI, 5 panels
+    ├── wpi_chart_local_currency.png            # local-currency WPI, 5 panels
+    └── wpi_em_gold_denominated_sync.jpg        # 10 EM + US, sync-start years marked
 ```
 
 ## Usage
@@ -140,9 +146,11 @@ python scripts/ssa_fertility_scenario.py --data-dir <dir>  # SSA scenario (needs
 python scripts/wpi_build_series.py --raw-dir <dir>       # WPI series (needs downloads, see below)
 python scripts/wpi_plot_charts.py                        # gold-denominated WPI figures
 python scripts/wpi_plot_local_currency.py                # local-currency WPI figure
+python scripts/wpi_em_build.py --gold-csv wpi_raw_data/gold_monthly.csv   # EM series (needs network)
+python scripts/wpi_em_sync.py                            # EM vs US sync + JPG figure
 ```
 
-Results are written to `data/` (JSON) and `figures/` (PNG).
+Results are written to `data/` (JSON) and `figures/` (PNG/JPG).
 
 ### Input data
 
@@ -294,6 +302,88 @@ market; France 1953–55 is linearly interpolated.
 
 All WPI figures were regenerated from the committed JSON data and verified to be
 pixel-identical to the working-project originals.
+
+# Emerging-economy gold-denominated WPI and sync with the United States
+
+Added 2026-09-02. Ten developing economies (China, India, Brazil, Mexico,
+Kenya, Nigeria, Egypt, Indonesia, Pakistan, Morocco) are compared with the
+United States on the question: *from which year did their long-wave (price)
+cycle start to move in sync with the US?*
+
+## What the scripts do
+
+| Script | Function |
+|---|---|
+| `wpi_em_build.py` | Downloads price indices and PPP factors, builds the annual local-currency price index, backcasts PPP before 1990, computes the PPP-corrected gold-denominated index and writes `data/wpi_em_annual.json` |
+| `wpi_em_sync.py` | Correlates each country with the US gold-denominated WPI (from `data/wpi_annual_1800_2026.json`, rebased to 2010=100), detects the sync-start year and draws `figures/wpi_em_gold_denominated_sync.jpg`; writes `data/wpi_em_sync.json` |
+
+Method and formula (as requested):
+
+```
+goldden_c(t) = price_index_c(t) / [PPP_c(t) × gold_usd(t)],   rebased 2010 = 100
+```
+
+- The PPP factor plays the role of the "fair" exchange rate, so the series
+  survives the episodes of excessive currency depreciation of developing
+  economies (raw USD-FX-denominated indices collapse there).
+- Sync-start criterion: Pearson correlation over a rolling 20-year window
+  between the centred 9-yr MA of log(goldden) and the same transform of the
+  US series; the country "syncs from year T" if the correlation is ≥ 0.5 for
+  15 consecutive years starting at T. A growth-rate variant (1-yr log
+  differences) is stored as a robustness check.
+
+## Data sources (used by the figure)
+
+| Series | Source | Coverage |
+|---|---|---|
+| Brazil price index | FGV IGP-DI, chained from monthly % changes via the Banco Central do Brasil SGS API (series 190, Feb 1944+); general price index with ~60% wholesale weights — the WPI proxy | 1950–2025 |
+| Other 9 countries: price index | consumer price index, World Bank `FP.CPI.TOTL` (2010=100) | 1960–2025 (China 1986–2025) |
+| PPP conversion factor (LCU per int. $) | World Bank `PA.NUS.PPP` | 1990–2025, backcast before 1990 |
+| US CPI (for the backcast) | FRED `CPIAUCSL` annual averages | 1950+ |
+| Gold (USD/oz, annual) | monthly market prices from `wpi_raw_data/gold_monthly.csv` (git-ignored; a static copy of the derived annual gold series is embedded in `data/wpi_em_annual.json`) | 1950–2025 |
+| US reference curve | gold-denominated WPI of the US from `data/wpi_annual_1800_2026.json` | rebased 2010=100 |
+
+PPP backcast rule (no official PPP exists before 1990):
+
+```
+PPP(t) = PPP(1990) × [pi(t)/pi(1990)] / [CPI_US(t)/CPI_US(1990)]   for t < 1990
+```
+
+i.e. a constant 1990 real exchange rate — a documented approximation.
+
+## Results (sync-start year vs the US)
+
+| Country | Sync from | Country | Sync from |
+|---|---|---|---|
+| Brazil | 1969 (earliest measurable, data from 1950) | Nigeria | 1979 (earliest measurable, data from 1960) |
+| India | 1979 (earliest measurable) | Egypt | 1979 (earliest measurable) |
+| Mexico | 1979 (earliest measurable) | Indonesia | 1979 (earliest measurable) |
+| Kenya | 1979 (earliest measurable) | Pakistan | 1979 (earliest measurable) |
+| Morocco | 1979 (earliest measurable) | **China** | **2005** (the only genuine late sync) |
+
+Because the rolling 20-y window and the 15-y persistence rule cannot be
+evaluated before the data begin, "earliest measurable" means the country
+already satisfied the criterion from the first possible evaluation year —
+i.e. it was in sync with the US for the whole observable period. China is the
+exception: its correlation with the US only crossed and stayed above 0.5 from
+2005 (windows covering ~1990–2019+).
+
+## Caveats
+
+1. The official WPI/PPI portals of most of these countries (India OEA/RBI,
+   Mexico INEGI/Banxico, China NBS, Egypt CAPMAS, ...) could not be fetched
+   headlessly from this environment (SSL/HTTP blocks). Only Brazil therefore
+   uses a wholesale-based index (FGV IGP-DI); the other nine use the CPI.
+   Swapping in an official WPI/PPI series later is a drop-in replacement of
+   the `pi` block of `data/wpi_em_annual.json` (rerun `wpi_em_sync.py`).
+2. For CPI-based countries the ratio CPI/PPP tracks the US price level
+   closely (PPP absorbs most of the domestic inflation), so their
+   gold-denominated series are dominated by the common "US CPI in gold"
+   factor. Their sync results mostly reflect the world real gold cycle, and
+   the pre-1990 PPP backcast assumes a constant real exchange rate. The
+   Brazil (wholesale-based) series and the post-1990 official-PPP decades are
+   the least affected parts of the dataset.
+3. Series end in 2025 (full calendar years; latest World Bank vintage).
 
 ## License
 
