@@ -747,22 +747,51 @@ Read together with Section 6, the model suggests that Marxian crisis theory shou
 distinguish two configurations, and that the class struggle selects between them rather
 than between "crisis" and "no crisis":
 
-1. *Chronic low-profit stagnation (CS > 0).* The squeeze lowers profitability; accumulation
-   continues, but on a low rate of profit, in an increasingly mechanised form; growth is
-   sluggish, the waves are long and flat, and there is no single catastrophic collapse —
-   the system "ages" in the low-profit crawl. The historical counterpart is the
-   high-wage-share, low-profitability decade of the mid-1970s to early 1980s: repeated but
-   contained recessions, stagflation, and a profit rate that only recovered after wages were
-   brought under control. The wage-share peaks of 1974–75 did not produce a 1929; they
-   produced a protracted squeeze that was resolved politically — by the offensive of 1979
-   onwards.
+1. *Chronic low-profit stagnation (CS > 0) — the model's counterfactual regime.* The
+   squeeze lowers profitability; accumulation continues, but on a low rate of profit, in an
+   increasingly mechanised form (Table 3); growth is sluggish, the waves are long, and there
+   is no single catastrophic collapse — the system "ages" in the low-profit crawl. Two
+   things must be said about the historical correspondence of this regime, and they require
+   care with the periodisation.
+   First, the model's CS is the *autonomous wage push* — wage growth above the norm that the
+   labour market and productivity set — not the institutional strength of the working class
+   as such. A powerful labour movement whose wage growth follows the productivity norm does
+   not register as CS > 0 at all. This is what the period 1945–1968 — the long upswing of
+   the fourth Kondratiev wave — shows: organised labour at the height of its postwar power
+   (US union density at its historical peak in the early 1950s, roughly a third of the
+   private workforce), real wages rising strongly and continuously, a high and broadly
+   stable wage share — and a profit rate at its postwar maximum. The golden age is the
+   decisive counter-example to any mechanical "strong labour ⇒ low profit" inference: high
+   exploitation and strong unions coexisted because the boom's accumulation (and the rapid
+   growth of the labour supply) absorbed the wage bill. In the units of the model this era
+   is CS ≈ 0 (institutionalised bargaining tied wages to productivity — the Fordist wage
+   formula — so the wage share was trendless, the benchmark of Section 6.2), and the system
+   ran on the high-accumulation upswing with high n.
+   Second, the *above-normal* push appears only with the wage explosion of 1966–1975
+   (Section 6.1) — and, in the periodisation of the book's Table 5.1, that episode sits at
+   the crest and in the *downswing* of the fourth wave: after 1968 the long wave is already
+   in its descending phase, and the low profitability of the mid-1970s to early 1980s is a
+   phenomenon of that downswing, not the manifestation of a sustained CS > 0 regime. The
+   wage explosion played the profit-squeeze role at the turning point (the boom ends in full
+   employment and rising wages), but the depth of the 1974–82 fall of the profit rate
+   belongs primarily to the downswing's own dynamics — the OCC/mechanisation channel of Eq.
+   (8.15), the FROP — with the wage push as a modulator; Section 6.1 notes that the CS
+   channel alone cannot reproduce the magnitude of the 1970s fall. The correct historical
+   reading is therefore the pulse template of Section 4.5: a *bounded* CS > 0 episode
+   (1966–75) coincided with the depressive phase of the fourth wave; the crisis form of that
+   phase — stagflation, repeated recessions (1973–75, 1980–82), a profit rate that recovered
+   only after the offensive of 1979–82 — is the historical form of the *profitability crisis
+   of a long-wave downswing*, not a 1929-type overaccumulation crash. That the wage-share
+   peaks of 1974–75 did not produce a 1929 is, in this framework, exactly what the two
+   configurations predict: the deepest crashes are prepared by the *restoration* of
+   exploitation (configuration 2 below), not by its squeeze.
 2. *Acute overaccumulation crash (CS < 0).* Wage repression raises the profit share; the
    boom runs fast, the overshoot of accumulation becomes large, and the system generates its
    own violent correction (in the model: short cycles, downswing-heavy, early sV < 0; at
    CS ≤ −0.2 the economy leaves its meaningful domain after 78–88 years with the sharpest
    reserve-army collapses of the grid). The historical counterparts are the profit booms of
-   the 1920s and of the post-1980 period — both prepared by successful offensives against
-   labour — which ended in the deepest crashes of the twentieth and twenty-first centuries
+   the 1920s and of 1982–2007 — both prepared by successful offensives against labour —
+   which were broken by the deepest crashes of the twentieth and twenty-first centuries
    (1929–33; 2007–08, with the credit system, absent from this model, as the transmission
    mechanism).
 
