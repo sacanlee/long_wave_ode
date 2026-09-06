@@ -539,38 +539,71 @@ come out at 40–50 years). The correspondence below therefore compares *directi
 relative magnitudes* with documented historical episodes, using the wage share and the
 profit rate as the bridge variables (both are what CS shifts in the model).
 
-### 6.1 CS ≈ +0.005…+0.02 — an "above-normal" struggle: the late-1960s / 1970s analogy
+A convention fixes the units of the correspondence, because the model does not carry the
+level of the wage share as a state variable (Section 2.3). The observable counterpart of CS
+is the growth of the wage share relative to productivity, d ln w/dt ≈ ŵ − τ (real-wage
+growth minus productivity growth). The "normal" wage dynamic — what the reserve-army
+mechanism alone delivers — does not transmit productivity gains fully into wages: the
+pressure of an increasing IRAL "keeps the wage share constant or even decreasing"
+(book p. 216), i.e. the rate of surplus value tends to rise with productivity (relative
+surplus value) unless labour intervenes. Hence the calibration adopted here: wages that
+merely *keep pace* with productivity (ŵ ≈ τ, a flat share) are already an above-normal
+outcome of struggle and register as **CS > 0**; wages that outrun productivity (a rising
+share, the wage explosion of 1966–75) are a larger CS; and wages that fall behind even the
+market norm (a falling share: the post-1980 offensive, the 1920s) are **CS < 0**. CS = 0 is
+the benchmark in which the share is constant-or-decreasing under reserve-army pressure —
+wages do not systematically keep up with productivity.
+
+### 6.1 CS > 0 — wages at or above the productivity norm: the golden age and the wage explosion (1945–1975)
 
 Model behaviour: profit-rate level squeezed (the CS component of d ln r/dt is −a₂·CS, i.e.
 roughly −0.05% to −0.2% of the level per decade at CS = +0.005…+0.02, or −0.25% to −1% over
 a typical half-century), waves slightly longer and more upswing-heavy, employment-share
 troughs deeper during the squeeze, recovery delayed.
 
-Historical counterpart — the wage explosion of 1966–1975: full employment in the OECD core,
-union militancy at its postwar peak (French May 1968; Italian *autunno caldo* 1969; UK
-miners 1972 and 1974; German wildcat strikes 1969–73), real-wage growth running above
-productivity growth, and the documented profit squeeze of the late boom (Glyn & Sutcliffe
-1972 for the UK; Boddy & Crotty 1975 for the US; Armstrong, Glyn & Harrison 1991). The US
-wage share rose from the mid-1960s to the mid-1970s and the measured pre-tax profit rate
-fell by roughly a third between 1965 and 1982 (Duménil & Lévy 1993) — the downswing of the
-fourth Kondratiev wave (1966–1982 in the periodisation of the book's Table 5.1). The model
-reproduces the *direction*: a sustained positive CS keeps the profit rate below the CS = 0
-path and prolongs the phase of weak accumulation. It does not reproduce the *magnitude* of
-the 1970s fall, because in the calibration of the book that fall is driven mainly by the
-OCC channel (a₁ = 0.04) — the FROP — with the wage push as a modulator (Sections 7–8).
+Historical counterpart, in two intensities of the same regime:
+
+- *1945–1968 — the golden age, the upswing of the fourth wave: a moderate positive CS.*
+  Organised labour at the height of its postwar power (US union density at its historical
+  peak in the early 1950s, roughly a third of the private workforce), full employment, and
+  institutionalised bargaining that tied wages to productivity growth (the Fordist wage
+  formula). Because productivity was rising throughout, a wage share that merely *held its
+  ground* at a high level (ŵ ≈ τ) already exceeded the reserve-army norm, under which the
+  share is constant-or-decreasing (book p. 216): in the units adopted here this registers
+  as a moderate CS > 0. The profit rate was nevertheless at its postwar maximum — which is
+  exactly what the model predicts for such a moderate push: at CS = +0.005 the drag on the
+  profit rate is only ≈ 0.05% per decade (Section 4.4; Table 1: mean r over [0,120 y] =
+  0.1407 at CS = +0.005 against 0.1411 at CS = 0), and the strength of the upswing
+  overwhelms it. The golden age is therefore not a counter-example to the wage-push
+  mechanism: it is the case of a productivity-bound push, and high profits coexist with
+  strong labour precisely because the push never outruns productivity.
+- *1966–1975 — the wage explosion, at the crest and into the early downswing of the fourth
+  wave: a larger CS.* Rank-and-file wage drift above the Fordist formula, strike waves
+  (French May 1968; Italian *autunno caldo* 1969; UK miners 1972 and 1974; German wildcat
+  strikes 1969–73), real-wage growth running above productivity growth, the US wage share
+  rising from the mid-1960s to the mid-1970s: wages now outrun the productivity norm. The
+  documented profit squeeze of the late boom followed (Glyn & Sutcliffe 1972 for the UK;
+  Boddy & Crotty 1975 for the US; Armstrong, Glyn & Harrison 1991), and the measured pre-tax
+  profit rate fell by roughly a third between 1965 and 1982 (Duménil & Lévy 1993) — the
+  downswing of the fourth Kondratiev wave (1966–1982 in the periodisation of the book's
+  Table 5.1). The model reproduces the *direction* (a sustained positive CS keeps the profit
+  rate below the CS = 0 path and prolongs the phase of weak accumulation), though not the
+  *magnitude* of the 1970s fall: in the calibration of the book that fall is driven mainly
+  by the OCC channel (a₁ = 0.04) — the FROP of the downswing — with the wage push as a
+  modulator (Sections 7–8).
 
 ### 6.2 CS ≈ 0 — the "normal" struggle level: the pure reserve-army cycle
 
 Model behaviour: the book's own wave — upswing ~25 y, downswing ~19 y (rise share ~57%),
 cycle length 43–47 y, profit rate falling secularly through the OCC channel.
 
-Historical counterpart: periods in which wage movements were dominated by the state of the
-labour market, with organised labour too weak (or too integrated) to shift the wage
-baseline: the 19th-century British and US industrial cycles (weak craft unions, large
-immigration, e.g. the US waves of 1845–1896) and, on the modern side, the "Fordist" decades
-1950–1965 in the US, where real wages rose with productivity and the wage share was broadly
-trendless until the mid-1960s. This is the benchmark the book itself describes on p. 216
-(the IRAL "keeps the wage share constant or even decreasing").
+Historical counterpart: periods in which wage formation was dominated by the labour market,
+with organised labour too weak (or too integrated) to shift the wage baseline — above all
+the 19th-century industrial cycles (weak unions, mass immigration, e.g. the US waves of
+1845–1896). In such periods wages did not systematically keep pace with productivity
+growth: under the pressure of the IRAL the wage share was constant or decreasing, the
+mechanism the book itself describes on p. 216, and the wave ran with the book's own
+rise/fall profile and no autonomous distributive component.
 
 ### 6.3 CS ≈ −0.005…−0.02 — a "below-normal" struggle: the post-1980 capital offensive
 
@@ -755,23 +788,26 @@ than between "crisis" and "no crisis":
    care with the periodisation.
    First, the model's CS is the *autonomous wage push* — wage growth above the norm that the
    labour market and productivity set — not the institutional strength of the working class
-   as such. A powerful labour movement whose wage growth follows the productivity norm does
-   not register as CS > 0 at all. This is what the period 1945–1968 — the long upswing of
-   the fourth Kondratiev wave — shows: organised labour at the height of its postwar power
-   (US union density at its historical peak in the early 1950s, roughly a third of the
-   private workforce), real wages rising strongly and continuously, a high and broadly
-   stable wage share — and a profit rate at its postwar maximum. The golden age is the
-   decisive counter-example to any mechanical "strong labour ⇒ low profit" inference: high
-   exploitation and strong unions coexisted because the boom's accumulation (and the rapid
-   growth of the labour supply) absorbed the wage bill. In the units of the model this era
-   is CS ≈ 0 (institutionalised bargaining tied wages to productivity — the Fordist wage
-   formula — so the wage share was trendless, the benchmark of Section 6.2), and the system
-   ran on the high-accumulation upswing with high n.
-   Second, the *above-normal* push appears only with the wage explosion of 1966–1975
-   (Section 6.1) — and, in the periodisation of the book's Table 5.1, that episode sits at
+   as such. This distinction matters for the period 1945–1968 — the long upswing of the
+   fourth Kondratiev wave — which shows that a powerful labour movement can coexist with a
+   profit rate at its postwar maximum. The point is not, however, that the era registers as
+   CS ≈ 0. Because productivity was rising throughout, a wage share that merely *held its
+   ground* at a high level (wages growing with productivity, ŵ ≈ τ) already exceeded the
+   reserve-army norm, under which the share is constant-or-decreasing (book p. 216); in the
+   units fixed in Section 6 the golden age is therefore a *moderate positive* CS — a
+   labour movement strong enough to hold the share at a high plateau against the
+   productivity trend. The golden age then ceases to look paradoxical at all: the model
+   predicts that such a moderate push costs the profit rate only ≈ 0.05% per decade
+   (Section 4.4; Table 1: mean r over [0,120 y] = 0.1407 at CS = +0.005 against 0.1411 at
+   CS = 0), a drag that the high-accumulation upswing (with its rapid growth of the labour
+   supply) simply overwhelms. What would squeeze profits is not a strong labour movement as
+   such but a push that *outruns productivity* — which is what makes the second intensity of
+   the same regime, the wage explosion of 1966–1975, the genuine squeeze episode.
+   Second, that *above-productivity* push — a larger CS — appears with the wage explosion
+   of 1966–1975 (Section 6.1) and, in the periodisation of the book's Table 5.1, sits at
    the crest and in the *downswing* of the fourth wave: after 1968 the long wave is already
    in its descending phase, and the low profitability of the mid-1970s to early 1980s is a
-   phenomenon of that downswing, not the manifestation of a sustained CS > 0 regime. The
+   phenomenon of that downswing, not the manifestation of a sustained large-CS regime. The
    wage explosion played the profit-squeeze role at the turning point (the boom ends in full
    employment and rising wages), but the depth of the 1974–82 fall of the profit rate
    belongs primarily to the downswing's own dynamics — the OCC/mechanisation channel of Eq.
@@ -863,14 +899,16 @@ itself creates.
    - the *mechanism* behind the cycle-shape effects is the rotation of the share dynamics
      around the receding balance point (τ/r, A/r) with the clock ω = √(A·r): CS depresses
      r and thereby slows and tilts the wave (Section 5).
-4. **Historical correspondence** (directions, not point calibration): CS > 0 ↔ the
+4. **Historical correspondence** (directions, not point calibration; units as fixed in
+   Section 6: CS = 0 means the wage share does not keep pace with productivity under
+   reserve-army pressure): CS > 0 ↔ wages at or above the productivity norm — 1945–1968
+   (the golden age: a moderate positive CS with a high profit rate) intensifying into the
    1966–1975 wage explosion and the profit squeeze of the fourth-wave downswing
-   (1966/73–1982); CS ≈ 0 ↔ the reserve-army-dominated 19th-century waves and the
-   1950–1965 Fordist benchmark; CS < 0 ↔ the post-1980 offensive (decline of union density,
-   falling wage share, profit recovery, the fifth-wave upswing of 1982–2007); CS ≪ 0 ↔ the
-   1920s "open-shop" decade; regime-scale CS > 0 is unsustainable and historically appears
-   only as bounded episodes (France 1936–38; the UK 1974–79), each terminated by crisis and
-   a subsequent offensive.
+   (1966/73–1982); CS ≈ 0 ↔ the reserve-army-dominated 19th-century waves; CS < 0 ↔ the
+   post-1980 offensive (decline of union density, falling wage share, profit recovery, the
+   fifth-wave upswing of 1982–2007); CS ≪ 0 ↔ the 1920s "open-shop" decade; regime-scale
+   CS > 0 is unsustainable and historically appears only as bounded episodes (France
+   1936–38; the UK 1974–79), each terminated by crisis and a subsequent offensive.
 5. **Limits of the exercise**:
    - the direct quantitative channel of the wage push is small *by the calibration of the
      book*: g_e enters only the "counteracting forces" bracket of Eq. (8.15), weighted with
