@@ -1,198 +1,296 @@
-# Class Struggle and the Long-Wave Model: A CS-Extension of Eqs. (8.15)–(8.19)
+# Class Struggle in the Long-Wave Model: The Closure g_e ≅ −sV and an Extension with an Autonomous Wage-Push Term (CS)
 
-**Author**: sacanlee | **Date**: 2026-09-06 | **Script**: `scripts/class_struggle_ode.py`
-**Results**: `data/class_struggle_results.json` | **Figures**:
-`figures/class_struggle_trajectories.png`, `figures/class_struggle_cycle_metrics.png`,
-`figures/class_struggle_pulse_episode.png`
+**A research note on Eqs. (8.15)–(8.19) of Chatzarakis, Tsaliki and Tsoulfidis (2022)**
+
+Prepared by: sacanlee | 6 September 2026
+
+Companion material (fully reproducible): `scripts/class_struggle_ode.py`;
+`data/class_struggle_results.json`; `figures/class_struggle_trajectories.png`,
+`figures/class_struggle_cycle_metrics.png`, `figures/class_struggle_pulse_episode.png`.
 
 **Reference**: Chatzarakis, N., Tsaliki, P. & Tsoulfidis, L. (2022), *Economic Growth and
-Long Cycles: A Classical Political Economy Approach*, Routledge, Ch. 8 (book page numbers
-below refer to this edition; in this repository the model equations (8.15)–(8.19) and the
-book's Section 8.3.3 have already been reproduced and audited — see
+Long Cycles: A Classical Political Economy Approach*, Routledge, Ch. 8. Book page numbers
+below refer to this edition. The model equations (8.15)–(8.19) and Section 8.3.3 have been
+reproduced and audited numerically in the companion repository (see
 `docs/model_validation_n_scenarios.md`, `docs/sv_sign_flip_report.md` and
-`docs/Technical_Report_Ch8_Model_Errata.docx`, findings F1–F6).
-
-**Question posed** (job_0906.txt): the author treats a negative growth rate of the rate of
-surplus value, g_e < 0, as the "profit-squeeze" case, i.e. as an active push for higher wages,
-but then closes the model with g_e ≅ −sV, a purely mechanical function of the investment in
-variable capital sV. Does this eliminate the *conscious* class struggle (a wage push aiming
-higher than what the investment in variable capital dictates) from the five-equation model of
-Section 8.3? And what happens if a class-struggle parameter CS is put back into the equation —
-in particular to the **length of the cycle** and to the **lengths of its upswing and downswing**?
+`docs/Technical_Report_Ch8_Model_Errata.docx` for the internal-consistency findings F1–F6 of
+the printed Chapter 8 material).
 
 ---
 
-## Part I — Is the critique right?
+## Abstract
 
-### I.1 What the book actually says, page by page
+Chapter 8 of the book builds a five-equation model of the long cycle around the profit rate
+and the shares of surplus value invested in constant and variable capital. In the qualitative
+analysis of Section 8.2.1.2 the growth rate of the rate of surplus value, g_e, carries the
+distributional content of the system: its sign is said to be related to "relations of
+production (income distribution, class struggle, exploitation of labor)", and its negative
+case is presented as the profit-squeeze case in which "the intensity of the class struggle
+leading to wage squeeze of profits is the reason behind the Law of the FROP". In Section
+8.2.1.3, however, the model is closed by setting g_e ≅ −sV, so that in the complete model
+(8.15)–(8.19) the wage dynamic is fully determined by the investment in variable capital
+(the reserve-army mechanism), and no variable remains through which an *autonomous* wage push
+— a struggle that aims higher (or lower) than the labour-market condition dictates — could
+operate. This note examines that observation, proposes a minimal formalisation of an
+above/below-normal class struggle by adding a parameter CS (g_e = −sV − CS, with CS = 0
+reproducing the book), and solves the modified system numerically for a grid of CS values,
+focusing on the length of the cycle and on the lengths of its upswing and downswing. The
+main results are: (i) the linearised period is essentially CS-invariant (41.7–41.8 y), but
+the nonlinear cycles lengthen with CS (≈ +0.05 y per +0.01 CS on the first, ≈ +0.16–0.18 y
+per +0.01 CS on the second completed cycle); (ii) the upswing (trough→peak of sC) lengthens
+and the downswing stays flat or shortens slightly, so the rise share of the wave increases
+from 54% (CS = −0.10) to 57% (CS = 0) to 59% (CS = +0.10); (iii) the dominant effect of CS
+is on the *level* of the profit rate, since Eq. (8.15-CS) contains the exact term
+−a₂·CS·r. An analytical mechanism is derived: with the profit rate drifting secularly
+downwards, the share dynamics rotate around the receding balance point (sV̄, sC̄) = (τ/r,
+A/r), A = δ + τ + n, with the clock ω = √(A·r); CS depresses r, slows this rotation, and the
+rising centre biases every wave towards its upswing. The different CS levels are then
+confronted with documented historical episodes (the 1966–75 wage explosion and the
+fourth-wave profit squeeze; the post-1980 capital offensive; the 1920s; regime-scale
+episodes such as France 1936–38 and the UK 1974–79). The note closes with the limits of the
+exercise and a suggestion for a fuller extension in which the level of distribution enters
+as a sixth state variable.
 
-**1. The "profit-squeeze" case (g_e < 0) is a case with *autonomous* distributional content.**
-The 3rd case of the OCC–profit-rate analysis appears at the end of Section 8.2.1.2 (book
-p. 212), immediately before Section 8.2.1.3 (book pp. 213–215):
+**Keywords**: long waves; rate of surplus value; class struggle; profit squeeze; industrial
+reserve army; Goodwin-type cycles; Kondratiev waves
 
-> "3rd Case: g_e < 0, that is, the surplus value is reduced relative to variable capital
-> (the case of profit-squeeze)." (p. 212)
+---
 
-The book is explicit that the *sign* of g_e is where class relations enter. Already on p. 207:
+## 1. Introduction
+
+The long-wave model of Chapter 8 of *Economic Growth and Long Cycles* (Chatzarakis, Tsaliki
+& Tsoulfidis 2022) describes a capitalist economy with five state variables — the rate of
+profit r, the shares of surplus value invested in variable (sV) and constant (sC) capital,
+the capital-devaluation rate δ and the rate of technical change τ — through the equations
+(book pp. 221–235)
+
+```
+(8.15)  r'  = −a1·(sC − sV)·r² + a2·(δ + τ − sV)·r
+(8.16)  sV' = sC·r − δ − τ − n
+(8.17)  sC' = sC·(τ − sV·r)
+(8.18)  δ'  = b0 + δ·(gw − sC·r)
+(8.19)  τ'  = b1·Erf(δ − b2)
+```
+
+with a₁ = 0.04, a₂ = 0.01, b₀ = 0.004, b₁ = 0.005, b₂ = 0.05, n = 0.015, g_w = 0.03.
+Equation (8.15) is derived in Section 8.2.1.3 from a growth-rate equation that contains the
+growth rate of the rate of surplus value, g_e, additively, and the model is closed by
+substituting g_e ≅ −sV.
+
+A comparison between the qualitative analysis of Sections 8.2.1.1–8.2.1.2 and the closure
+adopted in Sections 8.2.1.3–8.3 gives rise to a natural question: the sign and the intensity
+of g_e are assigned, in the qualitative part, to the sphere of class relations — and the
+negative case of g_e is presented as the profit-squeeze case, i.e. as an active push for
+higher wages — yet in the complete five-equation model g_e is made a deterministic function
+of the investment in variable capital. It is then unclear whether a *conscious* class
+struggle — a wage push aiming higher than what the investment in variable capital dictates —
+can be represented anywhere in the model at all.
+
+The purpose of this note is fivefold: (i) to assess that question against the text of the
+book; (ii) to propose a minimal formalisation of an above/below-normal class struggle, by
+introducing a parameter CS into the g_e relation; (iii) to report the numerical consequences
+of different CS values, with particular attention to the length of the cycle and to the
+lengths of its upward and downward phases; (iv) to give the analytical mechanism behind
+those consequences; and (v) to confront the different CS levels with documented historical
+episodes. A brief discussion of the limits of the exercise and of a possible fuller
+extension closes the note.
+
+Throughout, model time is not calibrated to calendar time; cycle lengths of 40–50 years
+emerge from the parameters of the book. Historical statements therefore refer to directions
+and relative magnitudes, not to point calibrations.
+
+## 2. The role of g_e in the model, and the closure adopted
+
+### 2.1 The qualitative role of g_e (Sections 8.2.1.1–8.2.1.2, pp. 205–212)
+
+In the two-variable (OCC, profit-rate) system analysed in Sections 8.2.1.1–8.2.1.2 the
+growth rate of the rate of surplus value, g_e, is treated as an exogenous parameter whose
+value selects the qualitative regime. Three cases are distinguished (book pp. 207–212):
+
+- the 1st case, g_e = 0: the distribution of income remains constant;
+- the 2nd case, g_e ≥ 0: the rate of surplus value grows faster than variable capital, and
+  profitability is sustained or rises;
+- the **3rd case, g_e < 0**: "the surplus value is reduced relative to variable capital
+  (the case of profit-squeeze)" (p. 212) — an active push for higher wages.
+
+The book is explicit that the *sign* of g_e is where class relations enter the system.
+Already on p. 207:
 
 > "The bifurcation of equilibrium point B is, therefore, defined by the sign of g_e, which is
 > a variable related not only to productive forces of the system (i.e., technological change,
 > capital accumulation, etc.) but also to relations of production (i.e., income distribution,
 > class struggle, exploitation of labor, etc.)."
 
-and on p. 212, discussing what the g_e < 0 case means for the law of the tendential fall in
-the rate of profit (FROP):
+and, discussing the meaning of the g_e < 0 case for the tendential fall in the rate of
+profit (FROP), p. 212:
 
 > "The significance of point B is only theoretical and may be interpreted in favor of the
 > 'profit squeeze' argument, according to which **the intensity of the class struggle leading
 > to wage squeeze of profits is the reason behind the Law of the FROP**. Under these
 > circumstances, the Law of FROP cannot be viewed as a general economic law independent of
-> people's 'will' and capable of realistically describing the dynamics of a capitalist economy."
+> people's 'will' and capable of realistically describing the dynamics of a capitalist
+> economy."
 
-So at this stage of the book g_e is effectively an **exogenous shift parameter** whose sign and
-size are set, among other things, by the intensity of class struggle.
+(For completeness: this third case appears in Section 8.2.1.2, which immediately precedes
+Section 8.2.1.3.)
 
-**2. Section 8.2.1.3 then endogenises g_e mechanically.** Book p. 214:
+### 2.2 The closure adopted in the complete model (Section 8.2.1.3, pp. 213–215)
 
-> "According to Marx (*Capital* I, ch. 25), the growth rate of the rate of surplus value, g_e,
-> is inversely proportional to the change in the labor force, or, what is the same, to the
-> investment in variable capital, sV. Glombowski (1983), for example, hypothesized that
+Section 8.2.1.3 derives the profit-rate dynamics on the capital stock. From the growth-rate
+equation
+
+```
+r'/r = −(sC − sV)·r + δ + τ + g_e                                    (8.14)
+```
+
+the book needs a theory of g_e. The one it adopts is purely mechanical (p. 214):
+
+> "According to Marx (*Capital* I, ch. 25), the growth rate of the rate of surplus value,
+> g_e, is inversely proportional to the change in the labor force, or, what is the same, to
+> the investment in variable capital, sV. Glombowski (1983), for example, hypothesized that
 > g_e = ε₀ − ε₁sV, where ε₀ and ε₁ are small positive constants. In our case, we specify a
 > somewhat simpler relation according to which g_e ≅ −sV and any remaining differences are
 > captured by two small positive parameters a₁ and a₂..."
 
-The profit-rate equation (8.14) contains g_e additively, g_r = ṙ/r = −(sC − sV)r + δ + τ + g_e,
-so the substitution g_e ≅ −sV produces the printed Eq. (8.15):
+Substitution of g_e ≅ −sV into (8.14), with the calibration parameters a₁ and a₂, gives the
+printed equation
 
-**ṙ = −a₁·(sC − sV)·r² + a₂·(δ + τ − sV)·r** (8.15)
+```
+r' = −a1·(sC − sV)·r² + a2·(δ + τ − sV)·r                            (8.15)
+```
 
-with a₁ = 0.04, a₂ = 0.01. Equation (8.15) is one of the five equations (8.15)–(8.19) of the
-complete model of Section 8.3 (book pp. 221–235). g_e itself appears in **no other equation**
-of the system: (8.16)–(8.19) contain only r, sV, sC, δ, τ and the constants n, g_w, b₀, b₁, b₂.
+Two features of the resulting complete model (8.15)–(8.19) should be noted:
 
-**3. The reserve-army channel that *remains*.** Strictly speaking the model does not abolish
-wage pressure altogether. Because sV is high when capital accumulation into employment exceeds
-the natural growth of the labour force (Eq. 8.16: ṡV = sC·r − δ − τ − n), g_e ≅ −sV means the
-rate of surplus value grows slowly (or falls) exactly in the tight-labour phases of the boom —
-the classical reserve-army / Goodwin mechanism, which the book itself describes on p. 216:
-"The pressure from an increasing IRAL keeps the wage share constant or even decreasing,
-increases the discipline of the labor force, and leads to a higher level of labor intensity."
-This is a **wage push, but one fully dictated by the state of the labour market**: workers get
-higher wages only when, and exactly as much as, accumulation of variable capital dictates.
+1. g_e itself appears in **no equation** of the complete model: the state equations
+   (8.16)–(8.19) contain only r, sV, sC, δ, τ and constants, and in (8.15) the wage-push
+   content of g_e survives only as the term −sV inside the "counteracting forces" bracket,
+   weighted by the small parameter a₂ = 0.01 against a₁ = 0.04 for the OCC term. The book
+   itself describes the second bracket as the locus of "the transient nature of the
+   counteracting forces" (p. 215).
+2. The level of distribution is not a state variable of the model: the rate of surplus
+   value e does not enter the state vector (only its growth rate g_e enters Eq. 8.15
+   through the derivation above), and the book explicitly declines to carry over Goodwin's
+   wage-share equation into the model (p. 216: the dual dynamics of employment and the wage
+   share "mainly concern the sphere of distribution … and partially reflects, but does not
+   capture, the deeper nature of the capitalist mode of production").
 
-**4. The critique is therefore essentially right, with three qualifications:**
+### 2.3 Assessment
 
-- **(i) The case taxonomy (g_e < 0 = profit squeeze) is in Section 8.2.1.2, not 8.2.1.3** —
-  the user's section reference is off by one subsection, but the two are contiguous and the
-  substantive point is unaffected (the profit-squeeze case immediately precedes the g_e ≅ −sV
-  closure).
-- **(ii) The tension is real and visible inside the book.** The book repeatedly assigns class
-  struggle a decisive role *in words* — the sign of g_e on p. 207, the FROP-via-profit-squeeze
-  on p. 212, g_e as "the key explanatory variable of the upswings and downswings of the rate
-  of profit" (pp. 237–238), and the rate of surplus value as "a key distributive variable
-  reflecting the level of class struggle in the sphere of circulation" (p. 239) — but in the
-  operative closure of Section 8.3 g_e is replaced by −sV. A working class that pushes wages
-  **more than the investment in variable capital dictates** — more than the reserve army
-  would justify at the current sV — cannot be represented anywhere in (8.15)–(8.19): at any
-  given state of the system, g_e is fully determined. That is exactly the channel the user
-  says is missing, and it is missing.
-- **(iii) The author has a textual defence in Marx — but it is only half of Marx.** The
-  closure follows Marx's *Capital* I, ch. 25, where the wage is treated as the *dependent*
-  variable of accumulation (accumulation determines the demand for labour, the reserve army
-  regulates the wage, and a wage rise that threatens accumulation is choked off by the
-  slackening of accumulation itself). The book even announces the exclusion of the
-  Goodwin-type wage-share equation on p. 216: the dual dynamics of employment and the wage
-  share "mainly concern the sphere of distribution … and partially reflects, but does not
-  capture, the deeper nature of the capitalist mode of production." But Marx's own theory
-  leaves room for an independent distributive force: the value of labour-power contains a
-  "historical and moral element" (*Capital* I, ch. 6), and distribution is decided in the
-  struggle between the classes (the "antinomy, right against right" of *Capital* I, ch. 10).
-  A model that wants to *endogenise the waves as struggles over distribution* (as the
-  profit-squeeze reading of the book's own 3rd case suggests) cannot collapse g_e into −sV.
-- **(iv) Structurally, the problem is deeper than the g_e substitution.** The complete model
-  has no state variable for the level of distribution at all: the rate of surplus value e does
-  not appear as a state (only its growth rate g_e enters Eq. 8.15). Hence not even a
-  *one-off shift* of the wage share — the typical historical product of a struggle (e.g. a
-  5-point rise of the wage share in the late 1960s) — has a representation in the system.
-  g_e ≅ −sV is the *second* removal of distributional autonomy: first the level of e is dropped
-  (Goodwin's wage-share equation is discarded, p. 216), then its growth rate is made a pure
-  function of sV.
+The question raised in the introduction can now be answered precisely.
 
-**Verdict on question 1**: Yes — the critique is substantially correct. The complete model of
-Section 8.3 contains no autonomous class-struggle channel: g_e is a deterministic function of
-sV alone, and the distributional level is not a state of the system. Two corrections of detail:
-the "profit-squeeze case" is in §8.2.1.2 (p. 212), and a *mechanical* reserve-army wage push
-does survive inside g_e ≅ −sV; what is eliminated is the autonomous component — the struggle
-that aims higher (or lower) than the labour-market condition dictates.
+1. **What the closure retains.** The relation g_e ≅ −sV is not the abolition of wage
+   pressure altogether. Because sV is high when capital accumulation into employment
+   exceeds the natural growth of the labour force (Eq. 8.16: sV′ = sC·r − δ − τ − n), the
+   rate of surplus value grows slowly, or falls, exactly in the tight-labour phases of the
+   boom — the reserve-army mechanism in the Goodwin tradition, described by the book on
+   p. 216: "The pressure from an increasing IRAL keeps the wage share constant or even
+   decreasing, increases the discipline of the labor force, and leads to a higher level of
+   labor intensity." This is a wage push, but one fully dictated by the state of the labour
+   market: workers obtain higher wages only when, and to the extent that, the accumulation
+   of variable capital dictates.
+2. **What the closure loses.** At any given state of the system (any given sV), g_e is fully
+   determined. A working class that pushes wages *more* than the investment in variable
+   capital dictates — more than the reserve army would justify at the current sV — cannot be
+   represented anywhere in (8.15)–(8.19). The same holds, symmetrically, for a wage push
+   *below* the labour-market norm (a demobilised working class or a successful capital
+   offensive). And because the distribution level is not a state variable, even a one-off
+   shift of the wage share — the typical historical product of a struggle, e.g. a 4–7 point
+   rise of the wage share in the late 1960s and early 1970s — has no representation in the
+   system.
+3. **The textual basis and its limits.** The closure follows Marx's *Capital* I, ch. 25,
+   where the wage is the *dependent* variable of accumulation (accumulation determines the
+   demand for labour; the reserve army regulates the wage; a wage rise that threatens
+   accumulation is choked off by the slackening of accumulation itself). Marx's own theory,
+   however, also contains an independent distributive element: the value of labour-power
+   has a "historical and moral element" (*Capital* I, ch. 6), and distribution is decided in
+   the struggle between the classes (*Capital* I, ch. 10). A model that wishes to
+   *endogenise the long waves as struggles over distribution* — the reading suggested by the
+   book's own 3rd case of Section 8.2.1.2 — cannot collapse g_e into −sV.
+4. **An internal tension.** Later parts of the chapter continue to assign the rate of
+   surplus value a decisive distributive role *in words*: g_e is called "the key explanatory
+   variable of the upswings and downswings of the rate of profit" (pp. 237–238), and the
+   rate of surplus value "a key distributive variable reflecting the level of class struggle
+   in the sphere of circulation" (p. 239). These statements characterise the *concept* of
+   the model; in its equations the wage dynamic is a function of sV alone.
 
----
+The observation examined here is therefore, in our assessment, essentially correct, with
+three qualifications of detail: (i) the profit-squeeze taxonomy (g_e < 0) is presented in
+Section 8.2.1.2 (p. 212), immediately before the closure of Section 8.2.1.3; (ii) a
+*mechanical* reserve-army wage push does survive inside g_e ≅ −sV — it is the *autonomous*
+component, the struggle that aims higher (or lower) than the labour-market condition
+dictates, that is eliminated; and (iii) structurally, the elimination operates twice: the
+level of distribution is dropped (no wage-share state equation, p. 216), and then the growth
+rate of the rate of surplus value is made a pure function of sV.
 
-## Part II — Formalisation: putting class struggle back into the equation
+## 3. A minimal extension: the class-struggle level CS
 
-### II.1 The modified equation
+### 3.1 Specification
 
-Glombowski's form g_e = ε₀ − ε₁sV already contains an **intercept** ε₀ (the drift of the rate
-of surplus value that is independent of the labour market). The book sets (ε₀, ε₁) = (0, 1).
-We restore an intercept driven by the class struggle:
+Glombowski's form g_e = ε₀ − ε₁·sV (Glombowski 1983) contains an **intercept** ε₀: the
+drift of the rate of surplus value that is independent of the labour market. The book sets
+(ε₀, ε₁) = (0, 1). The extension restores an intercept driven by the class struggle:
 
-**g_e = −sV − CS** (8.15-CS)
+```
+g_e = −sV − CS                                                    (8.15-CS)
 
-with **CS = 0** reproducing the book exactly. Only Eq. (8.15) changes:
+r'  = −a1·(sC − sV)·r² + a2·(δ + τ − sV − CS)·r                   (8.15-CS)
+```
 
-**ṙ = −a₁·(sC − sV)·r² + a₂·(δ + τ − sV − CS)·r** (8.15-CS)
-
-CS is measured per year, in the units of g_e and sV.
+with **CS = 0** reproducing the book exactly; only Eq. (8.15) changes. CS is measured per
+year, in the units of g_e and of sV.
 
 - **CS > 0**: the class struggle runs *above* the "normal" level dictated by economic
   conditions — the labour movement presses wages harder than the reserve army alone would
-  warrant. At any given sV the rate of surplus value grows more slowly (or falls faster);
-  in slumps (sV < 0) the wage fall is resisted (real-wage rigidity / union resistance).
-  Formally this is a **negative intercept**: even with a stationary labour demand (sV = 0),
-  e does not grow — wages press against surplus value.
+  warrant. At any given sV the rate of surplus value grows more slowly (or falls faster),
+  and in slumps (sV < 0) the wage fall is resisted (real-wage rigidity / union resistance).
+  Formally this is a **negative intercept**: even with a stationary labour demand (sV = 0)
+  the rate of surplus value does not grow — wages press against surplus value. This
+  instantiates the "historical and moral element" of the value of labour-power.
 - **CS < 0**: the struggle runs *below* the normal level — a demobilised working class, or a
-  successful capital offensive. Wages lag the labour-market norm in every phase. Formally the
-  intercept is positive: the rate of surplus value grows even when the labour market is not
-  tight, i.e. wages are held **below the value of labour-power** — in Marx's own list of the
+  successful capital offensive. Wages lag the labour-market norm in every phase. Formally
+  the intercept is positive: the rate of surplus value grows even when the labour market is
+  not tight, i.e. wages are held **below the value of labour-power** — one of Marx's own
   *counteracting causes* of the FROP (*Capital* III, ch. 14: "depression of wages below the
   value of labour-power").
 
-Both directions are therefore meaningful within Marxist economics: CS > 0 instantiates the
-"historical and moral element" of the value of labour-power (workers push the wage baseline
-up), CS < 0 instantiates a counteracting cause of the FROP (capital pushes the wage baseline
-down).
+Both directions are thus meaningful within the classical-Marxian framework.
 
-### II.2 Parameters, reference state and measurement protocol
+### 3.2 Parameters, reference state and measurement protocol
 
-Book parameters: a₁ = 0.04, a₂ = 0.01, b₀ = 0.004, b₁ = 0.005, b₂ = 0.05, n = 0.015,
-g_w = 0.03. Reference state: the book's own closed-form equilibrium (8.25),
-{r*, sV*, sC*, δ*, τ*} = {0.1756, 0.1650, 0.6263, 0.05, 0.045}; all runs start from
-1.05 × this state (the repository convention). The printed closed form does not involve g_e,
-so the same reference state is used for every CS in order to isolate the pure CS effect.
+Book parameters (p. 233): a₁ = 0.04, a₂ = 0.01, b₀ = 0.004, b₁ = 0.005, b₂ = 0.05,
+n = 0.015, g_w = 0.03. Reference state: the book's closed-form equilibrium (8.25),
+{r*, sV*, sC*, δ*, τ*} = {0.1756, 0.1650, 0.6263, 0.05, 0.045}; all runs start from 1.05 ×
+this state (the convention of the companion repository). The printed closed form does not
+involve g_e, so the same reference state is used for every CS, isolating the pure CS effect.
 
-Known caveats of the model, carried over from the repository's earlier audit (F1–F6): the
+Caveats carried over from the repository's audit of Chapter 8 (findings F1–F6): the
 reference point is **not a true fixed point** of (8.15)–(8.19) — no positive fixed point
 exists for the printed parameters — and the nonlinear solution is locally unstable
-(dominant eigenvalue +0.0212 ± 0.1505i), with amplitudes growing ~×3 per cycle. The model
-therefore leaves its economically meaningful domain (sV < 0; or a share sV, sC exceeding the
-whole surplus value, i.e. the book's premise sC + sV ≤ 1) after roughly 85–130 years, i.e.
-after about two cycles. All cycle statistics below are computed from the events that
-**complete before the first sV < 0 crossing** (t_dom, the repository convention); the first
-sC > 1 crossing (t_dom_shares) is reported as well. Script validity: at CS = 0 the
-implementation reproduces the repository's model bit-for-bit (identical RHS; Jacobian
+(dominant eigenvalue +0.0212 ± 0.1505i at the reference state), with amplitudes growing by a
+factor of roughly three per cycle. The model therefore leaves its economically meaningful
+domain — sV < 0, or a share sV, sC exceeding the whole surplus value (the book's premise
+sC + sV ≤ 1) — after roughly 85–130 years, i.e. after about two cycles. All cycle
+statistics below are computed from events that **complete before the first sV < 0 crossing**
+(t_dom, the repository convention); the first time a share exceeds 1 (t_dom_shares) is
+reported as well. Implementation validity: at CS = 0 the present code reproduces the
+repository's implementation of the book bit-for-bit (identical right-hand sides; Jacobian
 matches the analytical sympy Jacobian to 10⁻¹⁰; eigenvalue period 41.7 y at the reference
-state, identical to the repository's published 41.7 y).
+state).
 
----
+## 4. Numerical results: cycle length and the lengths of the upswing and downswing
 
-## Part III — Numerical results: what different CS do to the cycle
+### 4.1 Scenario table
 
-### III.1 Scenario table (11 values of CS, book parameters, n = 0.015)
+Eleven values of CS between −0.10 and +0.10 (book parameters, n = 0.015). In Table 1, the
+sC/sV statistics refer to the completed cycles of sC(t) / sV(t) ending before t_dom (first
+sV < 0); "cycles" lists the individual completed peak-to-peak (trough-to-trough) spacings in
+years; rise = median trough→peak duration (upswing), fall = median peak→trough duration
+(downswing); r_mean is the mean of r over the common window [0, 120 y]; r_end = r at t_dom.
+All statements of Section 4 are robust to the cycle-counting protocol: the same monotone
+ordering is obtained when the measurement window is the full 6·T window of the repository
+convention.
 
-sC/sV statistics refer to the completed cycles of sC(t) / sV(t) ending before t_dom
-(first sV < 0); "cycles" lists the individual completed peak-to-peak (or trough-to-trough)
-spacings in years; rise = median trough→peak (upswing), fall = median peak→trough
-(downswing); r_mean is the mean of r over [0, 120 y] (common window for all scenarios);
-r_end = r at t_dom.
+**Table 1 — Cycle statistics of sC and sV and profitability over the CS grid.**
 
 | CS | t_dom (sV<0) | t_dom (share>1) | T_lin (eigen.) | sC cycles (y) | sC T_med (y) | sC rise (y) | sC fall (y) | sC rise share | sV T_med (y) | sV rise share | r_mean [0,120] | r_end |
 |---|---|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -208,119 +306,130 @@ r_end = r at t_dom.
 | +0.050 | 135 | 86 | 41.8 | [42.9, 47.4] | 45.2 | 26.1 | 19.1 | 58% | 46.5 | 51% | 0.1370 | 0.0865 |
 | +0.100 | 202 | 85 | 41.8 | [43.2, 48.4, 56.4] | 48.4 | 28.3 | 20.1 | 59% | 50.1 | 52% | 0.1331 | 0.0416 |
 
-(All quantitative statements below are robust to the exact cycle-counting protocol: the same
-monotone ordering is obtained when the measurement window is the full 6·T window of the
-repository convention instead of the t_dom-restricted window.)
+*Source: author's computations (script `class_struggle_ode.py`).*
 
-### III.2 Findings on the cycle length (job question 2, first part)
+### 4.2 Effect on the cycle length
 
-1. **The linearised nominal period is essentially CS-invariant**: T_lin = 41.7–41.8 y for the
-   whole grid. Reason: CS shifts only the (1,1) entry of the Jacobian at the reference state
+1. **The linearised nominal period is essentially CS-invariant**: T_lin = 41.7–41.8 y over
+   the whole grid. CS shifts only the (1,1) entry of the Jacobian at the reference state,
    by −a₂·CS ≈ −10⁻⁴ per 0.01 of CS, which barely moves the dominant complex pair
-   (+0.0212 ± 0.1505i). The *local clock* of the model is set by the OCC/mechanisation
+   (+0.0212 ± 0.1505i). The local clock of the model is set by the OCC/mechanisation
    dynamics, not by the wage-push channel.
 2. **The nonlinear cycle length rises with militancy, by a small amount in the realistic
    band.** First complete cycle: 42.2 y at CS = −0.10 → 42.7 y at CS = 0 → 43.2 y at
    CS = +0.10 (+0.05 y per +0.01 CS). Second cycle: 45.0 → 46.6 → 48.4 y (+0.16–0.18 y per
-   +0.01 CS). A sustained, above-normal wage push of 1%/yr therefore lengthens the completed
-   long wave by roughly **0.05–0.2 y per 0.01 of CS** (0.1–0.4% of the period); a push of the
+   +0.01 CS). A sustained above-normal wage push of 1%/yr therefore lengthens the completed
+   long wave by roughly 0.05–0.2 y per 0.01 of CS (0.1–0.4% of the period); a push of the
    order of 5–10%/yr (CS = +0.05…+0.10) stretches the second cycle to 47.4–48.4 y and the
    third (completed only there) to 56.4 y.
-3. **Wage repression shortens the cycle.** At CS = −0.05…−0.10 the first two cycles shrink to
-   42.2–45.8 y (the second cycle loses about 1–1.6 y relative to CS = 0); the local
-   eigenvalue period stays 41.7 y. The shortening saturates: even at CS = −0.2…−0.3 the
-   cycles do not fall below ~41–44 y within the economically meaningful window.
+3. **Wage repression shortens the cycle.** At CS = −0.05…−0.10 the first two cycles shrink
+   to 42.2–45.8 y (the second cycle loses about 1–1.6 y relative to CS = 0), while the
+   local eigenvalue period stays 41.7 y. The shortening saturates: even at CS = −0.2…−0.3
+   the cycles do not fall below ~41–44 y within the economically meaningful window.
 4. **The extreme-militancy regime is qualitatively different**: at CS = +0.2/+0.3 the sC
-   spacings read [43.8, 50.4, 61.8] / [44.4, 52.8, 73.6] y — cycles keep stretching and the
-   profit rate crawls towards ~1–4% (r_mean 0.08/0.07, r_min 0.014/0.008) — a permanent
-   squeeze in which accumulation and employment stall. (Caveat: at such CS the sC + sV ≤ 1
-   premise is already violated from ~48–85 y, so the stretched cycles are recorded partly
-   outside the economically meaningful domain.)
+   spacings read [43.8, 50.4, 61.8] / [44.4, 52.8, 73.6] y — the cycles keep stretching,
+   and the profit rate crawls towards 1–4% (r_mean 0.081/0.073; r_min 0.014/0.008) — a
+   permanent squeeze in which accumulation and employment stall. (At such CS the premise
+   sC + sV ≤ 1 is violated from ~48–85 y onward, so the stretched cycles are recorded
+   partly outside the economically meaningful domain.)
 
-### III.3 Findings on the upswing and downswing (job question 2, second part)
+### 4.3 Effect on the lengths of the upswing and the downswing
 
-The wave is **asymmetric by construction** — at CS = 0 the median sC upswing (trough→peak)
-lasts 25.2 y against a downswing (peak→trough) of 19.4 y, a 57/43 split (the repository's
-historical validation used exactly this property: measured rise shares of 55% on waves 2–3
-match the model).
+The wave is asymmetric by construction: at CS = 0 the median sC upswing (trough→peak)
+lasts 25.2 y against a downswing (peak→trough) of 19.4 y — a 57/43 split. (The repository's
+historical validation uses exactly this property: measured rise shares of ~55% on waves 2–3
+of the book's Table 5.1 match the model.)
 
-1. **Higher class struggle lengthens the upswing and shortens the downswing.** Across the
-   grid the median sC upswing rises from 23.7 y (CS = −0.10) to 28.3 y (CS = +0.10)
-   (+0.2–0.3 y per +0.01 CS), the downswing stays flat or shortens slightly
-   (19.9 → 19.4 → 19.1 y up to CS = +0.05), and the rise share rises from 54% to 59%. In
-   words: with a militant working class the economy spends a *larger share of each wave in
-   the phase of expansion of mechanisation (sC rising)*, but does so on a permanently
-   squeezed profit rate.
-2. **Wage repression shifts the profile the other way**: rise share 54–56% at CS = −0.05…−0.10
-   and, in the extreme runs, down to ~51–52% at CS = −0.2…−0.3, with cycle lengths of only
-   ~41–44 y. The extreme-repression regime approaches the book's own qualitative "2nd case"
-   of Section 8.2.1.2 (g_e ≥ 0): profitability is sustained or rising during accumulation,
-   the boom does not generate its own squeeze, and the wave becomes shorter and more
-   symmetric.
+1. **Higher class struggle lengthens the upswing and leaves the downswing flat or slightly
+   shorter.** Across the grid the median sC upswing rises from 23.7 y (CS = −0.10) to 28.3 y
+   (CS = +0.10) (+0.2–0.3 y per +0.01 CS at moderate and high CS); the downswing stays flat
+   or shortens slightly (19.9 → 19.4 → 19.1 y up to CS = +0.05); the rise share rises from
+   54% to 57% to 59%. In words: with a militant working class the economy spends a *larger
+   share of each wave in the expansion phase of mechanisation (sC rising)*, but does so on
+   a permanently squeezed profit rate.
+2. **Wage repression shifts the profile the other way**: rise share 54–56% at
+   CS = −0.05…−0.10 and, in the extreme runs, down to ~51–52% at CS = −0.2…−0.3, with cycle
+   lengths of only ~41–44 y. The extreme-repression regime approaches the qualitative
+   "2nd case" of Section 8.2.1.2 (g_e ≥ 0): profitability is sustained or rising during
+   accumulation, the boom does not generate its own squeeze, and the wave becomes shorter
+   and more symmetric.
 3. **sV cycles are more symmetric than sC cycles** (rise share ~50–52% at all CS in the
    grid): the employment/hiring share spends roughly equal time rising and falling even
-   though its *amplitude* falls with CS (see III.4).
+   though its amplitude responds to CS (Section 4.4).
 
-### III.4 Findings on profitability (the level effect — the strongest response)
+### 4.4 Effect on profitability (the level effect — the strongest response)
 
 The dominant and most robust effect of CS is on the **level and trend of the profit rate**,
 not on the clock:
 
-- r(60) falls from 0.1485 (CS = −0.10) to 0.1309 (CS = +0.10), i.e. about **−0.0009 per
-  +0.01 CS** at the 60-year endpoint (≈ −0.6% of the level per +0.01 CS); mean r over
-  [0,120 y] falls from 0.1498 to 0.1331 (≈ −0.0008 per +0.01 CS, ≈ −0.6% of the level).
-- An exact analytical anchor: Eq. (8.15-CS) contains the term −a₂·CS·r, so the
-  class-struggle component of the profit-rate growth is exactly
-  **d ln r/dt = −a₂·CS = −0.01·CS per year** (−0.01% of the level per year at CS = +0.01).
-  The observed endpoints are consistent with this direct channel — the 60-year suppression
-  (≈ −0.6% per +0.01 CS) equals the direct cumulative effect, and the 120-year suppression
-  (≈ −1.5% per +0.01 CS) exceeds it by at most ~×1.2 from the feedback of sV/sC/δ/τ.
-  Concretely: an above-normal wage push of CS = +0.01 (= 1% per year) sustained for a decade
-  costs the profit rate ≈ 0.1% of its level (≈ 1% over a century); CS = +0.05…+0.10 costs
-  ≈ 0.5–1% of the level per decade — the difference between a mild and a severe profit
-  squeeze. These small *rates* compound into the level gaps of the table because they act on
-  every year of the trajectory.
-- Consistently, the first sV < 0 crossing is delayed by militancy (126 y at CS = −0.10, 131 y
-  at CS = 0, 202 y at CS = +0.10): with a squeezed profit rate the accumulation boom is
-  weaker, so the employment share never overshoots into negative territory as early — the
-  economy instead sinks into the low-profit crawl described in III.2.4.
+- r(60) falls from 0.1485 (CS = −0.10) to 0.1309 (CS = +0.10), i.e. about −0.0009 per
+  +0.01 CS at the 60-year endpoint (≈ −0.6% of the level per +0.01 CS); the mean of r over
+  [0, 120 y] falls from 0.1498 to 0.1331 (≈ −0.0008 per +0.01 CS).
+- Exact analytical anchor: Eq. (8.15-CS) contains the term −a₂·CS·r, so the class-struggle
+  component of the profit-rate growth is exactly **d ln r/dt = −a₂·CS = −0.01·CS per year**
+  (−0.01% of the level per year at CS = +0.01). The observed endpoints are consistent with
+  this direct channel — the 60-year suppression (≈ −0.6% per +0.01 CS) equals the direct
+  cumulative effect, and the 120-year suppression (≈ −1.5% per +0.01 CS) exceeds it by at
+  most ~×1.2 through the feedback of sV/sC/δ/τ. Concretely: an above-normal wage push of
+  CS = +0.01 (= 1% per year), sustained for a decade, costs the profit rate ≈ 0.1% of its
+  level (≈ 1% over a century); CS = +0.05…+0.10 costs ≈ 0.5–1% of the level per decade —
+  the difference between a mild and a severe profit squeeze. These small rates compound
+  into the level gaps of Table 1 because they act on every year of the trajectory.
+- Consistently, the first sV < 0 crossing is delayed by militancy (126 y at CS = −0.10,
+  131 y at CS = 0, 202 y at CS = +0.10): with a squeezed profit rate the accumulation boom
+  is weaker, so the employment share never overshoots into negative territory as early —
+  the economy instead sinks into the low-profit crawl described in Section 4.2 (item 4).
 
-### III.5 The "historical episode" experiment (pulse)
+### 4.5 A "historical episode" experiment (pulse)
 
-Conscious struggle typically arrives as an *episode*, not as a permanent regime. Figure 3
-shows a stylised pulse: CS = +0.02 during t = 18–30 (a "wage explosion" at the boom peak,
-1968–73-style), CS = +0.005 during t = 30–44 (the persistent high-wage-share phase), then
-CS = −0.015 for t > 44 (the capital counter-offensive, post-1980-style), against the CS = 0
-baseline. Because the model's wage-push channel carries the small weight a₂ = 0.01, even this
-episode moves the profit rate by only −0.31% (maximum squeeze, at t = 44) to +1.31%
-(maximum excess of the offensive, at the end of the window); sV and sC deviate by at most
-0.015–0.017 in absolute terms. This *quantifies* how little room the book's calibration
-leaves for distributional
-struggle to steer the wave — see Part IV for the interpretation and Part V for the limits
-this places on the exercise.
+Conscious struggle typically arrives as an *episode*, not as a permanent regime. As an
+illustration, Figure 3 shows a stylised pulse: CS = +0.02 during t = 18–30 (a "wage
+explosion" at the boom peak, 1968–73-style), CS = +0.005 during t = 30–44 (a persistent
+high-wage-share phase), then CS = −0.015 for t > 44 (a capital counter-offensive,
+post-1980-style), against the CS = 0 baseline. Because the model's wage-push channel carries
+the small weight a₂ = 0.01, even this episode moves the profit rate by only −0.31% (maximum
+squeeze, at t = 44) to +1.31% (maximum excess of the offensive, at the end of the window);
+sV and sC deviate by at most 0.015–0.017 in absolute terms. This quantifies how little room
+the calibration of the book leaves for distributional struggle to steer the wave (see
+Section 7 for the interpretation and limits).
 
-### III.6 The mechanism in mathematical terms: why CS > 0 lengthens the cycle and tilts it toward the upswing
+**Figure 1** — `class_struggle_trajectories.png`: profit rate r, sV and sC under the CS grid
+(each trajectory truncated at its first sV < 0).
+**Figure 2** — `class_struggle_cycle_metrics.png`: cycle length, upswing/downswing lengths,
+rise share and profitability as functions of CS.
+**Figure 3** — `class_struggle_pulse_episode.png`: the stylised wage-explosion → offensive
+episode as deviations from the CS = 0 baseline.
 
-This subsection answers the "why" behind Sections III.2–III.3. All identities are exact; the
-oscillator statements are linearisations around the moving centre of the share subsystem and
-are verified against the runs.
+## 5. The mechanism in analytical terms: why CS > 0 lengthens the cycle and tilts it toward the upswing
 
-**(a) The exact phase structure: sC is the integral of a "gap".** From (8.17):
+This section derives the mechanism behind Sections 4.2–4.3. All identities below are exact;
+the oscillator statements are linearisations around the moving centre of the share
+subsystem, verified against the runs.
 
-> d ln sC/dt = τ − sV·r
+### 5.1 The exact phase structure: sC is the integral of a "gap"
+
+From (8.17):
+
+```
+d ln sC/dt = τ − sV·r
+```
 
 so sC rises ⇔ sV·r < τ and falls ⇔ sV·r > τ, and every extremum of sC is a crossing of the
-hiring-pressure variable h := sV·r through the threshold τ. In the simulations this is not an
-approximation: every detected peak and trough of sC(t) satisfies |sV·r − τ| ≤ 3 × 10⁻⁵.
-The threshold itself is quasi-stationary — τ stays in the band [0.0461, 0.0472] (±1%) over
-more than a century — because τ′ = b₁·Erf(δ − b₂) integrates only small δ-oscillations
+hiring-pressure variable h := sV·r through the threshold τ. In the simulations this is not
+an approximation: every detected peak and trough of sC(t) satisfies |sV·r − τ| ≤ 3 × 10⁻⁵.
+The threshold itself is quasi-stationary — τ stays within the band [0.0461, 0.0472] (±1%)
+over more than a century — because τ′ = b₁·Erf(δ − b₂) integrates only small δ-oscillations
 (b₁ = 0.005), and δ is anchored by (8.18), δ′ = b₀ + δ(g_w − sC·r) ≈ 0, at the value that
 keeps sC·r ≈ g_w + b₀/b₂ = 0.11. The whole long wave is therefore the story of h crossing a
 fixed threshold.
 
-**(b) What drives h, and the exact footprint of CS.** Combining (8.16) and (8.15-CS):
+### 5.2 What drives h, and the exact footprint of CS
 
-> d ln(sV·r)/dt = sV′/sV + r′/r = (sC·r − A)/sV − a₁(sC − sV)·r + a₂(δ + τ − sV) − a₂·CS
+Combining (8.16) and (8.15-CS):
+
+```
+d ln(sV·r)/dt = sV′/sV + r′/r = (sC·r − A)/sV − a1·(sC − sV)·r + a2·(δ + τ − sV) − a2·CS
+```
 
 with A := δ + τ + n ≈ 0.11 (quasi-constant, ±2–3%). The first term is the employment side
 (hiring accelerates when accumulation sC·r exceeds the "natural" rate A), the bracket is the
@@ -328,19 +437,27 @@ profit side, and **CS enters as an exact proportional drag −a₂·CS on the lo
 crossing variable itself** — h contains r, and r′/r contains −a₂·CS. Nothing else in the
 system changes.
 
-**(c) The clock: rotation around a drifting centre.** For a slowly moving r, the two share
-dynamics have "balance levels" — sC′ = 0 at sV̄ := τ/r and sV′ = 0 at sC̄ := A/r — both
-scaling as 1/r. With log-deviations p := ln(sC/sC̄), q := ln(sV/sV̄) and g := d ln r/dt < 0:
+### 5.3 The clock: rotation around a drifting centre
 
-> ṗ ≈ −τ·q + g,   q̇ ≈ (A·r/τ)·p + g   ⇒   p̈ + A·r·p = −τ·g
+For a slowly moving r, the two share dynamics have "balance levels" — sC′ = 0 at
+sV̄ := τ/r and sV′ = 0 at sC̄ := A/r — both scaling as 1/r. With log-deviations
+p := ln(sC/sC̄), q := ln(sV/sV̄) and g := d ln r/dt < 0:
+
+```
+ṗ ≈ −τ·q + g,    q̇ ≈ (A·r/τ)·p + g     ⇒     p̈ + A·r·p = −τ·g
+```
 
 i.e. a harmonic oscillator whose natural frequency is set by the product of the
 "natural-growth" constant and the profit rate:
 
-> ω = √(A·r) = √((δ + τ + n)·r),   T = 2π/√(A·r)
+```
+ω = √(A·r) = √((δ + τ + n)·r),     T = 2π/√(A·r)
+```
 
-Verified against the runs (cycle means; the absolute level comes out ~10% high because of the
-large-amplitude nonlinearity, but the dependence on r is the point):
+Table 2 verifies this against the runs (cycle means; the absolute level comes out ~10% high
+because of the large-amplitude nonlinearity, but the dependence on r is the point).
+
+**Table 2 — Measured cycle spacings vs the oscillator clock 2π/√(A·r).**
 
 | run | cycle | r̄ over the cycle | actual spacing (y) | 2π/√(Ā·r̄) (y) |
 |---|---|---:|---:|---:|
@@ -352,73 +469,77 @@ large-amplitude nonlinearity, but the dependence on r is the point):
 
 The cross-CS differentials match almost exactly, which is what matters for the comparison:
 √(0.1317/0.1203) = 1.046 predicts 48.7 y for the second cycle at CS = +0.10 versus 46.6 y at
-CS = 0 (actual 48.4 y); √(0.1317/0.1434) = 0.958 predicts 44.7 y at CS = −0.10 (actual
-45.0 y). **To first order the wave period scales as T ∝ r^(−1/2).**
+CS = 0 (actual: 48.4 y); √(0.1317/0.1434) = 0.958 predicts 44.7 y at CS = −0.10 (actual:
+45.0 y). **To first order, the wave period scales as T ∝ r^(−1/2).**
 
-**(d) CS lowers r, so it slows the clock.** Eq. (8.15-CS) contains −a₂·CS·r, hence
-d ln r/dt ∋ −a₂·CS exactly. Two consequences, both visible in the runs: r is lower at every
-date (measured mean d ln r over the first upswing: −0.0032/yr at CS = −0.10, −0.0043/yr at
-CS = 0, −0.0054/yr at CS = +0.10 — the extra −0.001/yr is −a₂·CS plus feedback); and,
-because the δ-balance keeps sC·r ≈ 0.11, the lower r rides on a higher sC, i.e. the centre
-(sC̄, sV̄) = (A/r, τ/r) moves outward. With ω = √(A·r) the rotation slows, so every wave
-lengthens — by a little in the realistic band (c1: 42.2 → 43.2 y; c2: 45.0 → 46.6 → 48.4 y)
-and strongly at regime scale — and the lengthening compounds from cycle to cycle because the
-r-deficit (hence the ω-deficit) grows with time, exactly the spacing pattern of Section
-III.2.
+### 5.4 CS lowers r, so it slows the clock
 
-**(e) Why the upswing lengthens and the downswing does not.** The asymmetry is produced by
-the fact that r declines monotonically (d ln r < 0 on every segment of every run — the FROP
-drift) and faster the higher the CS:
+Eq. (8.15-CS) contains −a₂·CS·r, hence d ln r/dt ∋ −a₂·CS exactly. Two consequences are
+visible in the runs: r is lower at every date (measured mean d ln r over the first upswing:
+−0.0032/yr at CS = −0.10, −0.0043/yr at CS = 0, −0.0054/yr at CS = +0.10 — the extra
+−0.001/yr is −a₂·CS plus a small feedback); and, because the δ-balance keeps sC·r ≈ 0.11,
+the lower r rides on a higher sC, i.e. the centre (sC̄, sV̄) = (A/r, τ/r) moves outward.
+With ω = √(A·r) the rotation slows, so every wave lengthens — by a little in the realistic
+band (first cycle 42.2 → 43.2 y; second cycle 45.0 → 46.6 → 48.4 y) and strongly at regime
+scale — and the lengthening compounds from cycle to cycle because the r-deficit (hence the
+ω-deficit) grows with time, exactly the spacing pattern of Section 4.2.
+
+### 5.5 Why the upswing lengthens and the downswing does not
+
+The asymmetry is produced by the fact that r declines monotonically (d ln r < 0 on every
+segment of every run — the FROP drift) and faster the higher the CS:
 
 1. *A rising target tilts the wave toward its rise.* The centre sC̄ = A/r grows at the rate
    h := d ln sC̄/dt = −d ln r/dt > 0 (about 0.3–0.9%/yr, larger under CS > 0). Since
    sC = sC̄·e^p, the mechanisation share rises whenever the orbit's own motion satisfies
    ṗ > −h, i.e. during more than half of every rotation. For a roughly sinusoidal p of
-   amplitude ρ the up-share is
+   amplitude ρ, the upswing share is
 
-   > up-share ≈ ½ + (1/π)·arcsin(h/(ρ·ω))
+   ```
+   upswing share ≈ ½ + (1/π)·arcsin(h/(ρ·ω))
+   ```
 
    which is increasing in h and decreasing in ω — both pushed the right way by CS > 0 (a
    steeper r-decline raises h; a lower r lowers ω). Magnitude at cycle 1, CS = 0:
    h ≈ 0.0043/yr, ρ ≈ 0.16, ω ≈ 0.126/yr give arcsin(0.0043/0.020) ≈ 0.21 rad, i.e. a
-   predicted share of ~57% against the measured 54% (the difference is the relaxation shape
-   of the real orbit at large amplitude). The *increase* of the share with CS is the robust
-   part: measured per-cycle upswing shares rise from 52.6% (CS = −0.10) to 54.2% (CS = 0) to
-   56.3% (CS = +0.10) on cycle 1 (upswings 23.2 → 24.4 → 25.9 y), and from 51.1% to 52.4% to
-   54.5% on cycle 2 (upswings 24.2 → 26.0 → 28.3 y) — matching the median-based grid numbers
-   54 → 57 → 59% of Section III.1. As the amplitude grows in later cycles, ρ·ω grows and the
-   arcsin argument shrinks, so the share drifts back toward 50% even at fixed CS — also
-   observed (cycle-2 shares below cycle-1 shares).
+   predicted share of ~57% against the measured 54% (the difference reflects the relaxation
+   shape of the real orbit at large amplitude). The *increase* of the share with CS is the
+   robust part: measured per-cycle upswing shares rise from 52.6% (CS = −0.10) to 54.2%
+   (CS = 0) to 56.3% (CS = +0.10) on cycle 1 (upswings 23.2 → 24.4 → 25.9 y), and from
+   51.1% to 52.4% to 54.5% on cycle 2 (upswings 24.2 → 26.0 → 28.3 y) — consistent with the
+   median-based grid numbers 54 → 57 → 59% of Table 1. As the amplitude grows in later
+   cycles, ρ·ω grows and the arcsin argument shrinks, so the share drifts back toward 50%
+   even at fixed CS — also observed (cycle-2 shares below cycle-1 shares).
 2. *The down-leg is trimmed because the overshoot above τ shrinks.* The downswing is the
    time h = sV·r stays above the fixed threshold τ. The measured overshoot above τ
    *decreases* with CS (mean sV·r over the first downswing: 0.064 → 0.061 → 0.059 for
-   CS = −0.10/0/+0.10), because the employment term (sC·r − A)/sV acts on a larger sV when r
-   is lower and compresses the sV excursion. A smaller excursion above a fixed threshold ends
-   sooner: first downswing 20.9 → 20.6 → 20.1 y (later downswings still lengthen at fixed CS,
-   because ω keeps falling with r, but always less than the upswings).
+   CS = −0.10/0/+0.10), because the employment term (sC·r − A)/sV acts on a larger sV when
+   r is lower and compresses the sV excursion. A smaller excursion above a fixed threshold
+   ends sooner: first downswing 20.9 → 20.6 → 20.1 y. (Later downswings still lengthen at
+   fixed CS, because ω keeps falling with r, but always less than the upswings.)
 
 Net effect: the lengthening of the cycle is carried almost entirely by the upswing
 (≈ +1.5–2.3 y per +0.1 CS per cycle) against a flat-to-slightly-shorter downswing
-(≈ −0.5–0 y), which is exactly the rise-share movement of Sections III.1–III.3.
+(≈ −0.5–0 y), which is exactly the rise-share movement of Table 1.
 
-**(f) Economic reading.** The long wave of this model is a *growth-rate* oscillation: its
-clock is ω = √((δ + τ + n)·r), the geometric mean of the natural-growth constant and the
-profit rate. A class struggle that pushes wages above the reserve-army norm acts on the
-clock through the exact term −a₂·CS in the profit-rate growth: it depresses r, slows the
-(sC, sV) rotation around the receding balance point (τ/r, A/r), stretches each wave, and —
-because the receding centre rises faster under militancy — redistributes each wave's time
-toward its mechanisation upswing and away from its high-hiring downswing.
+### 5.6 Economic reading of the mechanism
 
----
+The long wave of this model is a *growth-rate* oscillation: its clock is
+ω = √((δ + τ + n)·r), the geometric mean of the natural-growth constant and the profit
+rate. A class struggle that pushes wages above the reserve-army norm acts on the clock
+through the exact term −a₂·CS in the profit-rate growth: it depresses r, slows the (sC, sV)
+rotation around the receding balance point (τ/r, A/r), stretches each wave and — because
+the receding centre rises faster under militancy — redistributes each wave's time toward its
+mechanisation upswing and away from its high-hiring downswing.
 
-## Part IV — What the results mean historically
+## 6. Historical correspondence of the CS levels
 
-Model time is not calendar time (the repository does not calibrate the model to the data;
-cycle lengths come out at 40–50 y). The mapping below therefore compares *directions and
+Model time is not calendar time (the model is not calibrated to the data; cycle lengths
+come out at 40–50 years). The correspondence below therefore compares *directions and
 relative magnitudes* with documented historical episodes, using the wage share and the
-profit rate as the bridge variables (both are what the model's CS shifts).
+profit rate as the bridge variables (both are what CS shifts in the model).
 
-### CS ≈ +0.005…+0.02 — "above-normal" struggle: the late-1960s / 1970s analogy
+### 6.1 CS ≈ +0.005…+0.02 — an "above-normal" struggle: the late-1960s / 1970s analogy
 
 Model behaviour: profit-rate level squeezed (the CS component of d ln r/dt is −a₂·CS, i.e.
 roughly −0.05% to −0.2% of the level per decade at CS = +0.005…+0.02, or −0.25% to −1% over
@@ -426,142 +547,142 @@ a typical half-century), waves slightly longer and more upswing-heavy, employmen
 troughs deeper during the squeeze, recovery delayed.
 
 Historical counterpart — the wage explosion of 1966–1975: full employment in the OECD core,
-union militancy at its postwar peak (French May 1968; Italian *autunno caldo* 1969; UK miners
-1972 and 1974, engineers 1971–72; German wildcat strikes 1969–73), real-wage growth running
-above productivity growth, and the documented **profit squeeze** of the late boom
-(Glyn & Sutcliffe 1972 for the UK; Boddy & Crotty 1975 for the US; Armstrong, Glyn &
-Harrison 1991). The US private wage share rose from the mid-1960s to the mid-1970s and the
-measured pre-tax profit rate fell by roughly a third between 1965 and 1982
-(Duménil & Lévy 1993), the downswing of the fourth Kondratiev wave (1966–1982 in the
-repository's periodisation, Table 5.1 of the book). The model reproduces the *direction*: a
-sustained positive CS keeps the profit rate below the CS = 0 path and prolongs the phase of
-weak accumulation; it does not reproduce the *magnitude* of the 1970s fall, because in the
-book's calibration that fall is driven mainly by the OCC channel (a₁ = 0.04) — the FROP —
-with the wage push as a modulator (see the caveats in Part V).
+union militancy at its postwar peak (French May 1968; Italian *autunno caldo* 1969; UK
+miners 1972 and 1974; German wildcat strikes 1969–73), real-wage growth running above
+productivity growth, and the documented profit squeeze of the late boom (Glyn & Sutcliffe
+1972 for the UK; Boddy & Crotty 1975 for the US; Armstrong, Glyn & Harrison 1991). The US
+wage share rose from the mid-1960s to the mid-1970s and the measured pre-tax profit rate
+fell by roughly a third between 1965 and 1982 (Duménil & Lévy 1993) — the downswing of the
+fourth Kondratiev wave (1966–1982 in the periodisation of the book's Table 5.1). The model
+reproduces the *direction*: a sustained positive CS keeps the profit rate below the CS = 0
+path and prolongs the phase of weak accumulation. It does not reproduce the *magnitude* of
+the 1970s fall, because in the calibration of the book that fall is driven mainly by the
+OCC channel (a₁ = 0.04) — the FROP — with the wage push as a modulator (Section 7).
 
-### CS ≈ 0 — the "normal" struggle level: the pure reserve-army cycle
+### 6.2 CS ≈ 0 — the "normal" struggle level: the pure reserve-army cycle
 
-Model behaviour: the book's own wave — upswing 25 y, downswing 19 y (rise share 57%), cycle
-length 43–47 y, profit rate falling secularly through the OCC channel.
+Model behaviour: the book's own wave — upswing ~25 y, downswing ~19 y (rise share ~57%),
+cycle length 43–47 y, profit rate falling secularly through the OCC channel.
 
 Historical counterpart: periods in which wage movements were dominated by the state of the
-labour market, with organised labour too weak (or too integrated) to shift the wage baseline:
-the 19th-century British and US industrial cycles (weak craft unions, free immigration, e.g.
-the US waves of 1845–1896), and — on the modern side — the "Fordist" decades 1950–1965 in
-the US, where real wages rose with productivity and the wage share was broadly trendless
-until the mid-1960s. This is the benchmark the book itself describes on p. 216 (the IRAL
-"keeps the wage share constant or even decreasing").
+labour market, with organised labour too weak (or too integrated) to shift the wage
+baseline: the 19th-century British and US industrial cycles (weak craft unions, large
+immigration, e.g. the US waves of 1845–1896) and, on the modern side, the "Fordist" decades
+1950–1965 in the US, where real wages rose with productivity and the wage share was broadly
+trendless until the mid-1960s. This is the benchmark the book itself describes on p. 216
+(the IRAL "keeps the wage share constant or even decreasing").
 
-### CS ≈ −0.005…−0.02 — "below-normal" struggle: the post-1980 capital offensive
+### 6.3 CS ≈ −0.005…−0.02 — a "below-normal" struggle: the post-1980 capital offensive
 
-Model behaviour: profits kept high (r_mean up to +0.008–0.01 above the CS = 0 case at
-CS = −0.1), wage-bill growth below the reserve-army norm, waves a little shorter, upswings a
-little shorter relative to downswings (rise share down to 54–55%), i.e. accumulation runs
-"cheaper" for capital.
+Model behaviour: profits kept high (mean r over [0,120 y] up to ~+0.009 above the CS = 0
+case at CS = −0.10), wage-bill growth below the reserve-army norm, waves a little shorter,
+upswings a little shorter relative to downswings (rise share down to 54–55%): accumulation
+runs "cheaper" for capital.
 
-Historical counterpart — 1979–2000: the monetarist shock and mass unemployment after
-1979–82; the symbolic defeats of organised labour (PATCO, 1981; UK miners, 1984–85; German
-and Japanese wage moderation from the mid-1980s); US private-sector union density falling
-from ~24% (1973) to ~10% (2010s), UK density from ~50% (1980) to ~23%; real wages flat for
-the US production worker from 1973 to the mid-1990s while productivity kept rising; the wage
-share of US national income falling from the mid-1970s/early 1980s back to and below its
-1965 level. Profits recovered correspondingly: the US profit rate rose from its 1982 trough
-through the 1990s (Duménil & Lévy), and the period 1982–2007 is the upswing of the fifth
-Kondratiev wave in the repository's periodisation. Marx's *Capital* III, ch. 14
+Historical counterpart — 1979–2000: the monetarist shock and mass unemployment of
+1979–82; the symbolic defeats of organised labour (PATCO, 1981; the UK miners, 1984–85;
+German and Japanese wage moderation from the mid-1980s); US private-sector union density
+falling from ~24% (1973) to ~10% (2010s), UK density from ~50% (1980) to ~23%; real wages
+flat for the US production worker from 1973 to the mid-1990s while productivity kept
+rising; the wage share of US national income falling from the mid-1970s/early 1980s back to
+and below its 1965 level. Profits recovered correspondingly: the US profit rate rose from
+its 1982 trough through the 1990s (Duménil & Lévy), and the period 1982–2007 is the upswing
+of the fifth Kondratiev wave in the book's periodisation. Marx's *Capital* III, ch. 14
 ("depression of wages below the value of labour-power") names exactly this mechanism as a
-counteracting cause of the FROP — the model's CS < 0 is its formalisation, and the model
+counteracting cause of the FROP; the model's CS < 0 is its formalisation, and the model
 confirms the expected effect: the fall of the profit rate is slowed.
 
-### CS ≈ −0.1…−0.3 — extreme repression: the 1920s analogy
+### 6.4 CS ≲ −0.1 — extreme repression: the 1920s analogy
 
 Model behaviour: profitability sustained near its initial level for more than a century of
-model time (r_mean 0.15–0.17 at CS = −0.2…−0.3, almost no squeeze), cycles shortened to
+model time (mean r 0.15–0.17 at CS = −0.2…−0.3, almost no squeeze), cycles shortened to
 ~41–44 y and nearly symmetric (rise share ~51%).
 
 Historical counterpart — the US 1920s under the "American Plan" open-shop offensive: real
 manufacturing wages roughly stagnant between 1923 and 1929 while output per worker rose by
 about a quarter, pushing the wage share down and the profit share to a peak by 1929 — the
 classic "Roaring Twenties" configuration of high and rising profitability with wage
-repression (and, as the decade's end shows, one that stored up the overaccumulation crisis —
-which this five-equation model, having no credit/finance layer, cannot itself generate).
-The earlier US episode 1898–1907 (post-1896 wage-share trough, strike defeats of the
+repression (which, as the decade's end shows, stored up the overaccumulation crisis — a
+crisis this five-equation model, having no credit/finance layer, cannot itself generate).
+The earlier US episode of 1898–1907 (post-1896 wage-share trough, strike defeats of the
 mid-1890s, then rapid accumulation) is a weaker, partial analogue.
 
-### CS ≳ +0.05 — regime-scale militancy: the squeeze that does not end
+### 6.5 CS ≳ +0.05 — regime-scale militancy: the squeeze that does not end
 
-Model behaviour: profit rate collapses towards 1–8%, cycles stretch to 50–74 y, and the
-economy slides into the low-profit crawl (the model leaves its economically meaningful
+Model behaviour: the profit rate collapses towards 1–8%, the cycles stretch to 50–74 y, and
+the economy slides into the low-profit crawl (the model leaves its economically meaningful
 domain early, so these runs are boundary illustrations rather than forecasts).
 
-Historical counterpart: not a long historical epoch (no capitalist economy sustained a
-5–15%/yr excess wage push for long — the resistance of capital, disinvestment and crisis
-have always cut it short), but the *episodes* that point that way: France 1936–1938 (Popular
-Front wage rises and the 40-hour week, the profit collapse of 1937 and the "capital strike"
-of 1937–38, ended by the wage pause of November 1938), the UK 1974–1979 (wage-push under
-full employment, the IMF crisis of 1976, and the squeeze that prepared the 1979–80 reversal),
-and the US 1970–1974 (wage controls followed by the 1973–75 recession). These episodes are
-the historical evidence that regime-scale CS > 0 is not sustainable *as a constant*: the
-system responds with crisis and, ultimately, a capital offensive that resets CS below zero —
-exactly the sequence stylised in the pulse experiment of Section III.5 and figure 3.
+Historical counterpart: no capitalist economy has sustained a 5–15%/yr excess wage push for
+long — the resistance of capital, disinvestment and crisis have always cut it short — but
+several *episodes* point that way: France 1936–1938 (Popular Front wage rises and the
+40-hour week; the profit collapse of 1937 and the "capital strike" of 1937–38, ended by the
+wage pause of November 1938); the UK 1974–1979 (wage push under full employment, the IMF
+crisis of 1976, and the squeeze that prepared the 1979–80 reversal); the US 1970–1974 (wage
+controls followed by the 1973–75 recession). These episodes are historical evidence that
+regime-scale CS > 0 is not sustainable *as a constant*: the system responds with crisis and,
+ultimately, a capital offensive that resets CS below zero — exactly the sequence stylised in
+the pulse experiment of Section 4.5 and Figure 3.
 
----
+## 7. Conclusions and limits
 
-## Part V — Conclusions and limits
-
-1. **The critique is right.** Sections 8.2.1.2–8.2.1.3 (book pp. 207–215) acknowledge that the
-   sign and intensity of g_e carry the class struggle, and the 3rd case (g_e < 0,
-   profit-squeeze, p. 212) makes the wage push the reason behind the FROP — but the closing
-   relation g_e ≅ −sV (p. 214) reduces the wage dynamic to the reserve army, and the complete
-   five-equation model of Section 8.3 contains no variable through which a struggle "aiming
-   higher than what the investment in variable capital dictates" could act. The book's own
-   later claims that the rate of surplus value reflects "class struggle and the like"
-   (p. 238) and "the level of class struggle in the sphere of circulation" (p. 239) are
-   therefore statements about the *concept* of the model, not about its equations.
-2. **The CS-extension** (g_e = −sV − CS; only Eq. 8.15 changes) puts the struggle back in a
-   minimal, well-defined way: CS > 0 is an above-normal wage push (the "historical and moral
-   element" of the value of labour-power), CS < 0 a below-normal push (Marx's counteracting
-   cause, the depression of wages below value). CS = 0 reproduces the book exactly.
-3. **What CS does to the wave** (the quantitative answer to the job question):
-   - the *local (linearised) period is unchanged* (41.7–41.8 y) — CS shifts only the weak
-     (1,1) Jacobian entry; the model's clock is set by the OCC mechanism;
-   - the *nonlinear* cycle lengthens mildly with militancy (≈ +0.05 y per +0.01 CS on the
-     first and ≈ +0.16–0.18 y per +0.01 CS on the second completed cycle; stretching strongly
-     only at regime-scale CS ≥ +0.05), and shortens mildly under repression;
-   - the *upswing* lengthens and the *downswing* shortens with CS (rise share of the sC wave:
-     54% at CS = −0.10 → 57% at CS = 0 → 59% at CS = +0.10);
+1. **The observation is correct, with qualifications.** Sections 8.2.1.1–8.2.1.2 (book pp.
+   205–212) acknowledge that the sign and intensity of g_e carry the class struggle, and the
+   3rd case (g_e < 0, profit-squeeze, p. 212) makes the wage push the reason behind the
+   FROP — but the closing relation g_e ≅ −sV (p. 214) reduces the wage dynamic to the
+   reserve army, and the complete five-equation model of Section 8.3 contains no variable
+   through which a struggle "aiming higher than what the investment in variable capital
+   dictates" could act. The book's later statements that the rate of surplus value reflects
+   "class struggle and the like" (p. 238) and "the level of class struggle in the sphere of
+   circulation" (p. 239) characterise the concept of the model, not its equations.
+2. **The CS extension** (g_e = −sV − CS; only Eq. 8.15 changes) restores the struggle in a
+   minimal, well-defined way: CS > 0 is an above-normal wage push (the "historical and
+   moral element" of the value of labour-power), CS < 0 a below-normal push (Marx's
+   counteracting cause, the depression of wages below value). CS = 0 reproduces the book
+   exactly.
+3. **What CS does to the wave** (the quantitative answer):
+   - the *local (linearised) period* is unchanged (41.7–41.8 y) — CS shifts only the weak
+     (1,1) Jacobian entry; the local clock is set by the OCC mechanism;
+   - the *nonlinear cycle* lengthens mildly with militancy (≈ +0.05 y per +0.01 CS on the
+     first and ≈ +0.16–0.18 y per +0.01 CS on the second completed cycle; stretching
+     strongly only at regime-scale CS ≥ +0.05), and shortens mildly under repression;
+   - the *upswing* lengthens and the *downswing* stays flat or shortens slightly (rise
+     share of the sC wave: 54% at CS = −0.10 → 57% at CS = 0 → 59% at CS = +0.10);
    - the *level effect dominates*: the CS component of d ln r/dt is −a₂·CS = −0.01·CS
-     exactly, so a sustained above-normal struggle of 1%/yr (CS = +0.01) costs ≈ 0.1% of the
-     profit rate per decade (≈ 1% over a century), and regime-scale pushes
-     (CS ≥ +0.05…+0.10) drive the profit rate towards zero over the simulation horizon
-     (stagnation); wage repression keeps profitability high and slows the FROP.
-4. **Historical reading** (directions, not point calibration): CS > 0 ↔ the 1966–1975 wage
-   explosion and the profit squeeze of the fourth-wave downswing (1966/73–1982); CS ≈ 0 ↔ the
-   reserve-army-dominated 19th-century waves and the 1950–1965 Fordist benchmark; CS < 0 ↔ the
-   post-1980 offensive (Thatcher/Reagan, union-density collapse, wage-share decline, profit
-   recovery, the fifth-wave upswing of 1982–2007); CS ≪ 0 ↔ the 1920s "open-shop" decade;
-   regime-scale CS > 0 is unsustainable and historically appears only as bounded episodes
-   (1936–38 France, 1974–79 UK), each terminated by crisis and a subsequent offensive.
-5. **Limits of the exercise** (honest statement):
-   - the direct quantitative channel of the wage push is small *by the book's own
-     calibration*: g_e enters only the "counteracting forces" bracket of Eq. (8.15), which
-     the authors deliberately weight with a₂ = 0.01 against a₁ = 0.04 for the OCC channel
-     (book p. 215: the smaller effect of the counteracting forces is "the transient nature"
-     of these forces). Inserting CS therefore changes the profit-rate *level* first and the
-     *clock* second — a finding in its own right, since it shows that even a formal admission
-     of the class struggle would leave the book's model largely OCC-determined;
-   - the level of distribution is not a state variable of the model (the Goodwin wage-share
-     equation was dropped, p. 216), so a *level* shift of the wage share — historically the
-     most visible product of class struggle — cannot be represented, only the growth-rate
-     premium CS. A faithful extension would add the rate of surplus value e (or the wage
-     share) as a sixth state with a struggle-augmented adjustment equation; that is the
-     natural next step and would make the historical magnitudes (wage-share swings of ±4–7
-     points) commensurable with the model;
+     exactly, so a sustained above-normal struggle of 1%/yr (CS = +0.01) costs ≈ 0.1% of
+     the profit rate per decade (≈ 1% over a century), and regime-scale pushes
+     (CS ≥ +0.05…+0.10) drive the profit rate towards zero over the simulation horizon;
+     wage repression keeps profitability high and slows the FROP;
+   - the *mechanism* behind the cycle-shape effects is the rotation of the share dynamics
+     around the receding balance point (τ/r, A/r) with the clock ω = √(A·r): CS depresses
+     r and thereby slows and tilts the wave (Section 5).
+4. **Historical correspondence** (directions, not point calibration): CS > 0 ↔ the
+   1966–1975 wage explosion and the profit squeeze of the fourth-wave downswing
+   (1966/73–1982); CS ≈ 0 ↔ the reserve-army-dominated 19th-century waves and the
+   1950–1965 Fordist benchmark; CS < 0 ↔ the post-1980 offensive (decline of union density,
+   falling wage share, profit recovery, the fifth-wave upswing of 1982–2007); CS ≪ 0 ↔ the
+   1920s "open-shop" decade; regime-scale CS > 0 is unsustainable and historically appears
+   only as bounded episodes (France 1936–38; the UK 1974–79), each terminated by crisis and
+   a subsequent offensive.
+5. **Limits**:
+   - the direct quantitative channel of the wage push is small *by the calibration of the
+     book*: g_e enters only the "counteracting forces" bracket of Eq. (8.15), weighted with
+     a₂ = 0.01 against a₁ = 0.04 for the OCC channel (p. 215). Inserting CS therefore
+     changes the profit-rate *level* first and the *clock* second — a finding in its own
+     right, since it shows that even a formal admission of the class struggle would leave
+     the model largely OCC-determined;
+   - the level of distribution is not a state variable of the model (the Goodwin
+     wage-share equation is dropped, p. 216), so a *level* shift of the wage share —
+     historically the most visible product of class struggle — cannot be represented, only
+     the growth-rate premium CS. A fuller extension would add the rate of surplus value e
+     (or the wage share) as a sixth state with a struggle-augmented adjustment equation;
+     that is the natural next step and would make the historical magnitudes (wage-share
+     swings of ±4–7 points) commensurable with the model;
    - the model has no positive fixed point at the printed parameters and leaves its
-     economically meaningful domain after ~85–130 y (findings F1–F6 of this repository), so
-     the quantitative statements above refer to the first two completed cycles;
-   - model time is not calibrated to calendar time; the historical mapping is qualitative.
-
----
+     economically meaningful domain after ~85–130 y (findings F1–F6 of the companion
+     repository), so the quantitative statements refer to the first two completed cycles;
+   - model time is not calibrated to calendar time; the historical correspondence is
+     qualitative.
 
 ## References
 
@@ -569,8 +690,8 @@ exactly the sequence stylised in the pulse experiment of Section III.5 and figur
 - Boddy, R. & Crotty, J. (1975). Class conflict and macro-policy: the political business
   cycle. *Review of Radical Political Economics*, 7(1), 1–19.
 - Chatzarakis, N., Tsaliki, P. & Tsoulfidis, L. (2022). *Economic Growth and Long Cycles: A
-  Classical Political Economy Approach*. Routledge. Sections 8.2.1.2 (pp. 207–212),
-  8.2.1.3 (pp. 213–215), 8.2.2 (p. 216), 8.3 (pp. 221–235), 8.4 (pp. 236–242).
+  Classical Political Economy Approach*. Routledge. Sections 8.2.1.1–8.2.1.3
+  (pp. 205–215), 8.2.2 (p. 216), 8.3 (pp. 221–235), 8.4 (pp. 236–242).
 - Duménil, G. & Lévy, D. (1993). *The Economics of the Profit Rate*. Edward Elgar.
 - Glombowski, J. (1983). A Marxian model of long run capitalist development.
   *Zeitschrift für Nationalökonomie*, 43(4), 363–382.
@@ -581,5 +702,6 @@ exactly the sequence stylised in the pulse experiment of Section III.5 and figur
 - Marx, K. *Capital*, Vol. I (ch. 6: the value of labour-power; ch. 10: the struggle over
   the working day; ch. 25: the general law of capitalist accumulation); Vol. III, ch. 14
   (the counteracting causes of the FROP).
-- Repository reports: `docs/model_validation_n_scenarios.md`, `docs/sv_sign_flip_report.md`,
-  `docs/Technical_Report_Ch8_Model_Errata.docx` (findings F1–F6).
+- Companion repository reports: `docs/model_validation_n_scenarios.md`,
+  `docs/sv_sign_flip_report.md`, `docs/Technical_Report_Ch8_Model_Errata.docx`
+  (findings F1–F6 on the printed Chapter 8 material).
