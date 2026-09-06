@@ -907,7 +907,84 @@ accumulation (CS > 0) — and that even then the gain is purchased at the price 
 profitability, a price that capital makes labour repay in the subsequent offensive
 (Sections 6.3 and 7.4).
 
-### 7.6 Limits of this interpretation
+### 7.6 A stalemated class struggle does not shorten the depression; the exit through the offensive and the external labour supply
+
+The questions addressed here are: if, during the downswing, capital cannot dismantle the
+political and organisational power of labour, so that the class struggle remains stalemated
+at CS ≥ 0 (the 1970s situation), is the depression then *not* shortened — and, had no large
+external labour pool (East Asia, later China) been available for industrial relocation, how
+could the centre economies have exited the crisis at all? Both questions have a model-based
+answer, with one important caution about magnitudes.
+
+**The condition for the depression to end.** In this model the profit rate declines
+secularly at every CS (the FROP through the OCC channel), so a "recovery" means the
+restoration of the rate of surplus value — the variable that the wage push suppresses. The
+restoration operates through the reserve army: ge = −sV − CS becomes positive only when the
+hiring share turns sufficiently negative (sV < −CS), i.e. when employment is shed deeply
+enough for the wage share to be pushed back down. At CS = 0 the first such purge (sV < 0)
+arrives at t ≈ 131 y; the model's deep-crisis phase — absolute disinvestment in the wage
+fund, the reserve army exploding — is the event that undoes the distributional gains of the
+preceding boom.
+
+**A stalemate postpones or prevents the purge.** If the wage push survives the slump
+(CS ≥ 0), the purge is weakened exactly by that push: at CS = +0.10 the first sV < 0
+crossing is delayed from 131 y to 202 y, and for CS ≥ +0.15 it never occurs within 300 y.
+Profitability then stays depressed for as long as the push persists — r(120 y) falls from
+0.0997 (CS = 0) to 0.0860 (CS = +0.10), and at regime scale (CS ≥ +0.05…0.10) the model's
+economy crawls at r → 1–4% with waves of 56–74 y and no restart of accumulation
+(Section 4.2, configuration 1 of Section 7.4). The premise of the question is therefore
+borne out by the model: **with a stalemated class struggle the depression is not shortened —
+it is prolonged into a low-profit phase whose duration is set by the class relation, not by
+the clock.** The 1974–82 episode fits this reading at the qualitative level: the wage share
+held at its 1974–75 peak through the late 1970s, the organised power of labour survived the
+two recessions intact, and the measured profit rate stayed depressed until the offensive of
+1979–82 had begun (Duménil & Lévy 1993). (The caution: the model's wage-push channel carries
+the small weight a₂ = 0.01, and the level of the wage share is not a state variable
+(Sections 2.3, 7.7), so the model reproduces the *qualitative* condition — no purge, no
+restoration — not the full quantitative depth of the 1970s profit fall, which the downswing's
+own FROP dynamics carry.)
+
+**How the centre actually exited, in the model's terms.** The exit required CS to fall
+below zero — the wage push to be broken — and it happened in two steps:
+
+1. *The internal offensive of 1979–85* (monetarist disinflation and the deliberate
+   unemployment of 1980–82; the defeats of organised labour: PATCO 1981, the UK miners
+   1984–85; wage concessions and concession bargaining): in the model this is the parameter
+   shift to CS < 0, which re-opens the reserve-army channel — the purge arrives earlier
+   (sV < 0 at ≈ 126 y at CS = −0.10, ≈ 78 y at CS = −0.3), the rate of surplus value is
+   restored, and profitability recovers (r stays at 0.15–0.17 at CS ≤ −0.1, against 0.10 at
+   CS = 0), at the price of sharper, more downswing-heavy cycles (configuration 2 of
+   Section 7.4). An additional, unplanned purge operated through the inflation of
+   1974–80, which eroded real wages (a nominal channel outside this real model).
+2. *The external labour supply.* Relocation and the threat of relocation to lower-wage
+   regions — East Asia and Latin America from the late 1960s–70s, China from the 1990s and
+   especially after its WTO entry in 2001 — enlarged the reserve army facing the centre's
+   workers without a frontal political defeat: the reserve army of Marx's general law of
+   accumulation became global. In the units of the model this works like a sustained
+   negative CS on the centre: US real wages stopped growing with productivity from the
+   1970s, and stayed flat even at full employment after 2001 (the "China shock":
+   Autor, Dorn & Hanson 2013; Freeman 2006 — the world labour force roughly doubled with
+   the integration of China, India and the former Soviet bloc). The upswing of the fifth
+   wave (1982–2007 in the book's periodisation) is, in this reading, the wave of global
+   labour integration; the companion repository's price evidence dates the synchronisation
+   of the emerging economies with the US cycle to ~1979.
+
+**The counterfactual: no external labour pool.** Without the possibility of relocation,
+the centre would have had to exit the stalemate through the internal routes alone: either a
+longer and deeper slump that devalued capital and purged the wage share by mass
+unemployment — the template of 1873–96 and 1929–40, long depressions that ended only when
+the internal balance of forces was settled (in 1929–40, only the war and the destruction of
+the interwar order accomplished it) — or, if labour held, the indefinite stagnation of
+configuration 1. And even after a successful internal purge, the restored-profit boom would
+have run into domestic labour scarcity much sooner: without the global pool, the wage
+squeeze would have returned at every full-employment approach, and the centre would have
+been condemned to either recurring frontal confrontations over distribution or to keeping
+its own reserve army large through repeated deliberate recessions. The global labour supply
+was therefore not merely one wage-restraint device among others: it is what allowed high
+profitability to coexist with (near-)full employment in the centre for a generation — the
+combination that a purely internal class compromise could not deliver.
+
+### 7.7 Limits of this interpretation
 
 1. *Permanent vs episodic struggle.* The scenarios of Section 4 hold CS constant, whereas
    the class struggle in history is episodic and answered by capital (disinvestment,
@@ -1000,6 +1077,11 @@ profitability, a price that capital makes labour repay in the subsequent offensi
 ## References
 
 - Armstrong, P., Glyn, A. & Harrison, J. (1991). *Capitalism since 1945*. Blackwell.
+- Autor, D. H., Dorn, D. & Hanson, G. H. (2013). The China syndrome: local labor market
+  effects of import competition in the United States. *American Economic Review*, 103(6),
+  2121–2168.
+- Freeman, R. B. (2006). The great doubling: the challenge of the new global labor market.
+  In *Emerging Economies and the Transformation of International Business*. Edward Elgar.
 - Boddy, R. & Crotty, J. (1975). Class conflict and macro-policy: the political business
   cycle. *Review of Radical Political Economics*, 7(1), 1–19.
 - Chatzarakis, N., Tsaliki, P. & Tsoulfidis, L. (2022). *Economic Growth and Long Cycles: A
