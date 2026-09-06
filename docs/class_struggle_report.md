@@ -399,6 +399,9 @@ Sections 7 and 8 for the interpretation and limits).
 rise share and profitability as functions of CS.
 **Figure 3** — `class_struggle_pulse_episode.png`: the stylised wage-explosion → offensive
 episode as deviations from the CS = 0 baseline.
+**Figure 4** — `class_struggle_ratchet_recoveries.png`: the "pointless recoveries" at a fixed
+CS = +0.02 (Section 7.6): the accumulation wave keeps cycling (boom peaks at t ≈ 50, 97, 150,
+213 y) while the profit rate ratchets down at every peak (r: 0.146 → 0.115 → 0.083 → 0.051).
 
 ## 5. The mechanism in analytical terms: why CS > 0 lengthens the cycle and tilts it toward the upswing
 
@@ -1009,6 +1012,47 @@ below zero" meaningless. The resolution has three parts.
   slides toward zero and the shares leave their economically meaningful domain — so that the
   political flip is not arbitrary but is the real-world answer to a degeneracy that the
   equations exhibit.
+
+**(5) How long the pointless recoveries last, and how they end.** Figure 4 shows a run with
+CS fixed at +0.02 — the 1970s-scale push held constant — against the CS = 0 baseline. The
+ratchet is visible cycle by cycle. The accumulation wave continues almost on schedule: the
+boom peaks of sC occur at t ≈ 50, 97, 150 and 213 y (peak-to-peak spacings 46.9, 53.0 and
+62.8 y, close to the CS = 0 cadence of 46.6, 52.3 and 61.2 y), because the restart of the
+boom needs no restoration of the rate of surplus value — only the return of the hiring
+pressure below the choke threshold (the green bands of Figure 4's third panel, the phases
+sV·r < τ, are exactly the recoveries). But every boom peaks at a lower profit rate than the
+last: r at the successive peaks is 0.146 → 0.115 → 0.083 → 0.051 (against 0.148 → 0.117 →
+0.086 → 0.053 at CS = 0 at the same dates), and every recovery starts from a lower trough
+(r = 0.163 → 0.130 → 0.096 → 0.062 at t ≈ 26, 71, 121, 178 y). Over the economically
+meaningful horizon the profit gap to the CS = 0 path widens with every cycle (peak gaps of
+≈ 0.002–0.003 at each of the first three peaks; r(120 y) = 0.0967 against 0.0997) — the
+accumulated −a₂·CS·t drag plus the state feedback. (In the later, out-of-domain phase the
+CS = 0 baseline's own deep crisis — sV < 0 from t ≈ 131 y against ≈ 133 y at CS = +0.02 —
+accelerates its decline and narrows the gap again, which is why the comparison is
+meaningful only while the shares respect the book's premise.)
+
+Each pointless recovery — one sC upswing — lasts ≈ 25–28 y of model time, and the
+succession has no internal end: as long as the wage push holds, the mechanism that restarts
+the boom (sV·r falling back below τ) keeps operating, so the recoveries keep coming
+indefinitely at fixed CS. The succession ends only in one of two ways. (i) In the model's
+own terms the run eventually leaves its economically meaningful domain: the mechanisation
+share exceeds the whole surplus value at t ≈ 86 y (sC > 1, the book's premise sC + sV ≤ 1),
+and the reserve-army purge — sV < 0, the event that would finally reverse the wage-share
+dynamic — arrives only at t ≈ 133 y, because CS = +0.02 lies below the purge threshold of
+≈ +0.115 (point (2) above). By then the shares have long violated the book's premise, so
+this late purge is an out-of-domain artefact rather than a meaningful restoration: r(220 y)
+= 0.045 and the slide continues. (ii) Historically, the succession was ended not by the
+model's internal dynamics but by the regime change — CS switched below zero (Section 7.7);
+had the push instead been maintained above the purge threshold, even the late purge would
+not occur and r would slide toward ≈ 0.006 by 300 y (point (2) above). The conclusion of
+the exercise is the one drawn in points (1)–(4): a militant wage push does not stop the
+cycle — it empties the recoveries of profit; and because profit is the regulator of
+accumulation, a succession of profitless recoveries is not a resolution but a ratchet,
+whose only exits are the domain breakdown of the equations or a change in the class
+relation. (The correspondence to the 1970s is of the *pattern*, not of the frequency: the
+cyclical recoveries of 1975–79 and 1980–81 inside the long downswing restarted activity but
+not profitability; the model's wave is the long wave, so its model-time durations should
+not be read as calendar durations.)
 
 ### 7.7 A stalemated class struggle and the exit from the low-profit state: the offensive and the external labour supply
 

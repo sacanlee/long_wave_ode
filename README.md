@@ -144,6 +144,8 @@ long-wave-model/
     ├── class_struggle_cycle_metrics.png # cycle length / upswing-downswing / rise share /
     │                               #   profitability as functions of CS
     ├── class_struggle_pulse_episode.png # stylised wage-explosion -> offensive episode vs CS=0
+    ├── class_struggle_ratchet_recoveries.png # pointless recoveries at fixed CS=+0.02:
+    │                               #   the wave keeps cycling while the profit rate ratchets down
     ├── wpi_chart_US.png ... wpi_chart_FR.png   # gold-denominated WPI per country
     ├── wpi_chart_combined_9yMA_log.png         # five countries, 9-yr MAs
     ├── wpi_chart_local_currency.png            # local-currency WPI, 5 panels
@@ -441,20 +443,31 @@ Main quantitative results at the book parameters (11 CS values from −0.10 to
 | Profit-rate level | the dominant effect: the CS component of d ln r/dt is −a₂·CS (−0.01·CS per year), amplified by state feedback; mean r [0,120 y]: 0.150 → 0.141 → 0.133 across the grid |
 | Extreme CS | CS ≥ +0.2: cycles stretch to 50–74 y, r collapses toward 1–4% (permanent squeeze / stagnation); CS ≤ −0.2: cycles ~41–43 y, profits kept high (Roaring-Twenties-like repression) |
 
-Historical reading of the levels (directions, not calibrated magnitudes):
-CS > 0 ↔ the 1966–1975 wage explosion and the fourth-wave profit squeeze
-(1966/73–1982); CS ≈ 0 ↔ reserve-army-dominated epochs (19th-century waves,
-US 1950–65); CS < 0 ↔ the post-1980 offensive (union-density collapse, wage
-share decline, profit recovery, the 1982–2007 upswing); CS ≪ 0 ↔ the US 1920s;
+Historical reading of the levels (directions, not calibrated magnitudes; units:
+CS = 0 means the wage share does not keep pace with productivity under
+reserve-army pressure, cf. book p. 216):
+CS > 0 ↔ wages at or above the productivity norm — the golden age on the
+fourth-wave upswing (1940–1966; moderate positive CS, high profit rate),
+intensifying into the 1966–1975 wage explosion and the fourth-wave profit
+squeeze (1966–1982); CS ≈ 0 ↔ reserve-army-dominated 19th-century waves;
+CS < 0 ↔ the post-1980 offensive (union-density collapse, wage share decline,
+profit recovery, the 1982–2007 upswing); CS ≪ 0 ↔ the US 1920s;
 regime-scale CS > 0 is historically unsustainable and appears only as bounded
 episodes (France 1936–38, UK 1974–79) that crises terminate. A stylised
 "wage-explosion → offensive" pulse run (`figures/class_struggle_pulse_episode.png`)
 shows that, because the book weights the distribution channel with a₂ = 0.01
 against a₁ = 0.04 for the OCC channel, even a strong historical-style episode
 moves the profit rate by only ~±1%: the model is OCC-determined by
-construction — a quantitative confirmation of the critique. See the report for
-caveats (no distribution state variable, no true fixed point, ~2-cycle
-meaningful window) and the suggested sixth-state extension.
+construction — a quantitative confirmation of the critique. At a *fixed*
+CS = +0.02 the model produces "pointless recoveries"
+(`figures/class_struggle_ratchet_recoveries.png`): the accumulation wave keeps
+cycling (boom peaks at t ≈ 50/97/150/213 y) while every boom peaks at a lower
+profit rate (r: 0.146 → 0.115 → 0.083 → 0.051) — short, profitless recoveries
+into a permanently lower profitability, ended only by the regime change
+(CS < 0) or by the model leaving its domain (sC > 1 at ≈86 y, sV < 0 at
+≈133 y). See the report for caveats (no distribution state variable, no true
+fixed point, ~2-cycle meaningful window) and the suggested sixth-state
+extension.
 
 ## License
 

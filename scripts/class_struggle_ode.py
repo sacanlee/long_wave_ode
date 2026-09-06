@@ -294,9 +294,11 @@ def main():
               f"end {sc['r_end']:.4f}")
 
     pulse = None
+    ratchet = None
     if not args.no_figs:
         pulse = _run_pulse_episode(eq)
-        _make_figures(scenarios, eq, pulse)
+        ratchet = run_ratchet_recoveries()
+        _make_figures(scenarios, eq, pulse, ratchet)
 
     os.makedirs(DATA_DIR, exist_ok=True)
     report = {
@@ -311,6 +313,8 @@ def main():
     }
     if pulse is not None:
         report['pulse_episode'] = pulse['summary']
+    if ratchet is not None:
+        report['ratchet_recoveries'] = ratchet['summary']
     def _clean(o):
         """Recursively convert numpy types and NaN to strict-JSON values
         (NaN occurs for variables with no complete cycle in the window,
@@ -378,7 +382,61 @@ def _run_pulse_episode(eq, T_years=150.0):
     return dict(t=t, profile=prof, sol_pulse=sol_p, sol_base=sol_b, summary=summary)
 
 
-def _make_figures(scenarios, eq, pulse=None):
+def run_ratchet_recoveries(cs_fixed=0.02, cs_ref=0.0, T_years=220.0):
+    """The 'pointless recoveries' run: CS fixed at a positive value for the
+    whole integration (a run with CS > 0 keeps producing accumulation cycles -
+    every upswing restarts when the hiring pressure sV*r falls back below the
+    choke threshold tau, without any restoration of the rate of surplus value),
+    while the profit rate ratchets down cycle after cycle.
+
+    Returns the trajectories, the sC events (peaks/troughs) with the profit
+    rate at each event, the domain-exit markers and a scalar summary (also
+    written to the JSON report). cs_fixed = +0.02 is the 1970s-scale wage push
+    held constant; cs_ref = 0 is the book baseline for comparison."""
+    eq = equilibrium_closed_form()
+    y0 = 1.05 * eq
+    t = np.linspace(0, T_years, int(T_years * 80) + 1)
+    sol_f = odeint(lambda y, t: f(y, cs_fixed), y0, t, rtol=1e-9, atol=1e-12)
+    sol_r = odeint(lambda y, t: f(y, cs_ref), y0, t, rtol=1e-9, atol=1e-12)
+    # sC peaks/troughs of the fixed-CS run (skip the initial transient peak)
+    pk, tr = peak_trough_indices(t, sol_f[:, 2], 10.0)
+    ev = sorted([(float(t[i]), 'P') for i in pk if t[i] > 12]
+                + [(float(t[i]), 'T') for i in tr])
+    peaks = [e for e in ev if e[1] == 'P']
+    troughs = [e for e in ev if e[1] == 'T']
+    def r_at(sol, tt):
+        i = int(np.searchsorted(t, tt))
+        return float(sol[min(i, len(t) - 1), 0])
+    neg = np.where(sol_f[:, 1] < 0)[0]
+    gt1 = np.where(sol_f[:, 2] > 1.0)[0]
+    t_sV0 = float(t[neg[0]]) if len(neg) else None
+    t_sC1 = float(t[gt1[0]]) if len(gt1) else None
+    summary = dict(
+        cs=cs_fixed, cs_ref=cs_ref,
+        peak_times=[round(e[0], 1) for e in peaks[:6]],
+        r_at_peaks=[round(r_at(sol_f, e[0]), 4) for e in peaks[:6]],
+        r_at_peaks_ref=[round(r_at(sol_r, e[0]), 4) for e in peaks[:6]],
+        trough_times=[round(e[0], 1) for e in troughs[:6]],
+        r_at_troughs=[round(r_at(sol_f, e[0]), 4) for e in troughs[:6]],
+        peak_spacings=[round(peaks[i+1][0] - peaks[i][0], 1) for i in range(min(5, len(peaks)-1))],
+        t_sC_gt_1=t_sC1, t_sV_lt_0=t_sV0,
+        r_120=round(r_at(sol_f, 120.0), 4), r_220=round(r_at(sol_f, 220.0), 4),
+        r_120_ref=round(r_at(sol_r, 120.0), 4), r_220_ref=round(r_at(sol_r, 220.0), 4),
+    )
+    print('\nPointless recoveries at a fixed wage push (CS = %+.3f, book baseline CS = %+.3f):'
+          % (cs_fixed, cs_ref))
+    print('  sC boom peaks at t = %s with r = %s (CS = 0 at the same dates: %s)'
+          % (summary['peak_times'], summary['r_at_peaks'], summary['r_at_peaks_ref']))
+    print('  sC troughs  at t = %s with r = %s' % (summary['trough_times'], summary['r_at_troughs']))
+    print('  peak-to-peak spacings: %s  |  sC > 1 at t = %s  |  sV < 0 at t = %s'
+          % (summary['peak_spacings'], t_sC1, t_sV0))
+    print('  r(120) = %.4f (ref %.4f)  r(220) = %.4f (ref %.4f)'
+          % (summary['r_120'], summary['r_120_ref'], summary['r_220'], summary['r_220_ref']))
+    return dict(t=t, sol_fixed=sol_f, sol_ref=sol_r, peaks=peaks, troughs=troughs,
+                summary=summary)
+
+
+def _make_figures(scenarios, eq, pulse=None, ratchet=None):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -489,6 +547,93 @@ def _make_figures(scenarios, eq, pulse=None):
         f3 = os.path.join(FIG_DIR, 'class_struggle_pulse_episode.png')
         fig.savefig(f3, dpi=130); plt.close(fig)
         print(f"                {f3}")
+
+    # -------- Figure 4: pointless recoveries at a fixed CS > 0 (the ratchet) ----
+    if ratchet is not None:
+        t = ratchet['t']
+        s = ratchet['summary']
+        sol = ratchet['sol_fixed']
+        hr = sol[:, 1] * sol[:, 0]          # hiring pressure sV*r
+        tau = sol[:, 4]
+        rec_mask = hr < tau                 # sC rising: the "recovery" phases
+        fig, axes = plt.subplots(4, 1, figsize=(11, 13.5), sharex=True)
+        # shade recoveries (hr < tau) in light green on every panel
+        for ax in axes:
+            ax.fill_between(t, 0, 1, where=rec_mask, transform=ax.get_xaxis_transform(),
+                            color='#2ca02c', alpha=0.07)
+        # -- panel 1: the ratchet of the profit rate
+        ax = axes[0]
+        ax.plot(t, ratchet['sol_ref'][:, 0], lw=1.1, color='#888888', ls='--',
+                label=f'baseline CS = {s["cs_ref"]:+.2f} (book)')
+        ax.plot(t, sol[:, 0], lw=1.5, color='#d62728',
+                label=f'fixed CS = {s["cs"]:+.2f} (the push never ends)')
+        for i, (tt, rv) in enumerate(zip(s['peak_times'], s['r_at_peaks'])):
+            ax.plot(tt, rv, 'o', ms=5, color='#d62728')
+            off = 0.006 if i % 2 == 0 else -0.011
+            ax.annotate(f'r = {rv:.3f}', xy=(tt, rv), xytext=(tt - 6, rv + off),
+                        fontsize=8, color='#d62728')
+        ax.plot(s['trough_times'][0], s['r_at_troughs'][0], 's', ms=5, color='#d62728')
+        ax.set_ylabel('r(t)'); ax.grid(alpha=0.3)
+        ax.legend(fontsize=8, loc='upper right')
+        ax.text(0.02, 0.97, 'each boom peak is lower than the last: the recoveries restart,\n'
+                'but every restart begins from a lower profit rate (the ratchet)',
+                transform=ax.transAxes, va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        # -- panel 2: the accumulation wave keeps cycling
+        ax = axes[1]
+        ax.plot(t, sol[:, 2], lw=1.3, color='#1f77b4')
+        for i, e in enumerate(ratchet['peaks'][:5]):
+            ax.annotate(f'P{i+1}', xy=(e[0], sol[int(np.searchsorted(t, e[0])), 2]),
+                        xytext=(e[0] - 3, 0), textcoords='offset points', fontsize=8)
+        for i, e in enumerate(ratchet['troughs'][:5]):
+            ax.annotate(f'T{i+1}', xy=(e[0], sol[int(np.searchsorted(t, e[0])), 2]),
+                        xytext=(e[0] - 3, -12), textcoords='offset points', fontsize=8)
+        ax.axvline(s['t_sC_gt_1'], color='#555555', ls=':', lw=1.2)
+        ax.text(s['t_sC_gt_1'] + 1, ax.get_ylim()[1]*0.97, 'sC > 1\n(share above the whole\n'
+                'surplus value: domain ends)', fontsize=7.5, va='top')
+        ax.set_ylabel('sC(t)'); ax.grid(alpha=0.3)
+        ax.text(0.02, 0.97, 'the mechanisation wave continues at fixed CS > 0: peaks P1-P4 at '
+                f't = {s["peak_times"][0]:.0f}, {s["peak_times"][1]:.0f}, '
+                f'{s["peak_times"][2]:.0f} and {s["peak_times"][3]:.0f} y\n'
+                '(spacings ~47-63 y, close to the CS = 0 cadence): no restoration of the '
+                'surplus-value rate is needed for the boom to restart',
+                transform=ax.transAxes, va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        # -- panel 3: the restart mechanism (hiring pressure vs the choke threshold)
+        ax = axes[2]
+        ax.plot(t, hr, lw=1.2, color='#9467bd', label='hiring pressure  h = sV*r')
+        ax.plot(t, tau, lw=1.2, color='#2ca02c', label='choke threshold  tau(t)')
+        ax.set_ylabel('h = sV*r, tau'); ax.grid(alpha=0.3)
+        ax.legend(fontsize=8, loc='upper right')
+        ax.text(0.02, 0.97, 'green shading = h < tau, i.e. sC rising (the "recovery" phases).\n'
+                'Each recovery starts when h falls back below tau - it does NOT wait for the\n'
+                'rate of surplus value to be restored (g_e < 0 all along while h > -CS)',
+                transform=ax.transAxes, va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        # -- panel 4: the hiring share and how the run ends
+        ax = axes[3]
+        ax.plot(t, sol[:, 1], lw=1.2, color='#ff7f0e')
+        ax.axhline(0, color='k', lw=0.7)
+        ax.axvline(s['t_sV_lt_0'], color='#d62728', ls='--', lw=1.2)
+        ax.text(s['t_sV_lt_0'] + 1, ax.get_ylim()[0], 'sV < 0 at t = %.0f y:\nthe purge arrives\n'
+                'only late (CS below the\npurge threshold)' % s['t_sV_lt_0'], fontsize=7.5, va='bottom')
+        ax.set_ylabel('sV(t)'); ax.grid(alpha=0.3)
+        ax.text(0.02, 0.97, 'the hiring share stays positive for ~133 y: the reserve-army purge is '
+                'delayed.\nr(120) = %.3f, r(220) = %.3f (baseline %.3f / %.3f): the profit slide '
+                'continues -\nthe profitless succession has no internal end; only the regime change '
+                '(CS < 0) restores profit'
+                % (s['r_120'], s['r_220'], s['r_120_ref'], s['r_220_ref']),
+                transform=ax.transAxes, va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        axes[3].set_xlabel('t (years)')
+        fig.suptitle('Pointless recoveries at a fixed wage push: CS = %+.2f held constant over the '
+                     'whole run (book parameters, n = 0.015)\n'
+                     'the accumulation wave keeps cycling while the profit rate ratchets down - '
+                     'model time, not calibrated to calendar years' % s['cs'], y=0.995)
+        fig.tight_layout(rect=[0, 0, 1, 0.975])
+        f4 = os.path.join(FIG_DIR, 'class_struggle_ratchet_recoveries.png')
+        fig.savefig(f4, dpi=130); plt.close(fig)
+        print(f"                {f4}")
 
 
 if __name__ == '__main__':
