@@ -299,6 +299,116 @@ leaves for distributional
 struggle to steer the wave — see Part IV for the interpretation and Part V for the limits
 this places on the exercise.
 
+### III.6 The mechanism in mathematical terms: why CS > 0 lengthens the cycle and tilts it toward the upswing
+
+This subsection answers the "why" behind Sections III.2–III.3. All identities are exact; the
+oscillator statements are linearisations around the moving centre of the share subsystem and
+are verified against the runs.
+
+**(a) The exact phase structure: sC is the integral of a "gap".** From (8.17):
+
+> d ln sC/dt = τ − sV·r
+
+so sC rises ⇔ sV·r < τ and falls ⇔ sV·r > τ, and every extremum of sC is a crossing of the
+hiring-pressure variable h := sV·r through the threshold τ. In the simulations this is not an
+approximation: every detected peak and trough of sC(t) satisfies |sV·r − τ| ≤ 3 × 10⁻⁵.
+The threshold itself is quasi-stationary — τ stays in the band [0.0461, 0.0472] (±1%) over
+more than a century — because τ′ = b₁·Erf(δ − b₂) integrates only small δ-oscillations
+(b₁ = 0.005), and δ is anchored by (8.18), δ′ = b₀ + δ(g_w − sC·r) ≈ 0, at the value that
+keeps sC·r ≈ g_w + b₀/b₂ = 0.11. The whole long wave is therefore the story of h crossing a
+fixed threshold.
+
+**(b) What drives h, and the exact footprint of CS.** Combining (8.16) and (8.15-CS):
+
+> d ln(sV·r)/dt = sV′/sV + r′/r = (sC·r − A)/sV − a₁(sC − sV)·r + a₂(δ + τ − sV) − a₂·CS
+
+with A := δ + τ + n ≈ 0.11 (quasi-constant, ±2–3%). The first term is the employment side
+(hiring accelerates when accumulation sC·r exceeds the "natural" rate A), the bracket is the
+profit side, and **CS enters as an exact proportional drag −a₂·CS on the log-slope of the
+crossing variable itself** — h contains r, and r′/r contains −a₂·CS. Nothing else in the
+system changes.
+
+**(c) The clock: rotation around a drifting centre.** For a slowly moving r, the two share
+dynamics have "balance levels" — sC′ = 0 at sV̄ := τ/r and sV′ = 0 at sC̄ := A/r — both
+scaling as 1/r. With log-deviations p := ln(sC/sC̄), q := ln(sV/sV̄) and g := d ln r/dt < 0:
+
+> ṗ ≈ −τ·q + g,   q̇ ≈ (A·r/τ)·p + g   ⇒   p̈ + A·r·p = −τ·g
+
+i.e. a harmonic oscillator whose natural frequency is set by the product of the
+"natural-growth" constant and the profit rate:
+
+> ω = √(A·r) = √((δ + τ + n)·r),   T = 2π/√(A·r)
+
+Verified against the runs (cycle means; the absolute level comes out ~10% high because of the
+large-amplitude nonlinearity, but the dependence on r is the point):
+
+| run | cycle | r̄ over the cycle | actual spacing (y) | 2π/√(Ā·r̄) (y) |
+|---|---|---:|---:|---:|
+| CS = −0.10 | 2 | 0.1434 | 45.0 | 49.6 |
+| CS = 0 | 1 | 0.1626 | 42.7 | 46.7 |
+| CS = 0 | 2 | 0.1317 | 46.6 | 51.9 |
+| CS = +0.10 | 1 | 0.1574 | 43.2 | 47.5 |
+| CS = +0.10 | 2 | 0.1203 | 48.4 | 54.3 |
+
+The cross-CS differentials match almost exactly, which is what matters for the comparison:
+√(0.1317/0.1203) = 1.046 predicts 48.7 y for the second cycle at CS = +0.10 versus 46.6 y at
+CS = 0 (actual 48.4 y); √(0.1317/0.1434) = 0.958 predicts 44.7 y at CS = −0.10 (actual
+45.0 y). **To first order the wave period scales as T ∝ r^(−1/2).**
+
+**(d) CS lowers r, so it slows the clock.** Eq. (8.15-CS) contains −a₂·CS·r, hence
+d ln r/dt ∋ −a₂·CS exactly. Two consequences, both visible in the runs: r is lower at every
+date (measured mean d ln r over the first upswing: −0.0032/yr at CS = −0.10, −0.0043/yr at
+CS = 0, −0.0054/yr at CS = +0.10 — the extra −0.001/yr is −a₂·CS plus feedback); and,
+because the δ-balance keeps sC·r ≈ 0.11, the lower r rides on a higher sC, i.e. the centre
+(sC̄, sV̄) = (A/r, τ/r) moves outward. With ω = √(A·r) the rotation slows, so every wave
+lengthens — by a little in the realistic band (c1: 42.2 → 43.2 y; c2: 45.0 → 46.6 → 48.4 y)
+and strongly at regime scale — and the lengthening compounds from cycle to cycle because the
+r-deficit (hence the ω-deficit) grows with time, exactly the spacing pattern of Section
+III.2.
+
+**(e) Why the upswing lengthens and the downswing does not.** The asymmetry is produced by
+the fact that r declines monotonically (d ln r < 0 on every segment of every run — the FROP
+drift) and faster the higher the CS:
+
+1. *A rising target tilts the wave toward its rise.* The centre sC̄ = A/r grows at the rate
+   h := d ln sC̄/dt = −d ln r/dt > 0 (about 0.3–0.9%/yr, larger under CS > 0). Since
+   sC = sC̄·e^p, the mechanisation share rises whenever the orbit's own motion satisfies
+   ṗ > −h, i.e. during more than half of every rotation. For a roughly sinusoidal p of
+   amplitude ρ the up-share is
+
+   > up-share ≈ ½ + (1/π)·arcsin(h/(ρ·ω))
+
+   which is increasing in h and decreasing in ω — both pushed the right way by CS > 0 (a
+   steeper r-decline raises h; a lower r lowers ω). Magnitude at cycle 1, CS = 0:
+   h ≈ 0.0043/yr, ρ ≈ 0.16, ω ≈ 0.126/yr give arcsin(0.0043/0.020) ≈ 0.21 rad, i.e. a
+   predicted share of ~57% against the measured 54% (the difference is the relaxation shape
+   of the real orbit at large amplitude). The *increase* of the share with CS is the robust
+   part: measured per-cycle upswing shares rise from 52.6% (CS = −0.10) to 54.2% (CS = 0) to
+   56.3% (CS = +0.10) on cycle 1 (upswings 23.2 → 24.4 → 25.9 y), and from 51.1% to 52.4% to
+   54.5% on cycle 2 (upswings 24.2 → 26.0 → 28.3 y) — matching the median-based grid numbers
+   54 → 57 → 59% of Section III.1. As the amplitude grows in later cycles, ρ·ω grows and the
+   arcsin argument shrinks, so the share drifts back toward 50% even at fixed CS — also
+   observed (cycle-2 shares below cycle-1 shares).
+2. *The down-leg is trimmed because the overshoot above τ shrinks.* The downswing is the
+   time h = sV·r stays above the fixed threshold τ. The measured overshoot above τ
+   *decreases* with CS (mean sV·r over the first downswing: 0.064 → 0.061 → 0.059 for
+   CS = −0.10/0/+0.10), because the employment term (sC·r − A)/sV acts on a larger sV when r
+   is lower and compresses the sV excursion. A smaller excursion above a fixed threshold ends
+   sooner: first downswing 20.9 → 20.6 → 20.1 y (later downswings still lengthen at fixed CS,
+   because ω keeps falling with r, but always less than the upswings).
+
+Net effect: the lengthening of the cycle is carried almost entirely by the upswing
+(≈ +1.5–2.3 y per +0.1 CS per cycle) against a flat-to-slightly-shorter downswing
+(≈ −0.5–0 y), which is exactly the rise-share movement of Sections III.1–III.3.
+
+**(f) Economic reading.** The long wave of this model is a *growth-rate* oscillation: its
+clock is ω = √((δ + τ + n)·r), the geometric mean of the natural-growth constant and the
+profit rate. A class struggle that pushes wages above the reserve-army norm acts on the
+clock through the exact term −a₂·CS in the profit-rate growth: it depresses r, slows the
+(sC, sV) rotation around the receding balance point (τ/r, A/r), stretches each wave, and —
+because the receding centre rises faster under militancy — redistributes each wave's time
+toward its mechanisation upswing and away from its high-hiring downswing.
+
 ---
 
 ## Part IV — What the results mean historically
