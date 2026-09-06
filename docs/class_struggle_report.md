@@ -1178,12 +1178,16 @@ are historically broken rather than persisted in (Section 6.5).
 
 **(c) Why the profit rate never recovers — and why sC rises anyway.** Three layers:
 
-1. *The waves are not profit-rate cycles.* r declines monotonically at every CS examined:
-   at no CS in the economically meaningful domain does r ever rise — the derivative ṙ ≤ 0 at
-   every instant (verified over 300-year integrations; e.g. at CS = +0.02 the fraction of
-   time with ṙ > 0 is zero, r falling 0.184 → 0.015, and the same holds at CS = 0 and at
-   CS = −0.10, where d ln r < 0 on every segment of every run). The recoveries of the wave
-   are recoveries of sC, never of r. The reason is structural: the OCC channel
+1. *The waves are not profit-rate cycles.* r never completes a cycle and never exceeds its
+   starting value at any CS examined: r(0) = 0.184 is the global maximum in every run. Over
+   300-year integrations the derivative ṙ ≤ 0 at every sampled instant at CS = +0.02 (r:
+   0.184 → 0.015); at CS = 0 and CS = −0.10, r declines over the economically meaningful
+   domain with at most microscopic late wiggles — ṙ > 0 for ≈ 1.8% (CS = 0) and ≈ 8.8%
+   (CS = −0.10) of the time, all confined to t ≈ 175–265 y at levels below 0.09, the
+   largest single rise ≈ 4×10⁻³, far below the starting value and outside the economically
+   meaningful domain (within the windows of Figures 1, 2 and 4, r is pointwise declining at
+   every CS shown). The recoveries of the wave are recoveries of sC, never of r. The reason
+   is structural: the OCC channel
    −a₁(sC − sV)r² dominates the counteracting bracket a₂(δ + τ − sV)r at the book's
    calibration (a₁ = 0.04 ≫ a₂ = 0.01), and no positive fixed point exists (findings F1–F4),
    so there is no profit level to which the system could return. The book itself describes r

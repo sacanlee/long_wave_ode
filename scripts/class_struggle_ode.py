@@ -620,6 +620,13 @@ def _make_figures(scenarios, eq, pulse=None, ratchet=None, osc=None):
                 'but every restart begins from a lower profit rate (the ratchet)',
                 transform=ax.transAxes, va='top', fontsize=8.5,
                 bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        ax.text(0.02, 0.03, 'note: at CS = 0 the profit rate is also strictly declining in this '
+                'window (r(0) = 0.184 is its global maximum):\nthe model wave lives in sC and sV '
+                '(panels 2-3), not in r (Section 7.8c) - so the near-coincidence of the two curves '
+                'is expected;\nthe CS = +0.02 drag is small (-a2*CS*t: about -4% of the level by '
+                't = 220 y)',
+                transform=ax.transAxes, va='bottom', fontsize=8,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
         # -- panel 2: the accumulation wave keeps cycling
         ax = axes[1]
         ax.plot(t, sol[:, 2], lw=1.3, color='#1f77b4')
