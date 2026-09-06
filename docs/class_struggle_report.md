@@ -976,6 +976,40 @@ at all and the low-profit phase would have no internal end (the extrapolated reg
 configuration 1). The profit depression of 1974–82 is the historical ratchet phase; its exit
 required CS to fall below zero — the subject of Section 7.7.
 
+**(4) Fixed CS versus regime change: how the runs are to be read.** CS is a parameter: each
+run of the ODE keeps CS constant, and this may seem to make "the exit required CS to fall
+below zero" meaningless. The resolution has three parts.
+
+- *Within a fixed-CS run, cycle restarts do occur even at CS > 0.* The upswing of sC does
+  not wait for the restoration of the rate of surplus value: the boom restarts when the
+  hiring-pressure variable falls back below the choke threshold (the sC trough is the
+  crossing sV·r = τ from above, Section 5.1), and the profit rate simply keeps declining
+  through successive cycles. A run at fixed CS = +0.02 therefore produces repeated
+  "recoveries" — each of them profitless in the sense that it starts from a lower r than the
+  previous one (the ratchet of point (1)). This is exactly the historical texture of
+  1974–82: output and employment recovered in 1975–79 while the profit rate never returned
+  to its pre-1973 level, and each recovery stalled again until the regime changed.
+- *What a fixed-CS run cannot do is restore profitability.* At any CS ≥ 0 the implied rate
+  of surplus value is not restored (point (2)), so no single trajectory with the 1970s
+  parameter value can produce the return of high profits. The historical "exit" is therefore
+  not an event inside such a trajectory: it is a *change of the parameter itself* — the
+  transition to the CS < 0 regime of Section 7.7, represented by a new run (or, within one
+  integration, by a piecewise-constant CS — exactly what the pulse experiment of Section
+  4.5 already does, where CS switches from +0.02 to +0.005 to −0.015 along a single
+  trajectory).
+- *The regime change is exogenous to the model.* Nothing in Eqs. (8.15-CS)–(8.19) turns a
+  militant regime into an offensive one: the equations do not explain why the wage push is
+  broken in 1979–85 (political defeats, mass unemployment as a policy, the state). The model
+  treats the class-struggle level as an exogenous parameter, exactly as it treats the
+  population growth n and the "normal" growth g_w; the historical narrative of Sections 6–7
+  is a *succession of runs* with different parameters, one per epoch — the same methodology
+  with which the companion repository compares the waves of Table 5.1 (one run per wave, with
+  that wave's n). What the model *does* contribute to the transition is the demonstration
+  that the militant regime is unsustainable in the long run — at fixed CS > 0 the profit rate
+  slides toward zero and the shares leave their economically meaningful domain — so that the
+  political flip is not arbitrary but is the real-world answer to a degeneracy that the
+  equations exhibit.
+
 ### 7.7 A stalemated class struggle and the exit from the low-profit state: the offensive and the external labour supply
 
 The question addressed here: if, during the downswing, capital cannot dismantle the
@@ -986,7 +1020,10 @@ for industrial relocation, could they have done so at all? Section 7.6 fixes the
 answer to the first part: a stalemate does not lengthen the individual busts; it keeps the
 ratchet engaged — the rate of surplus value is not restored while CS ≥ 0, so profitability
 stays depressed for as long as the push persists, and above the purge threshold
-(CS ≳ +0.11–0.12 at the book's parameters) it cannot be restored at all. The 1974–82
+(CS ≳ +0.11–0.12 at the book's parameters) it cannot be restored at all. Consistent with
+Section 7.6 (4), "the exit" is a regime change — the parameter is switched to CS < 0, and
+the post-1979 history is represented by the run of that new regime — not an event inside
+the stalemated trajectory. The 1974–82
 episode fits this reading qualitatively: the wage share held at its 1974–75 peak through the
 late 1970s, the organised power of labour survived the two recessions intact, and the
 measured profit rate stayed depressed until the offensive of 1979–82 had begun
