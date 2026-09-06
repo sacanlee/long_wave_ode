@@ -999,9 +999,12 @@ below zero" meaningless. The resolution has three parts.
   not wait for the restoration of the rate of surplus value: the boom restarts when the
   hiring-pressure variable falls back below the choke threshold (the sC trough is the
   crossing sV·r = τ from above, Section 5.1), and the profit rate simply keeps declining
-  through successive cycles. A run at fixed CS = +0.02 therefore produces repeated
-  "recoveries" — each of them profitless in the sense that it starts from a lower r than the
-  previous one (the ratchet of point (1)). This is exactly the historical texture of
+  through successive cycles — it never rises at any point of the run: at CS = +0.02 the
+  derivative ṙ ≤ 0 at every instant of a 300-year integration (r: 0.184 → 0.015, with the
+  boom-peak values 0.146 → 0.115 → 0.083 → 0.051; Section 7.8(c)). A run at fixed
+  CS = +0.02 therefore produces repeated "recoveries" — each of them profitless in the sense
+  that it starts from a lower r than the previous one (the ratchet of point (1)). This is
+  exactly the historical texture of
   1974–82: output and employment recovered in 1975–79 while the profit rate never returned
   to its pre-1973 level, and each recovery stalled again until the regime changed.
 - *What a fixed-CS run cannot do is restore profitability.* At any CS ≥ 0 the implied rate
@@ -1175,8 +1178,12 @@ are historically broken rather than persisted in (Section 6.5).
 
 **(c) Why the profit rate never recovers — and why sC rises anyway.** Three layers:
 
-1. *The waves are not profit-rate cycles.* r declines monotonically at every CS examined
-   (d ln r < 0 on every segment of every run, even at CS = −0.10): the OCC channel
+1. *The waves are not profit-rate cycles.* r declines monotonically at every CS examined:
+   at no CS in the economically meaningful domain does r ever rise — the derivative ṙ ≤ 0 at
+   every instant (verified over 300-year integrations; e.g. at CS = +0.02 the fraction of
+   time with ṙ > 0 is zero, r falling 0.184 → 0.015, and the same holds at CS = 0 and at
+   CS = −0.10, where d ln r < 0 on every segment of every run). The recoveries of the wave
+   are recoveries of sC, never of r. The reason is structural: the OCC channel
    −a₁(sC − sV)r² dominates the counteracting bracket a₂(δ + τ − sV)r at the book's
    calibration (a₁ = 0.04 ≫ a₂ = 0.01), and no positive fixed point exists (findings F1–F4),
    so there is no profit level to which the system could return. The book itself describes r
