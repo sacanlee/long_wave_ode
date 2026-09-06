@@ -6,7 +6,8 @@ Prepared by: sacanlee | 6 September 2026
 
 Companion material (fully reproducible): `scripts/class_struggle_ode.py`;
 `data/class_struggle_results.json`; `figures/class_struggle_trajectories.png`,
-`figures/class_struggle_cycle_metrics.png`, `figures/class_struggle_pulse_episode.png`.
+`figures/class_struggle_cycle_metrics.png`, `figures/class_struggle_pulse_episode.png`,
+`figures/class_struggle_ratchet_recoveries.png`, `figures/class_struggle_oscillation_death.png`.
 
 **Reference**: Chatzarakis, N., Tsaliki, P. & Tsoulfidis, L. (2022), *Economic Growth and
 Long Cycles: A Classical Political Economy Approach*, Routledge, Ch. 8. Book page numbers
@@ -511,9 +512,10 @@ segment of every run — the FROP drift) and faster the higher the CS:
 
    which is increasing in h and decreasing in ω — both pushed the right way by CS > 0 (a
    steeper r-decline raises h; a lower r lowers ω). Magnitude at cycle 1, CS = 0:
-   h ≈ 0.0043/yr, ρ ≈ 0.16, ω ≈ 0.126/yr give arcsin(0.0043/0.020) ≈ 0.21 rad, i.e. a
-   predicted share of ~57% against the measured 54% (the difference reflects the relaxation
-   shape of the real orbit at large amplitude). The *increase* of the share with CS is the
+   h ≈ 0.0043/yr, ρ ≈ 0.16 and ω ≈ 0.135/yr (√(A·r̄) with the cycle mean r̄ = 0.163 of
+   Table 2) give arcsin(0.0043/0.022) ≈ 0.20 rad, i.e. a predicted share of ~56% against
+   the measured 54% (the difference reflects the relaxation shape of the real orbit at
+   large amplitude). The *increase* of the share with CS is the
    robust part: measured per-cycle upswing shares rise from 52.6% (CS = −0.10) to 54.2%
    (CS = 0) to 56.3% (CS = +0.10) on cycle 1 (upswings 23.2 → 24.4 → 25.9 y), and from
    51.1% to 52.4% to 54.5% on cycle 2 (upswings 24.2 → 26.0 → 28.3 y) — consistent with the
@@ -568,8 +570,9 @@ wages do not systematically keep up with productivity.
 
 Model behaviour: profit-rate level squeezed (the CS component of d ln r/dt is −a₂·CS, i.e.
 roughly −0.05% to −0.2% of the level per decade at CS = +0.005…+0.02, or −0.25% to −1% over
-a typical half-century), waves slightly longer and more upswing-heavy, employment-share
-troughs deeper during the squeeze, recovery delayed.
+a typical half-century), waves slightly longer and more upswing-heavy, hiring-share troughs
+shallower (sV stays positive longer: its minimum over [0,120 y] rises from 0.0615 at CS = 0
+to 0.0955 at CS = +0.10), recoveries delayed (longer upswings).
 
 Historical counterpart, in two intensities of the same regime:
 
@@ -641,9 +644,9 @@ confirms the expected effect: the fall of the profit rate is slowed.
 
 ### 6.4 CS ≲ −0.1 — extreme repression: the 1920s analogy
 
-Model behaviour: profitability sustained near its initial level for more than a century of
-model time (mean r 0.15–0.17 at CS = −0.2…−0.3, almost no squeeze), cycles shortened to
-~41–44 y and nearly symmetric (rise share ~51%).
+Model behaviour: profitability sustained near its initial level through the economically
+meaningful window (mean r 0.15–0.17 at CS = −0.2…−0.3, almost no squeeze), cycles shortened
+to ~41–44 y and nearly symmetric (rise share ~51%).
 
 Historical counterpart — the US 1920s under the "American Plan" open-shop offensive: real
 manufacturing wages roughly stagnant between 1923 and 1929 while output per worker rose by
@@ -780,7 +783,7 @@ no different from Smith's 'rude and early state of society'", p. 212), i.e. towa
 stagnation, not toward an explosive crisis; with g_e > 0 the equilibrium becomes a
 repelling saddle and the solutions travel along the accumulation path toward the point of
 overaccumulation (pp. 207–212). In other words, in the theory of the book itself the
-permanent wage squeeze is the *stabilising, stagnation-generating* case, while the 
+permanent wage squeeze is the *stabilising, stagnation-generating* case, while the
 restoration of exploitation is the case that generates the dynamic of accumulation and
 crisis. The CS results of Section 4 are the five-equation counterpart of that analysis:
 high CS behaves like the g_e < 0 regime (the oscillation loses amplitude growth and the
@@ -1004,8 +1007,8 @@ below zero" meaningless. The resolution has three parts.
   boom-peak values 0.146 → 0.115 → 0.083 → 0.051; Section 7.8(c)). A run at fixed
   CS = +0.02 therefore produces repeated "recoveries" — each of them profitless in the sense
   that it starts from a lower r than the previous one (the ratchet of point (1)). This is
-  exactly the historical texture of
-  1974–82: output and employment recovered in 1975–79 while the profit rate never returned
+  exactly the historical texture of 1974–82: output and employment recovered in 1975–79
+  while the profit rate never returned
   to its pre-1973 level, and each recovery stalled again until the regime changed.
 - *What a fixed-CS run cannot do is restore profitability.* At any CS ≥ 0 the implied rate
   of surplus value is not restored (point (2)), so no single trajectory with the 1970s
@@ -1082,8 +1085,8 @@ stays depressed for as long as the push persists, and above the purge threshold
 (CS ≳ +0.11–0.12 at the book's parameters) it cannot be restored at all. Consistent with
 Section 7.6 (4), "the exit" is a regime change — the parameter is switched to CS < 0, and
 the post-1979 history is represented by the run of that new regime — not an event inside
-the stalemated trajectory. The 1974–82
-episode fits this reading qualitatively: the wage share held at its 1974–75 peak through the
+the stalemated trajectory. The 1974–82 episode fits this reading qualitatively: the wage
+share held at its 1974–75 peak through the
 late 1970s, the organised power of labour survived the two recessions intact, and the
 measured profit rate stayed depressed until the offensive of 1979–82 had begun
 (Duménil & Lévy 1993). (The caution of Section 7.6 applies: the model's wage-push channel
@@ -1153,10 +1156,12 @@ at +0.40 to ≈ 69 y at +0.50; Figure 5, panels 1–2). The economic content is 
 forever), so the boom-choke mechanism — full employment raising wages, wages choking
 profitability — cannot re-engage: profitability is too low for the hiring pressure ever to
 reach the threshold. The monotone rise of sC is then not "continuous investment in constant
-capital": it is an accounting fiction. The δ-anchoring keeps sC·r ≈ 0.11, forcing
-sC ≈ A/r → 351 while r → 3.5×10⁻⁴ — i.e. the "share of surplus value invested" exceeds the
-whole surplus value (sC + sV > 1; Figure 5, panel 4). Real accumulation at such a pace would
-be impossible without credit or the state — both absent from the model.
+capital": it is an accounting fiction. The δ-anchoring keeps the accumulation product
+sC·r at ≈ 0.11–0.12 (g_w + b₀/δ, with δ hovering near b₂), which forces the share itself
+to explode as r collapses: sC(300 y) = 351 at CS = +0.50, where r ≈ 3.5×10⁻⁴ — the "share
+of surplus value invested" then far exceeds the whole surplus value (sC + sV > 1; Figure 5,
+panel 4). Real accumulation at such a pace would be impossible without credit or the state —
+both absent from the model.
 
 **(b) Why sV > 0 forever (CS ≳ 0.12) does not mean better employment.** sV is the share of
 surplus value invested in variable capital, not the employment level. Hiring is funded out
@@ -1324,14 +1329,14 @@ their own premise.
 - Autor, D. H., Dorn, D. & Hanson, G. H. (2013). The China syndrome: local labor market
   effects of import competition in the United States. *American Economic Review*, 103(6),
   2121–2168.
-- Freeman, R. B. (2006). The great doubling: the challenge of the new global labor market.
-  In *Emerging Economies and the Transformation of International Business*. Edward Elgar.
 - Boddy, R. & Crotty, J. (1975). Class conflict and macro-policy: the political business
   cycle. *Review of Radical Political Economics*, 7(1), 1–19.
 - Chatzarakis, N., Tsaliki, P. & Tsoulfidis, L. (2022). *Economic Growth and Long Cycles: A
   Classical Political Economy Approach*. Routledge. Sections 8.2.1.1–8.2.1.3
   (pp. 205–215), 8.2.2 (p. 216), 8.3 (pp. 221–235), 8.4 (pp. 236–242).
 - Duménil, G. & Lévy, D. (1993). *The Economics of the Profit Rate*. Edward Elgar.
+- Freeman, R. B. (2006). The great doubling: the challenge of the new global labor market.
+  In *Emerging Economies and the Transformation of International Business*. Edward Elgar.
 - Glombowski, J. (1983). A Marxian model of long run capitalist development.
   *Zeitschrift für Nationalökonomie*, 43(4), 363–382.
 - Glyn, A. & Sutcliffe, B. (1972). *British Capitalism, Workers and the Profit Squeeze*.
