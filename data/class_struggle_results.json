@@ -1,0 +1,1173 @@
+{
+  "params": {
+    "a1": 0.04,
+    "a2": 0.01,
+    "b0": 0.004,
+    "b1": 0.005,
+    "b2": 0.05,
+    "gw": 0.03,
+    "n": 0.015
+  },
+  "note": "CS-extended model (8.15-CS)-(8.19); CS=0 reproduces the book. ge = -sV - CS in (8.15). Metrics are measured inside the economically meaningful window t < t_dom = first time sV<0 (repository convention); t_dom_shares = first time sC>1 or sV>1 (book premise sC+sV<=1) is reported separately.",
+  "scenarios": [
+    {
+      "cs": -0.1,
+      "t_dom": 125.899364,
+      "t_dom_shares": 87.245721,
+      "eig": {
+        "lam": "(0.021177308416385272+0.15051131722743774j)",
+        "Re": 0.021177,
+        "T_years": 41.7456
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 44.385433,
+          "rise_med": 22.102083,
+          "fall_med": 22.28335,
+          "rise_share_pct": 49.795803,
+          "cycles": [
+            42.88,
+            45.89
+          ],
+          "rises": [
+            21.6,
+            22.6
+          ],
+          "falls": [
+            21.28,
+            23.29
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 43.597858,
+          "rise_med": 23.658479,
+          "fall_med": 19.939379,
+          "rise_share_pct": 54.265233,
+          "cycles": [
+            42.18,
+            45.02
+          ],
+          "rises": [
+            23.16,
+            24.15
+          ],
+          "falls": [
+            19.01,
+            20.86
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 43.391589,
+          "rise_med": 22.339605,
+          "fall_med": 21.051984,
+          "rise_share_pct": 51.483722,
+          "cycles": [
+            41.64,
+            45.14
+          ],
+          "rises": [
+            20.95,
+            23.73
+          ],
+          "falls": [
+            20.69,
+            21.41
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 42.454001,
+          "rise_med": 20.170651,
+          "fall_med": 22.28335,
+          "rise_share_pct": 47.511779,
+          "cycles": [
+            39.54,
+            45.37
+          ],
+          "rises": [
+            18.85,
+            21.49
+          ],
+          "falls": [
+            20.69,
+            23.88
+          ]
+        }
+      },
+      "r_mean": 0.148175,
+      "r_min": 0.114611,
+      "r_end": 0.114611
+    },
+    {
+      "cs": -0.05,
+      "t_dom": 128.512358,
+      "t_dom_shares": 86.845851,
+      "eig": {
+        "lam": "(0.021176468449551646+0.15050351524432112j)",
+        "Re": 0.021176,
+        "T_years": 41.747764
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 45.066834,
+          "rise_med": 22.652178,
+          "fall_med": 22.414655,
+          "rise_share_pct": 50.263523,
+          "cycles": [
+            43.25,
+            46.88
+          ],
+          "rises": [
+            21.98,
+            23.33
+          ],
+          "falls": [
+            21.28,
+            23.55
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 44.09799,
+          "rise_med": 24.408597,
+          "fall_med": 19.689393,
+          "rise_share_pct": 55.350815,
+          "cycles": [
+            42.42,
+            45.78
+          ],
+          "rises": [
+            23.78,
+            25.04
+          ],
+          "falls": [
+            18.64,
+            20.74
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 43.929224,
+          "rise_med": 22.495913,
+          "fall_med": 21.433311,
+          "rise_share_pct": 51.209448,
+          "cycles": [
+            41.88,
+            45.98
+          ],
+          "rises": [
+            20.96,
+            24.03
+          ],
+          "falls": [
+            20.91,
+            21.95
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 42.785364,
+          "rise_med": 20.226945,
+          "fall_med": 22.558419,
+          "rise_share_pct": 47.275383,
+          "cycles": [
+            39.53,
+            46.04
+          ],
+          "rises": [
+            18.76,
+            21.69
+          ],
+          "falls": [
+            20.76,
+            24.35
+          ]
+        }
+      },
+      "r_mean": 0.142747,
+      "r_min": 0.104984,
+      "r_end": 0.104984
+    },
+    {
+      "cs": -0.02,
+      "t_dom": 130.235074,
+      "t_dom_shares": 86.581697,
+      "eig": {
+        "lam": "(0.021175989057118007+0.15049883499874828j)",
+        "Re": 0.021176,
+        "T_years": 41.749063
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 45.491019,
+          "rise_med": 22.989278,
+          "fall_med": 22.501741,
+          "rise_share_pct": 50.535862,
+          "cycles": [
+            43.49,
+            47.49
+          ],
+          "rises": [
+            22.2,
+            23.78
+          ],
+          "falls": [
+            21.29,
+            23.71
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 44.409685,
+          "rise_med": 24.889425,
+          "fall_med": 19.52026,
+          "rise_share_pct": 56.045039,
+          "cycles": [
+            42.55,
+            46.27
+          ],
+          "rises": [
+            24.16,
+            25.61
+          ],
+          "falls": [
+            18.39,
+            20.65
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 44.253423,
+          "rise_med": 22.589247,
+          "fall_med": 21.664176,
+          "rise_share_pct": 51.045198,
+          "cycles": [
+            42.02,
+            46.49
+          ],
+          "rises": [
+            20.96,
+            24.21
+          ],
+          "falls": [
+            21.05,
+            22.28
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 42.984575,
+          "rise_med": 20.251567,
+          "fall_med": 22.733008,
+          "rise_share_pct": 47.113567,
+          "cycles": [
+            39.52,
+            46.45
+          ],
+          "rises": [
+            18.7,
+            21.8
+          ],
+          "falls": [
+            20.81,
+            24.65
+          ]
+        }
+      },
+      "r_mean": 0.139478,
+      "r_min": 0.099344,
+      "r_end": 0.099344
+    },
+    {
+      "cs": -0.01,
+      "t_dom": 130.836477,
+      "t_dom_shares": 86.482586,
+      "eig": {
+        "lam": "(0.021175833353528+0.15049727510006763j)",
+        "Re": 0.021176,
+        "T_years": 41.749495
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 45.629002,
+          "rise_med": 23.114528,
+          "fall_med": 22.514475,
+          "rise_share_pct": 50.657534,
+          "cycles": [
+            43.57,
+            47.69
+          ],
+          "rises": [
+            22.29,
+            23.94
+          ],
+          "falls": [
+            21.28,
+            23.75
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 44.522655,
+          "rise_med": 25.058448,
+          "fall_med": 19.464207,
+          "rise_share_pct": 56.282465,
+          "cycles": [
+            42.62,
+            46.43
+          ],
+          "rises": [
+            24.3,
+            25.81
+          ],
+          "falls": [
+            18.31,
+            20.61
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 44.360141,
+          "rise_med": 22.614484,
+          "fall_med": 21.745657,
+          "rise_share_pct": 50.979287,
+          "cycles": [
+            42.07,
+            46.65
+          ],
+          "rises": [
+            20.96,
+            24.26
+          ],
+          "falls": [
+            21.1,
+            22.39
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 43.053777,
+          "rise_med": 20.258027,
+          "fall_med": 22.79575,
+          "rise_share_pct": 47.052846,
+          "cycles": [
+            39.5,
+            46.6
+          ],
+          "rises": [
+            18.68,
+            21.84
+          ],
+          "falls": [
+            20.83,
+            24.76
+          ]
+        }
+      },
+      "r_mean": 0.138385,
+      "r_min": 0.097486,
+      "r_end": 0.097486
+    },
+    {
+      "cs": -0.005,
+      "t_dom": 131.149684,
+      "t_dom_shares": 86.43303,
+      "eig": {
+        "lam": "(0.021175756269453432+0.15049649518519062j)",
+        "Re": 0.021176,
+        "T_years": 41.749712
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 45.704246,
+          "rise_med": 23.164652,
+          "fall_med": 22.539594,
+          "rise_share_pct": 50.683807,
+          "cycles": [
+            43.6,
+            47.8
+          ],
+          "rises": [
+            22.31,
+            24.01
+          ],
+          "falls": [
+            21.29,
+            23.79
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 44.572891,
+          "rise_med": 25.146086,
+          "fall_med": 19.426805,
+          "rise_share_pct": 56.41565,
+          "cycles": [
+            42.63,
+            46.52
+          ],
+          "rises": [
+            24.36,
+            25.93
+          ],
+          "falls": [
+            18.26,
+            20.59
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 44.416626,
+          "rise_med": 22.633353,
+          "fall_med": 21.783274,
+          "rise_share_pct": 50.956938,
+          "cycles": [
+            42.09,
+            46.74
+          ],
+          "rises": [
+            20.96,
+            24.3
+          ],
+          "falls": [
+            21.13,
+            22.44
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 43.091503,
+          "rise_med": 20.264383,
+          "fall_med": 22.827121,
+          "rise_share_pct": 47.0264,
+          "cycles": [
+            39.5,
+            46.68
+          ],
+          "rises": [
+            18.66,
+            21.86
+          ],
+          "falls": [
+            20.84,
+            24.81
+          ]
+        }
+      },
+      "r_mean": 0.137836,
+      "r_min": 0.096559,
+      "r_end": 0.096559
+    },
+    {
+      "cs": 0.0,
+      "t_dom": 131.462894,
+      "t_dom_shares": 86.383473,
+      "eig": {
+        "lam": "(0.021175679696139902+0.15049571529748831j)",
+        "Re": 0.021176,
+        "T_years": 41.749928
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 45.77949,
+          "rise_med": 23.233529,
+          "fall_med": 22.545961,
+          "rise_share_pct": 50.750956,
+          "cycles": [
+            43.65,
+            47.9
+          ],
+          "rises": [
+            22.36,
+            24.1
+          ],
+          "falls": [
+            21.29,
+            23.8
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 44.629377,
+          "rise_med": 25.233725,
+          "fall_med": 19.395652,
+          "rise_share_pct": 56.540616,
+          "cycles": [
+            42.67,
+            46.59
+          ],
+          "rises": [
+            24.44,
+            26.03
+          ],
+          "falls": [
+            18.23,
+            20.56
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 44.473112,
+          "rise_med": 22.645971,
+          "fall_med": 21.827141,
+          "rise_share_pct": 50.92059,
+          "cycles": [
+            42.12,
+            46.83
+          ],
+          "rises": [
+            20.96,
+            24.33
+          ],
+          "falls": [
+            21.15,
+            22.5
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 43.12298,
+          "rise_med": 20.264488,
+          "fall_med": 22.858492,
+          "rise_share_pct": 46.992318,
+          "cycles": [
+            39.5,
+            46.74
+          ],
+          "rises": [
+            18.65,
+            21.88
+          ],
+          "falls": [
+            20.85,
+            24.86
+          ]
+        }
+      },
+      "r_mean": 0.137287,
+      "r_min": 0.095636,
+      "r_end": 0.095636
+    },
+    {
+      "cs": 0.005,
+      "t_dom": 131.782032,
+      "t_dom_shares": 86.342107,
+      "eig": {
+        "lam": "(0.021175603633524283+0.15049493543373862j)",
+        "Re": 0.021176,
+        "T_years": 41.750145
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 45.846196,
+          "rise_med": 23.288743,
+          "fall_med": 22.557454,
+          "rise_share_pct": 50.797546,
+          "cycles": [
+            43.68,
+            48.02
+          ],
+          "rises": [
+            22.4,
+            24.18
+          ],
+          "falls": [
+            21.28,
+            23.84
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 44.677384,
+          "rise_med": 25.313851,
+          "fall_med": 19.363533,
+          "rise_share_pct": 56.659205,
+          "cycles": [
+            42.68,
+            46.68
+          ],
+          "rises": [
+            24.5,
+            26.13
+          ],
+          "falls": [
+            18.18,
+            20.55
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 44.527376,
+          "rise_med": 22.66996,
+          "fall_med": 21.857416,
+          "rise_share_pct": 50.912409,
+          "cycles": [
+            42.14,
+            46.92
+          ],
+          "rises": [
+            20.98,
+            24.36
+          ],
+          "falls": [
+            21.16,
+            22.55
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 43.158553,
+          "rise_med": 20.269832,
+          "fall_med": 22.888721,
+          "rise_share_pct": 46.965967,
+          "cycles": [
+            39.5,
+            46.81
+          ],
+          "rises": [
+            18.64,
+            21.9
+          ],
+          "falls": [
+            20.86,
+            24.91
+          ]
+        }
+      },
+      "r_mean": 0.136737,
+      "r_min": 0.094714,
+      "r_end": 0.094714
+    },
+    {
+      "cs": 0.01,
+      "t_dom": 132.107734,
+      "t_dom_shares": 86.292552,
+      "eig": {
+        "lam": "(0.021175528084109455+0.15049415559507578j)",
+        "Re": 0.021176,
+        "T_years": 41.750361
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 45.921438,
+          "rise_med": 23.357617,
+          "fall_med": 22.563821,
+          "rise_share_pct": 50.864298,
+          "cycles": [
+            43.73,
+            48.12
+          ],
+          "rises": [
+            22.45,
+            24.26
+          ],
+          "falls": [
+            21.28,
+            23.85
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 44.733869,
+          "rise_med": 25.401487,
+          "fall_med": 19.332382,
+          "rise_share_pct": 56.783569,
+          "cycles": [
+            42.72,
+            46.75
+          ],
+          "rises": [
+            24.58,
+            26.23
+          ],
+          "falls": [
+            18.14,
+            20.53
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 44.58386,
+          "rise_med": 22.682578,
+          "fall_med": 21.901282,
+          "rise_share_pct": 50.876209,
+          "cycles": [
+            42.16,
+            47.0
+          ],
+          "rises": [
+            20.98,
+            24.39
+          ],
+          "falls": [
+            21.19,
+            22.61
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 43.196279,
+          "rise_med": 20.282437,
+          "fall_med": 22.913841,
+          "rise_share_pct": 46.954131,
+          "cycles": [
+            39.5,
+            46.89
+          ],
+          "rises": [
+            18.64,
+            21.93
+          ],
+          "falls": [
+            20.86,
+            24.96
+          ]
+        }
+      },
+      "r_mean": 0.136186,
+      "r_min": 0.093794,
+      "r_end": 0.093794
+    },
+    {
+      "cs": 0.02,
+      "t_dom": 132.78415,
+      "t_dom_shares": 86.180938,
+      "eig": {
+        "lam": "(0.02117537851623015+0.15049259599902462j)",
+        "Re": 0.021175,
+        "T_years": 41.750794
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 46.071925,
+          "rise_med": 23.476618,
+          "fall_med": 22.595307,
+          "rise_share_pct": 50.956451,
+          "cycles": [
+            43.82,
+            48.33
+          ],
+          "rises": [
+            22.53,
+            24.43
+          ],
+          "falls": [
+            21.29,
+            23.9
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 44.84059,
+          "rise_med": 25.570512,
+          "fall_med": 19.270078,
+          "rise_share_pct": 57.025369,
+          "cycles": [
+            42.75,
+            46.93
+          ],
+          "rises": [
+            24.7,
+            26.44
+          ],
+          "falls": [
+            18.05,
+            20.49
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 44.690579,
+          "rise_med": 22.707815,
+          "fall_med": 21.982765,
+          "rise_share_pct": 50.811189,
+          "cycles": [
+            42.2,
+            47.18
+          ],
+          "rises": [
+            20.96,
+            24.45
+          ],
+          "falls": [
+            21.24,
+            22.73
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 43.259231,
+          "rise_med": 20.288898,
+          "fall_med": 22.970333,
+          "rise_share_pct": 46.900737,
+          "cycles": [
+            39.49,
+            47.03
+          ],
+          "rises": [
+            18.61,
+            21.96
+          ],
+          "falls": [
+            20.88,
+            25.06
+          ]
+        }
+      },
+      "r_mean": 0.135077,
+      "r_min": 0.091958,
+      "r_end": 0.091958
+    },
+    {
+      "cs": 0.05,
+      "t_dom": 135.019263,
+      "t_dom_shares": 85.8418,
+      "eig": {
+        "lam": "(0.021174942071658282+0.15048791788147978j)",
+        "Re": 0.021175,
+        "T_years": 41.752091
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 2,
+          "T_med": 46.51483,
+          "rise_med": 23.851195,
+          "fall_med": 22.663635,
+          "rise_share_pct": 51.276539,
+          "cycles": [
+            44.04,
+            48.99
+          ],
+          "rises": [
+            22.78,
+            24.93
+          ],
+          "falls": [
+            21.26,
+            24.06
+          ]
+        },
+        "sC": {
+          "n_cycles": 2,
+          "T_med": 45.177263,
+          "rise_med": 26.126309,
+          "fall_med": 19.050954,
+          "rise_share_pct": 57.830659,
+          "cycles": [
+            42.91,
+            47.44
+          ],
+          "rises": [
+            25.15,
+            27.1
+          ],
+          "falls": [
+            17.76,
+            20.34
+          ]
+        },
+        "delta": {
+          "n_cycles": 2,
+          "T_med": 45.033506,
+          "rise_med": 22.801142,
+          "fall_med": 22.232364,
+          "rise_share_pct": 50.631506,
+          "cycles": [
+            42.35,
+            47.71
+          ],
+          "rises": [
+            20.96,
+            24.64
+          ],
+          "falls": [
+            21.39,
+            23.08
+          ]
+        },
+        "tau": {
+          "n_cycles": 2,
+          "T_med": 43.458427,
+          "rise_med": 20.301017,
+          "fall_med": 23.15741,
+          "rise_share_pct": 46.713649,
+          "cycles": [
+            39.46,
+            47.45
+          ],
+          "rises": [
+            18.54,
+            22.06
+          ],
+          "falls": [
+            20.93,
+            25.39
+          ]
+        }
+      },
+      "r_mean": 0.131697,
+      "r_min": 0.086468,
+      "r_end": 0.086468
+    },
+    {
+      "cs": 0.1,
+      "t_dom": 202.335519,
+      "t_dom_shares": 85.179428,
+      "eig": {
+        "lam": "(0.02117425548203937+0.15048012349162335j)",
+        "Re": 0.021174,
+        "T_years": 41.754254
+      },
+      "var_stats": {
+        "r": {
+          "n_cycles": 0,
+          "T_med": null,
+          "rise_med": null,
+          "fall_med": null,
+          "rise_share_pct": null,
+          "cycles": [],
+          "rises": [],
+          "falls": []
+        },
+        "sV": {
+          "n_cycles": 3,
+          "T_med": 50.115105,
+          "rise_med": 25.826343,
+          "fall_med": 24.288763,
+          "rise_share_pct": 51.534048,
+          "cycles": [
+            44.46,
+            50.12,
+            58.88
+          ],
+          "rises": [
+            23.21,
+            25.83,
+            30.14
+          ],
+          "falls": [
+            21.25,
+            24.29,
+            28.74
+          ]
+        },
+        "sC": {
+          "n_cycles": 3,
+          "T_med": 48.352514,
+          "rise_med": 28.301471,
+          "fall_med": 20.051042,
+          "rise_share_pct": 58.531541,
+          "cycles": [
+            43.18,
+            48.35,
+            56.37
+          ],
+          "rises": [
+            25.91,
+            28.3,
+            32.79
+          ],
+          "falls": [
+            17.26,
+            20.05,
+            23.58
+          ]
+        },
+        "delta": {
+          "n_cycles": 3,
+          "T_med": 48.615027,
+          "rise_med": 24.951297,
+          "fall_med": 23.66373,
+          "rise_share_pct": 51.324248,
+          "cycles": [
+            42.59,
+            48.62,
+            56.07
+          ],
+          "rises": [
+            20.96,
+            24.95,
+            29.49
+          ],
+          "falls": [
+            21.63,
+            23.66,
+            26.58
+          ]
+        },
+        "tau": {
+          "n_cycles": 3,
+          "T_med": 48.177505,
+          "rise_med": 22.238656,
+          "fall_med": 25.938849,
+          "rise_share_pct": 46.159834,
+          "cycles": [
+            39.41,
+            48.18,
+            54.99
+          ],
+          "rises": [
+            18.4,
+            22.24,
+            27.09
+          ],
+          "falls": [
+            21.01,
+            25.94,
+            27.9
+          ]
+        }
+      },
+      "r_mean": 0.104542,
+      "r_min": 0.041612,
+      "r_end": 0.041612
+    }
+  ],
+  "pulse_episode": {
+    "r_at": [
+      0.1695,
+      0.1611,
+      0.1521,
+      0.1392,
+      0.1279,
+      0.1151,
+      0.1695,
+      0.1615,
+      0.1526,
+      0.1394,
+      0.1277,
+      0.1146
+    ],
+    "r_mean_downturn": [
+      0.152825,
+      0.153218
+    ],
+    "r_min_downturn": [
+      0.143275,
+      0.143518
+    ],
+    "r_peak_recovery": [
+      0.143275,
+      0.143518
+    ],
+    "sV_min_squeeze": [
+      0.125227,
+      0.126492
+    ],
+    "sV_at_60": [
+      0.499801,
+      0.495244
+    ]
+  }
+}

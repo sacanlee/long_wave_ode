@@ -25,6 +25,15 @@ evidence package** (gold-denominated and local-currency WPI for five countries,
 1800–2026: scripts, regenerated JSON series and figures). See
 ["What was added in this update"](#what-was-added-in-this-update).
 
+On 2026-09-06 the repository was extended with a **class-struggle extension of
+the model** (`scripts/class_struggle_ode.py` + `docs/class_struggle_report.md`):
+it checks the critique that the book's closure g_e ≅ −sV (Eq. 8.15) eliminates
+the *autonomous* (above-reserve-army) wage push from the five-equation model,
+introduces the class-struggle level CS via g_e = −sV − CS, and solves the ODE
+for a grid of CS values, measuring the effect on the **cycle length** and on
+the **upswing/downswing lengths** (see
+["Class struggle in the long-wave model (CS extension)"](#class-struggle-in-the-long-wave-model-cs-extension)).
+
 ## The model
 
 Five key variables: the rate of profit `r`, the shares of surplus value invested
@@ -92,6 +101,8 @@ long-wave-model/
 │   ├── long_wave_model.py         # model implementation, book self-checks, n scenarios,
 │   │                              #   cycles_by_n figure + optional --cycles-fig ODE-solution figure
 │   ├── sv_sign_flip.py            # sign-flip robustness check of Eq. (8.15) (4 variants × 6 findings)
+│   ├── class_struggle_ode.py      # class-struggle CS extension of (8.15): cycle length /
+│   │                              #   upswing-downswing lengths vs CS + historical-episode pulse
 │   ├── history_compare.py         # model vs the 5 historical long waves
 │   ├── forecast_2050_2080.py      # 2050-2080 UN WPP 2024 three-scenario forecast
 │   ├── ssa_fertility_scenario.py  # SSA fertility-crash scenario, waves 6/7 re-estimation
@@ -109,6 +120,9 @@ long-wave-model/
 │   ├── forecast_2050_2080.md
 │   ├── ssa_fertility_scenario.md
 │   ├── sv_sign_flip_report.md
+│   ├── class_struggle_report.md  # is the class struggle really absent from the model?
+│   │                             #   + CS extension, cycle/upswing/downswing results,
+│   │                             #   historical reading of every CS level
 │   └── Technical_Report_Ch8_Model_Errata.docx   # 6 findings on the book's Section 8.3.3
 ├── data/                          # regenerated result JSONs (English)
 │   ├── results.json
@@ -116,6 +130,7 @@ long-wave-model/
 │   ├── forecast_results.json
 │   ├── ssa_scenario_results.json
 │   ├── sv_flip_results.json
+│   ├── class_struggle_results.json    # CS scenarios: cycle/rise/fall stats + pulse episode
 │   ├── wpi_annual_1800_2026.json      # annual WPI / FX / gold-denominated WPI
 │   ├── wpi_quarterly_1982_2026.json   # quarterly gold-denominated WPI
 │   ├── wpi_cycles_gold.json           # gold WPI peak/trough cycles (9-yr MA)
@@ -125,6 +140,10 @@ long-wave-model/
 └── figures/
     ├── cycles_by_n.png            # linearised Δr(t) per n scenario
     ├── ode_solution_book_params.png   # nonlinear ODE solution cycles at book parameters
+    ├── class_struggle_trajectories.png  # CS runs: r/sV/sC paths up to the domain exit
+    ├── class_struggle_cycle_metrics.png # cycle length / upswing-downswing / rise share /
+    │                               #   profitability as functions of CS
+    ├── class_struggle_pulse_episode.png # stylised wage-explosion -> offensive episode vs CS=0
     ├── wpi_chart_US.png ... wpi_chart_FR.png   # gold-denominated WPI per country
     ├── wpi_chart_combined_9yMA_log.png         # five countries, 9-yr MAs
     ├── wpi_chart_local_currency.png            # local-currency WPI, 5 panels
@@ -140,6 +159,8 @@ python scripts/long_wave_model.py                        # self-checks + n scena
 python scripts/long_wave_model.py --ns 0.015 0 -0.008 -0.015
 python scripts/long_wave_model.py --cycles-fig figures/ode_solution_book_params.png
 python scripts/sv_sign_flip.py                           # sign-flip check of (8.15)
+python scripts/class_struggle_ode.py                     # CS scenarios + pulse episode
+python scripts/class_struggle_ode.py --cs -0.05 0 0.05   # custom CS grid
 python scripts/history_compare.py                        # historical comparison
 python scripts/forecast_2050_2080.py                     # 2050-2080 forecast
 python scripts/ssa_fertility_scenario.py --data-dir <dir>  # SSA scenario (needs OWID CSVs, see below)
@@ -384,6 +405,56 @@ exception: its correlation with the US only crossed and stayed above 0.5 from
    Brazil (wholesale-based) series and the post-1990 official-PPP decades are
    the least affected parts of the dataset.
 3. Series end in 2025 (full calendar years; latest World Bank vintage).
+
+# Class struggle in the long-wave model (CS extension)
+
+Added 2026-09-06. Question (see `docs/class_struggle_report.md` for the full
+analysis): the book's 3rd case (g_e < 0, "profit-squeeze", p. 212) treats the
+growth rate of the rate of surplus value as the carrier of the class struggle,
+but the closure of the complete model sets g_e ≅ −sV (p. 214), a pure function
+of the investment in variable capital — so an *autonomous* wage push (a
+struggle aiming higher than the reserve army dictates) has no place in
+(8.15)–(8.19). **Verdict of the report: the critique is essentially correct**
+(with the reserve-army wage push surviving inside g_e = −sV, and with the
+observation that the level of distribution is not a state variable at all).
+
+The extension puts the struggle back as **g_e = −sV − CS**, where CS is the
+class-struggle level (CS = 0 reproduces the book; CS > 0 = above-normal wage
+push — the "historical and moral element" of the value of labour-power;
+CS < 0 = below-normal push — Marx's counteracting cause, the depression of
+wages below value). Only Eq. (8.15) changes:
+
+```
+(8.15-CS)  r' = −a1·(sC − sV)·r² + a2·(δ + τ − sV − CS)·r
+```
+
+Main quantitative results at the book parameters (11 CS values from −0.10 to
++0.10; cycles measured within the economically meaningful window):
+
+| Effect of raising CS (more militant) | Magnitude |
+|---|---|
+| Linearised (eigenvalue) period | essentially unchanged: 41.7 → 41.8 y |
+| Nonlinear cycle length | lengthens ≈0.05 y per +0.01 CS on the first and ≈0.16–0.18 y per +0.01 CS on the second completed cycle (second cycle: 45.0 y at CS=−0.10 → 46.6 y at CS=0 → 48.4 y at CS=+0.10; third ~56 y at CS=+0.10); shortening under CS < 0 |
+| Upswing (trough→peak) of sC | lengthens ~0.2–0.3 y per +0.01 CS at moderate/high CS (23.7 → 28.3 y across the grid) |
+| Downswing (peak→trough) of sC | flat to slightly shorter (19.9 → 19.4 y) |
+| Rise share of the wave | 54% (CS = −0.10) → 57% (CS = 0) → 59% (CS = +0.10) |
+| Profit-rate level | the dominant effect: the CS component of d ln r/dt is −a₂·CS (−0.01·CS per year), amplified by state feedback; mean r [0,120 y]: 0.150 → 0.141 → 0.133 across the grid |
+| Extreme CS | CS ≥ +0.2: cycles stretch to 50–74 y, r collapses toward 1–4% (permanent squeeze / stagnation); CS ≤ −0.2: cycles ~41–43 y, profits kept high (Roaring-Twenties-like repression) |
+
+Historical reading of the levels (directions, not calibrated magnitudes):
+CS > 0 ↔ the 1966–1975 wage explosion and the fourth-wave profit squeeze
+(1966/73–1982); CS ≈ 0 ↔ reserve-army-dominated epochs (19th-century waves,
+US 1950–65); CS < 0 ↔ the post-1980 offensive (union-density collapse, wage
+share decline, profit recovery, the 1982–2007 upswing); CS ≪ 0 ↔ the US 1920s;
+regime-scale CS > 0 is historically unsustainable and appears only as bounded
+episodes (France 1936–38, UK 1974–79) that crises terminate. A stylised
+"wage-explosion → offensive" pulse run (`figures/class_struggle_pulse_episode.png`)
+shows that, because the book weights the distribution channel with a₂ = 0.01
+against a₁ = 0.04 for the OCC channel, even a strong historical-style episode
+moves the profit rate by only ~±1%: the model is OCC-determined by
+construction — a quantitative confirmation of the critique. See the report for
+caveats (no distribution state variable, no true fixed point, ~2-cycle
+meaningful window) and the suggested sixth-state extension.
 
 ## License
 
