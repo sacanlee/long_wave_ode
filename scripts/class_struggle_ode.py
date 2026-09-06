@@ -295,10 +295,12 @@ def main():
 
     pulse = None
     ratchet = None
+    osc = None
     if not args.no_figs:
         pulse = _run_pulse_episode(eq)
         ratchet = run_ratchet_recoveries()
-        _make_figures(scenarios, eq, pulse, ratchet)
+        osc = run_oscillation_death()
+        _make_figures(scenarios, eq, pulse, ratchet, osc)
 
     os.makedirs(DATA_DIR, exist_ok=True)
     report = {
@@ -315,6 +317,8 @@ def main():
         report['pulse_episode'] = pulse['summary']
     if ratchet is not None:
         report['ratchet_recoveries'] = ratchet['summary']
+    if osc is not None:
+        report['oscillation_death'] = osc['summary']
     def _clean(o):
         """Recursively convert numpy types and NaN to strict-JSON values
         (NaN occurs for variables with no complete cycle in the window,
@@ -436,7 +440,44 @@ def run_ratchet_recoveries(cs_fixed=0.02, cs_ref=0.0, T_years=220.0):
                 summary=summary)
 
 
-def _make_figures(scenarios, eq, pulse=None, ratchet=None):
+def run_oscillation_death(cs_list=(0.10, 0.15, 0.20, 0.30, 0.40, 0.50), T_years=300.0):
+    """The high-CS regime of Section 7.6(2): above the purge threshold
+    (CS ~ 0.115) the wage share is never purged (sV never turns negative), the
+    profit rate slides towards zero, and above CS ~ 0.35-0.5 the oscillation
+    itself dies out (the last extremum of sC moves to t ~ 70-130 y, after which
+    the trajectory is monotone). By then the premise sC + sV <= 1 has long been
+    violated, so these are extrapolated regime statements rather than
+    economically meaningful trajectories - the figure shows exactly that."""
+    eq = equilibrium_closed_form()
+    y0 = 1.05 * eq
+    t = np.linspace(0, T_years, int(T_years * 80) + 1)
+    sols, rows = [], []
+    print('\nOscillation death at high CS (300-year horizon):')
+    print(f"{'CS':>6} {'last extremum':>13} {'extrema':>7} {'sV<0 at':>8} {'sC or sV>1 at':>13} "
+          f"{'r(300)':>8} {'sC(300)':>9} {'sV min':>7}")
+    for cs in cs_list:
+        sol = odeint(lambda y, tt: f(y, cs), y0, t, rtol=1e-9, atol=1e-12)
+        sols.append(sol)
+        sC, sV, r = sol[:, 2], sol[:, 1], sol[:, 0]
+        pk, tr = peak_trough_indices(t, sC, 12.0)
+        evt = np.concatenate([t[pk], t[tr]])
+        t_last = float(evt.max()) if len(evt) else 0.0
+        neg = np.where(sV < 0)[0]
+        t_sV0 = float(t[neg[0]]) if len(neg) else None
+        sh = np.where((sC > 1.0) | (sV > 1.0))[0]
+        t_sh = float(t[sh[0]]) if len(sh) else None
+        row = dict(cs=cs, t_last_extremum=round(t_last, 1), n_extrema=int(len(evt)),
+                   t_sV_lt_0=(round(t_sV0, 1) if t_sV0 else None),
+                   t_share_gt_1=(round(t_sh, 1) if t_sh else None),
+                   r_end=round(float(r[-1]), 6), sC_end=round(float(sC[-1]), 2),
+                   sV_min=round(float(sV.min()), 3))
+        rows.append(row)
+        print(f"{cs:+.2f} {t_last:13.1f} {len(evt):7d} {str(t_sV0):>8} {str(t_sh):>13} "
+              f"{r[-1]:8.5f} {sC[-1]:9.1f} {sV.min():7.3f}")
+    summary = dict(cs_list=list(cs_list), T_years=T_years, runs=rows)
+    return dict(t=t, sols=sols, summary=summary)
+
+def _make_figures(scenarios, eq, pulse=None, ratchet=None, osc=None):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -634,6 +675,93 @@ def _make_figures(scenarios, eq, pulse=None, ratchet=None):
         f4 = os.path.join(FIG_DIR, 'class_struggle_ratchet_recoveries.png')
         fig.savefig(f4, dpi=130); plt.close(fig)
         print(f"                {f4}")
+
+    # ------ Figure 5: oscillation death at high CS and the domain boundary ------
+    if osc is not None:
+        t = osc['t']
+        runs = osc['summary']['runs']
+        n = len(runs)
+        cols = plt.cm.viridis(np.linspace(0.05, 0.95, n))
+        sols = osc['sols']
+        fig, axes = plt.subplots(4, 1, figsize=(11, 13.5), sharex=True)
+        # panel 1: the profit rate (log scale - it collapses to ~1e-4..1e-2)
+        ax = axes[0]
+        for row, sol, col in zip(runs, sols, cols):
+            ax.semilogy(t, sol[:, 0], lw=1.3, color=col,
+                        label=f"CS = {row['cs']:+.2f}")
+            ax.annotate(f"r(300) = {row['r_end']:.4g}", xy=(295, row['r_end']),
+                        xytext=(295, row['r_end'] * 1.7), fontsize=7.5, color=col,
+                        va='bottom')
+        ax.set_ylabel('r(t), log scale'); ax.grid(alpha=0.3, which='both')
+        ax.legend(fontsize=8, loc='upper right', ncol=3)
+        ax.text(0.02, 0.97, 'above the purge threshold (CS ~ 0.115) the rate of surplus value is '
+                'never restored and r slides monotonically towards zero: r(300 y) falls from\n'
+                '0.0076 (CS = +0.10) to 0.00035 (CS = +0.50) - no boom ever regenerates '
+                'profitability', transform=ax.transAxes, va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        # panel 2: sC - the cycles stretch and then die
+        ax = axes[1]
+        for row, sol, col in zip(runs, sols, cols):
+            ax.plot(t, sol[:, 2], lw=1.3, color=col)
+            # last extremum of each run
+            pk, tr = peak_trough_indices(t, sol[:, 2], 12.0)
+            evt = np.concatenate([t[pk], t[tr]])
+            if len(evt):
+                i = int(np.searchsorted(t, evt.max()))
+                ax.plot(evt.max(), sol[i, 2], 'x', ms=7, color=col, mew=1.8)
+                ax.annotate(f"last extremum t = {evt.max():.0f} y", xy=(evt.max(), sol[i, 2]),
+                            xytext=(evt.max() - 62, sol[i, 2] + 0.14), fontsize=7, color=col,
+                            arrowprops=dict(arrowstyle='->', lw=0.6, color=col))
+        ax.set_ylim(0, 3.4)
+        ax.set_ylabel('sC(t)'); ax.grid(alpha=0.3)
+        ax.text(0.02, 0.97, 'the oscillation dies above CS ~ 0.35-0.5: the last extremum of sC moves '
+                'from t ~ 185 y (CS = +0.30) to t ~ 127 y (CS = +0.40)\nto t ~ 69 y (CS = +0.50); '
+                'afterwards sC grows monotonically - the curves climb off the panel '
+                '(sC(300) up to 351)', transform=ax.transAxes, va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        # panel 3: sV - the purge disappears
+        ax = axes[2]
+        for row, sol, col in zip(runs, sols, cols):
+            ax.plot(t, sol[:, 1], lw=1.3, color=col)
+        ax.axhline(0, color='k', lw=0.8)
+        ax.set_ylim(-0.35, 1.35)
+        ax.set_ylabel('sV(t)'); ax.grid(alpha=0.3)
+        ax.text(0.02, 0.97, 'the reserve-army purge disappears: sV < 0 only at CS = +0.10 '
+                '(t ~ 202 y, shallow); for CS >= +0.12 the hiring share never turns negative\n'
+                'within 300 y - g_e = -sV - CS stays <= 0 forever, the wage share is never purged',
+                transform=ax.transAxes, va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        # panel 4: the book premise sC + sV <= 1
+        ax = axes[3]
+        for row, sol, col in zip(runs, sols, cols):
+            ax.plot(t, sol[:, 2] + sol[:, 1], lw=1.2, color=col, alpha=0.9)
+            if row['t_share_gt_1'] is not None:
+                ax.axvline(row['t_share_gt_1'], color=col, ls=':', lw=1.0, alpha=0.8)
+                ax.plot(row['t_share_gt_1'], 1.04, 'v', ms=6, color=col)
+        ax.axhline(1, color='#d62728', ls='--', lw=1.4)
+        ax.set_ylim(0, 2.6)
+        ax.set_ylabel('sC(t) + sV(t)'); ax.grid(alpha=0.3)
+        cross_txt = '  '.join(f'CS={r["cs"]:+.2f}: {r["t_share_gt_1"]:.0f} y'
+                              for r in runs if r['t_share_gt_1'] is not None)
+        ax.text(0.02, 0.97, 'red dashed line: sC + sV = 1 (the book premise, the "shares" cannot '
+                'exceed the whole surplus value).\nFirst violation (triangles on the line): ' +
+                cross_txt + '.\nEverything to the right of each dotted line is economically '
+                'meaningless - these high-CS runs are\ntherefore "extrapolated regime statements, '
+                'not economically meaningful trajectories" (curves climb off the panel: '
+                'sC+sV ~ 19-350 by 300 y)',
+                transform=ax.transAxes, va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85, ec='#888888', lw=0.5))
+        axes[3].set_xlabel('t (years)')
+        fig.suptitle('Oscillation death at high CS and the domain boundary (book parameters, '
+                     'n = 0.015, 300-year horizon)\n'
+                     'above CS ~ 0.115 the wage share is never purged and r slides to ~1e-3-1e-2; '
+                     'above CS ~ 0.35-0.5 the oscillation itself dies - and the shares have long\n'
+                     'violated the premise sC + sV <= 1, so these high-CS runs are extrapolated '
+                     'regime statements rather than economically meaningful trajectories', y=0.995)
+        fig.tight_layout(rect=[0, 0, 1, 0.97])
+        f5 = os.path.join(FIG_DIR, 'class_struggle_oscillation_death.png')
+        fig.savefig(f5, dpi=130); plt.close(fig)
+        print(f"                {f5}")
 
 
 if __name__ == '__main__':

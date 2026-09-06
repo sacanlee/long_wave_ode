@@ -402,6 +402,13 @@ episode as deviations from the CS = 0 baseline.
 **Figure 4** — `class_struggle_ratchet_recoveries.png`: the "pointless recoveries" at a fixed
 CS = +0.02 (Section 7.6): the accumulation wave keeps cycling (boom peaks at t ≈ 50, 97, 150,
 213 y) while the profit rate ratchets down at every peak (r: 0.146 → 0.115 → 0.083 → 0.051).
+**Figure 5** — `class_struggle_oscillation_death.png`: the high-CS regime of Section 7.6(2)
+over 300 y: the profit rate collapses (r(300 y): 0.0076 at CS = +0.10 → 0.00035 at
+CS = +0.50), the sC cycles die out (last extremum at t ≈ 185 y for CS = +0.15…+0.30, ≈ 127 y
+at CS = +0.40, ≈ 69 y at CS = +0.50), sV never turns negative for CS ≥ +0.12, and the
+premise sC + sV ≤ 1 is violated from t ≈ 85 y (CS = +0.10) to ≈ 43–48 y (CS = +0.30–0.50) —
+the runs beyond those lines are extrapolated regime statements, not economically meaningful
+trajectories.
 
 ## 5. The mechanism in analytical terms: why CS > 0 lengthens the cycle and tilts it toward the upswing
 
@@ -956,7 +963,12 @@ vanishing profit rate. Recovery in the sense that the boom regenerates itself fa
 completely only above this second threshold (roughly CS ≈ 0.35–0.5 here: a permanent excess
 wage push of 35–50% per year — an extreme counterfactual; by then the premise sC + sV ≤ 1
 is long violated, so these are extrapolated regime statements, not economically meaningful
-trajectories).
+trajectories). Figure 5 shows this regime directly: the collapse of the profit rate (r(300 y)
+= 0.0076 at CS = +0.10 → 0.00035 at CS = +0.50, log panel), the death of the sC cycles (last
+extremum at t ≈ 185 y for CS = +0.15…+0.30, ≈ 127 y at CS = +0.40, ≈ 69 y at CS = +0.50),
+the disappearance of the sV < 0 purge (never for CS ≥ +0.12), and the violation of the
+premise sC + sV ≤ 1 from t ≈ 85 y (CS = +0.10) to ≈ 43–48 y (CS = +0.30–0.50) — everything
+to the right of those lines is the extrapolated territory.
 
 Between CS = 0 and the first threshold the behaviour is smooth, not bimodal. Two effects
 compete: the early-brake effect (smaller overshoot, trims the bust) and the slow-clock

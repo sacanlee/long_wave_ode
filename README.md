@@ -146,6 +146,8 @@ long-wave-model/
     ├── class_struggle_pulse_episode.png # stylised wage-explosion -> offensive episode vs CS=0
     ├── class_struggle_ratchet_recoveries.png # pointless recoveries at fixed CS=+0.02:
     │                               #   the wave keeps cycling while the profit rate ratchets down
+    ├── class_struggle_oscillation_death.png # high-CS regime: r -> ~1e-4-1e-2, cycles die out,
+    │                               #   no sV<0 purge, premise sC+sV<=1 violated (extrapolated)
     ├── wpi_chart_US.png ... wpi_chart_FR.png   # gold-denominated WPI per country
     ├── wpi_chart_combined_9yMA_log.png         # five countries, 9-yr MAs
     ├── wpi_chart_local_currency.png            # local-currency WPI, 5 panels
