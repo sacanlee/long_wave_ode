@@ -1166,10 +1166,38 @@ both absent from the model.
 **(b) Why sV > 0 forever (CS ≳ 0.12) does not mean better employment.** sV is the share of
 surplus value invested in variable capital, not the employment level. Hiring is funded out
 of surplus value — by definition V̇ = sV·S — so the actual hiring rate is g_V = V̇/V =
-sV·e, the product of the (positive) share and the (collapsing) rate of surplus value. In
-the CS ≳ 0.12 regime sV stays positive while the implied e → 0 (g_e = −sV − CS ≤ 0
-forever), so the real hiring rate g_V → 0 even though the share never turns negative — while
-the labour force keeps growing at n > 0. The reserve army is then recreated not by a purge
+sV·e, the product of the (positive) share and the (collapsing) rate of surplus value.
+
+Before turning to the extreme CS ≳ 0.12, consider the realistic band 0 < CS ≲ 0.11 (the
+1970s-scale push of Section 7.6(3)). There the reserve-army purge is not abolished but
+*postponed and weakened*: the first sV < 0 crossing moves from t ≈ 131 y at CS = 0 to ≈ 133 y
+at CS = +0.02, ≈ 135 y at CS = +0.05 and ≈ 202–205 y at CS = +0.10–0.11 (and then only to
+sV ≈ −0.03). Within the economically meaningful domain — before the shares exceed the whole
+surplus value at t ≈ 86 y — sV never turns negative at any CS ≥ 0, and its cyclical troughs
+are shallower the higher the CS (the minimum of sV over [0, 120 y] is 0.0615 at CS = 0,
+0.068 at CS = +0.02 and 0.096 at CS = +0.10, while the mean rises from 0.339 to 0.349,
+Table 3). In the model's own terms the working class therefore experiences, over the
+meaningful window, a labour market that never turns into absolute disinvestment: the hiring
+phases (sV > 0) run at slightly higher shares and the shedding phases are milder than at
+CS = 0. This apparent improvement is, however, the same trap as in the extreme regime, on a
+longer leash. Because the wage push is autonomous — it does not depend on the state of the
+reserve army — the timing of the purge is not set by the labour market: the absolute-
+disinvestment event arrives only late, after the premise sC + sV ≤ 1 has already failed at
+t ≈ 86 y (so the purge that finally restores the rate of surplus value is an out-of-domain
+phenomenon), and over the whole meaningful window the implied wage share keeps rising
+against a slowly eroding profit rate (g_e = −sV − CS < 0 while sV > −CS). Employment is
+therefore not better in the relevant sense: the model's "no purge in sight" is the obverse
+of "the wage share is never undone", and the longer the leash, the larger the accumulated
+distortion — at CS ≳ 0.115 the eventual restoration is not postponed but replaced by
+non-accumulation (the reserve army recreated by the vanishing surplus rather than by
+firing), which is the extreme described next. Historically the band 0 < CS ≲ 0.11 is the
+1970s: unemployment rose through 1974–82 as the hiring share fell toward zero, but no market
+purge restored profitability — that required the deliberate recession and the offensive of
+1979–85 (Section 7.7).
+
+In the CS ≳ 0.12 regime, by contrast, sV stays positive while the implied e → 0
+(g_e = −sV − CS ≤ 0 forever), so the real hiring rate g_V → 0 even though the share never
+turns negative — while the labour force keeps growing at n > 0. The reserve army is then recreated not by a purge
 (sV < 0 never occurs) but by non-accumulation: employment growth falls below labour-force
 growth because there is no surplus with which to hire. The persistently positive sV is an
 empty claim on a vanishing surplus — sV̄ = τ/r explodes as r → 0, and sV > 1 is as
