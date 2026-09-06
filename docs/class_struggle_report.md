@@ -983,7 +983,7 @@ higher one beyond which even the cycles cease.
 **(3) What this means for the 1970s question.** The 1970s-scale push (CS of the order of
 0.01–0.03) lies far below the purge threshold, and the model does not claim that such a push
 alone prevents recovery — its direct channel (a₂ = 0.01) is small and the level of the wage
-share is not a state variable (Sections 2.3 and 7.8). The model's contribution is structural
+share is not a state variable (Sections 2.3 and 7.9). The model's contribution is structural
 and qualitative: (i) the variable that a persistent wage push prolongs is not the individual
 bust but the low-profit state — the ratchet, whose exit requires the wage push to be broken;
 (ii) if the push were maintained above the purge threshold, no restoration would be possible
@@ -1128,7 +1128,96 @@ was therefore not merely one wage-restraint device among others: it is what allo
 profitability to coexist with (near-)full employment in the centre for a generation — the
 combination that a purely internal class compromise could not deliver.
 
-### 7.8 Limits of this interpretation
+### 7.8 How to read the model: monotone sC at very high CS, a positive sV without profit, and the mechanisation treadmill
+
+Three questions arise naturally from Figures 4 and 5 and from Section 7.6: (i) why does sC
+rise monotonically without fluctuation at very high CS? (ii) if sV never turns negative
+(CS ≳ 0.12), is employment better for the working class? (iii) why does sC keep rising while
+the profit rate declines without ever returning to its previous peak — and why, if capital
+cannot lay off workers or cut wages on a large scale, does it invest in constant capital at
+all? The three questions have one answer: the waves of this model are not profit-rate
+cycles.
+
+**(a) Why sC becomes monotone at very high CS (CS ≳ 0.35).** The turning points of sC are
+the crossings of the hiring pressure through the choke threshold: sC′ = sC(τ − sV·r)
+changes sign only when sV·r = τ ≈ 0.047 (Section 5.1). At CS ≳ 0.35 the profit rate
+collapses so fast and so low — r(300 y) ≈ 1.2×10⁻³ at CS = +0.30, 6.9×10⁻⁴ at +0.40,
+3.5×10⁻⁴ at +0.50 — that the product sV·r can never reach τ again: even sV = 1 would give
+sV·r ≈ 10⁻³ ≪ τ. Hence τ − sV·r > 0 forever, sC grows monotonically, and the clock itself
+dies (ω = √(A·r) → 0; the last extremum of sC moves from t ≈ 185 y at CS = +0.30 to ≈ 127 y
+at +0.40 to ≈ 69 y at +0.50; Figure 5, panels 1–2). The economic content is that of Section
+7.6(2): at such CS the implied rate of surplus value tends to zero (g_e = −sV − CS < 0
+forever), so the boom-choke mechanism — full employment raising wages, wages choking
+profitability — cannot re-engage: profitability is too low for the hiring pressure ever to
+reach the threshold. The monotone rise of sC is then not "continuous investment in constant
+capital": it is an accounting fiction. The δ-anchoring keeps sC·r ≈ 0.11, forcing
+sC ≈ A/r → 351 while r → 3.5×10⁻⁴ — i.e. the "share of surplus value invested" exceeds the
+whole surplus value (sC + sV > 1; Figure 5, panel 4). Real accumulation at such a pace would
+be impossible without credit or the state — both absent from the model.
+
+**(b) Why sV > 0 forever (CS ≳ 0.12) does not mean better employment.** sV is the share of
+surplus value invested in variable capital, not the employment level. Hiring is funded out
+of surplus value — by definition V̇ = sV·S — so the actual hiring rate is g_V = V̇/V =
+sV·e, the product of the (positive) share and the (collapsing) rate of surplus value. In
+the CS ≳ 0.12 regime sV stays positive while the implied e → 0 (g_e = −sV − CS ≤ 0
+forever), so the real hiring rate g_V → 0 even though the share never turns negative — while
+the labour force keeps growing at n > 0. The reserve army is then recreated not by a purge
+(sV < 0 never occurs) but by non-accumulation: employment growth falls below labour-force
+growth because there is no surplus with which to hire. The persistently positive sV is an
+empty claim on a vanishing surplus — sV̄ = τ/r explodes as r → 0, and sV > 1 is as
+impossible as sC > 1. For the working class the regime means: the share of output is never
+undone by market discipline (no mass-unemployment purge, no general wage cuts), but the
+system simultaneously loses the capacity to employ a growing labour force. In reality the
+contradiction surfaces through channels the model does not contain — capital flight, the
+capital strike (France 1937–38), the balance-of-payments crisis (UK 1976), state austerity:
+a wage share that outruns profitability cannot reproduce itself, which is why such regimes
+are historically broken rather than persisted in (Section 6.5).
+
+**(c) Why the profit rate never recovers — and why sC rises anyway.** Three layers:
+
+1. *The waves are not profit-rate cycles.* r declines monotonically at every CS examined
+   (d ln r < 0 on every segment of every run, even at CS = −0.10): the OCC channel
+   −a₁(sC − sV)r² dominates the counteracting bracket a₂(δ + τ − sV)r at the book's
+   calibration (a₁ = 0.04 ≫ a₂ = 0.01), and no positive fixed point exists (findings F1–F4),
+   so there is no profit level to which the system could return. The book itself describes r
+   as displaying "a cyclical decreasing secular behavior" (p. 235): at the book's parameters
+   the secular decline dominates the path of r, while the waves appear in the composition of
+   accumulation (sC, sV, δ, τ). Even the reserve-army purge that finally restores the rate of
+   surplus value (sV < 0 from t ≈ 131 y at CS = 0) cannot reverse r, because the falling r
+   forces the balance share sC̄ = A/r ever higher — the rising OCC feeds the tendency. Only
+   in the extreme-repression region (CS ≲ −0.3…−0.5) does the fall of r nearly stop
+   (d ln r ≈ −7×10⁻⁴/yr at CS = −0.5); a moderate offensive (the realistic 1980s, CS ≈
+   −0.01…−0.05) slows the decline but does not reverse it.
+2. *Why sC rises while r is low: mechanisation is not decided by the level of profit.* The
+   condition for sC to grow is τ − sV·r > 0: the pace of technical change outrunning the
+   profit-weighted hiring pressure. In the squeeze and the slump two forces push this gap
+   positive: sV·r collapses (labour shedding plus the falling r), and τ itself accelerates
+   (in the bust δ > b₂, so τ′ = b₁·Erf(δ − b₂) > 0). The wage squeeze therefore *spurs the
+   substitution of dead for living labour* — the classical Marxian response: when wages
+   cannot be cut (an autonomous push, large CS), mechanisation is the only counterattack
+   left to capital. This is the model's version of Marx-biased technical change, and it
+   answers the puzzle directly: a capitalist who cannot fire his way back to profit
+   mechanises instead. The model then shows the trap: the mechanisation raises the OCC,
+   which deepens the FROP through the a₁ channel and keeps r down — the treadmill: squeeze →
+   mechanisation → rising OCC → falling r → (while the push holds) renewed squeeze.
+3. *Part of the secular rise of sC is accounting, not investment.* The δ-anchoring keeps
+   sC·r ≈ 0.11, i.e. sC̄ = A/r: as r falls, the share must rise merely to maintain the same
+   pace of accumulation g_C = sC·r − δ ≈ 0.06/yr. Much of sC's climb is therefore the mirror
+   image of r's decline at an unchanged accumulation pace; once sC exceeds 1, even that pace
+   is impossible without external finance.
+
+**Reading summary.** The cycles are not profit cycles; they are mechanisation-versus-hiring
+cycles that keep running on a secularly falling profit rate (the book's own description,
+p. 235). sC rises because the wage squeeze makes machinery the only investment that still
+promises relief, and because the accounting share must rise as r falls. A positive sV
+without profit does not mean better employment: hiring is sV·e, and with e → 0 the reserve
+army is recreated by non-accumulation. The model's version of the exhaustion of the
+counteracting causes (*Capital* III, ch. 14–15) is the monotone-sC degeneracy of Figure 5:
+at very high CS the wage push eliminates the surplus, the labour-market wage mechanism is
+suspended, and the equations continue only as an accounting fiction until the shares violate
+their own premise.
+
+### 7.9 Limits of this interpretation
 
 1. *Permanent vs episodic struggle.* The scenarios of Section 4 hold CS constant, whereas
    the class struggle in history is episodic and answered by capital (disinvestment,
