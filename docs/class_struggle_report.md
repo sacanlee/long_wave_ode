@@ -1222,6 +1222,56 @@ are historically broken rather than persisted in (Section 6.5).
    image of r's decline at an unchanged accumulation pace; once sC exceeds 1, even that pace
    is impossible without external finance.
 
+**(d) Why capital does not simply stop accumulating: competition, consumption, and the exit
+valves the model omits.** A natural objection to (a)–(c) is: if the rate of profit is as low
+as the high-CS runs show, and the wage share cannot be pushed down, why do capitalists not
+stop accumulating and spend the surplus on personal consumption and financial speculation
+instead? The answer has three parts.
+
+1. *Accumulation is not a consumption choice; it is a competitive necessity.* In Marx the
+   capitalist as such is "capital personified": the motive is the boundless valorisation of
+   value, and the coercive laws of competition confront each individual capitalist as an
+   external constraint (*Capital* I, ch. 24). A capitalist who stops reinvesting while his
+   competitors mechanise is outcompeted — dearer output, lost market share, lost
+   creditworthiness. Stopping is individually rational but collectively impossible: capital
+   as a whole has no withdrawal option short of crisis. What changes at a low profit rate is
+   the *form* of accumulation, not its existence: it shifts from market expansion toward
+   defensive mechanisation (the substitution of dead for living labour — the τ − sV·r
+   channel of (c)) and toward centralisation (the purchase of other capitals). That is why
+   sC continues to rise in the model even while r collapses.
+2. *The consumption and finance margins are absent from the equations — and their absence is
+   exactly where the model degenerates.* In Eqs. (8.15-CS)–(8.19) the surplus is split only
+   between the shares sC and sV; a residual 1 − sC − sV for unproductive capitalist
+   consumption is implicit but never chosen by the dynamics, and there is no credit or
+   portfolio margin at all. The δ-anchoring pins the accumulation pace sC·r ≈ 0.11, so as r
+   collapses the required share sC = A/r exceeds 1: even the entire surplus would not
+   finance the "normal" pace of accumulation, and the equations continue only as the
+   accounting fiction of Figure 5 (sC + sV > 1). The monotone-sC degeneracy at very high CS
+   is the mathematical signature of the missing exit valves.
+3. *In reality the exit valves exist and are used — but they displace the contradiction
+   rather than resolve it.* Historically, when the wage share was high and could not be cut,
+   capital responded with (i) the *capital strike* — the refusal of new productive
+   investment (France 1937–38; the US corporate investment slump of the 1970s despite high
+   retained profits); (ii) *luxury consumption*, which is too small to absorb the surplus
+   and cannot restore the rate of profit (a ratio of surplus to capital, not a level of
+   spending); and (iii) *finance and speculation*: overaccumulated money capital flows into
+   credit, asset markets and foreign outlets — the outcome Marx anticipated in *Capital* III,
+   ch. 15 (capital that cannot be valorised productively overflows into speculation and
+   external outlets) and in his account of interest-bearing capital. The post-1980 period is
+   the textbook case: after the offensive restored profitability, productive investment never
+   returned to its golden-age share of output — a rising share of profits went to dividends,
+   share buybacks and financial assets, the "financialisation" of the advanced economies
+   (Krippner 2005; Duménil & Lévy on finance as a modern form of capitalist command).
+   Financial relocation of the surplus does not raise the rate of surplus value; it postpones
+   and re-channels the contradiction — which is why financialised regimes end in financial
+   crises (1929–33; 2007–08: configuration 2 of Section 7.4) — and why the low-profit regime
+   itself is ended, in reality, either by the market's own correction (crisis and the
+   devaluation of capital, the purge), by capital's political offensive to restore e
+   (Section 7.7), or by the financial transmutation of the contradiction. The model, lacking
+   these margins, shows the pure form — accumulation at a vanishing profit rate until the
+   shares violate their own premise — a counterfactual that isolates why the real exit valves
+   must open.
+
 **Reading summary.** The cycles are not profit cycles; they are mechanisation-versus-hiring
 cycles that keep running on a secularly falling profit rate (the book's own description,
 p. 235). sC rises because the wage squeeze makes machinery the only investment that still
@@ -1343,9 +1393,13 @@ their own premise.
   Penguin.
 - Goodwin, R. M. (1967). A growth cycle. In C. H. Feinstein (ed.), *Socialism, Capitalism
   and Economic Growth*. Cambridge University Press.
+- Krippner, G. R. (2005). The financialization of the American economy. *Socio-Economic
+  Review*, 3(2), 173–208.
 - Marx, K. *Capital*, Vol. I (ch. 6: the value of labour-power; ch. 10: the struggle over
-  the working day; ch. 25: the general law of capitalist accumulation); Vol. III, ch. 14
-  (the counteracting causes of the FROP).
+  the working day; ch. 24: the drive to accumulate, "capital personified" and the
+  competition-coercion of accumulation; ch. 25: the general law of capitalist accumulation);
+  Vol. III, ch. 14 (the counteracting causes of the FROP), ch. 15 (overproduction of capital
+  and its overflow into speculation and external outlets).
 - Przeworski, A. (1985). *Capitalism and Social Democracy*. Cambridge University Press.
 - Companion repository reports: `docs/model_validation_n_scenarios.md`,
   `docs/sv_sign_flip_report.md`, `docs/Technical_Report_Ch8_Model_Errata.docx`
